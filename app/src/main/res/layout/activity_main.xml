@@ -31,14 +31,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="clickValue"
-                android:text="@string/two" />
+                android:text="@string/two"
+                android:layout_column="1" />
 
             <Button
                 android:id="@+id/btn3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="clickValue"
-                android:text="@string/three" />
+                android:text="@string/three"
+                android:layout_column="2" />
         </TableRow>
 
         <TableRow
@@ -104,6 +106,26 @@
             android:layout_height="fill_parent">
 
         </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:onClick="clickValue"
+                android:id="@+id/button"
+                android:layout_span="3"
+                 />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        </TableRow>
     </TableLayout>
 
     <LinearLayout
@@ -132,7 +154,7 @@
             android:id="@+id/invoviceLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+android:gravity="center"
             android:hint="請輸入發票號碼"
             android:padding="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />

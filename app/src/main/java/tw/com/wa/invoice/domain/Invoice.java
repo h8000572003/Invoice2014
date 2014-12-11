@@ -22,9 +22,7 @@ public class Invoice implements Serializable{
         this.number = number;
     }
 
-    public Invoice() {
-        this("","");
-    }
+
 
     public void setAwards(String awards) {
         this.awards = awards;
