@@ -3,7 +3,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/abc_action_button_min_height_material"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
     android:orientation="vertical">
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -139,7 +142,7 @@
         <android.support.v7.widget.Toolbar
             android:id='@+id/my_awesome_toolbar'
             android:layout_width='match_parent'
-            android:layout_height='wrap_content'
+            android:layout_height="5dp"
             android:background='?attr/colorPrimary'
             android:minHeight='?attr/actionBarSize' />
 
@@ -150,14 +153,15 @@
             android:spinnerMode="dropdown" />
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/invoviceLabel"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:hint="請輸入發票號碼"
                 android:padding="5dp"
@@ -165,21 +169,21 @@
 
             <TextView
                 android:id="@+id/messageLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentStart="true"
-                android:background="#88000000"
+                android:background="@color/background_material_light"
                 android:gravity="center"
 
-                android:text="MESSAGE"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@android:color/holo_red_light" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="invisible" />
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
         <ScrollView
