@@ -15,8 +15,6 @@ public enum Award {
     ExactSix,//額外六
     None,
     Wait,
-    Finding,
-
-    ;;
+    Finding,;;
 
 }

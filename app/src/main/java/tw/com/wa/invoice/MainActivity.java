@@ -43,6 +43,8 @@ public class MainActivity extends ActionBarActivity {
 
         this.dto = new MainDTO();
 
+
+        //change
         this.dto.setInvoices(this.getDataCompent.getInvoice(""));
 
 
