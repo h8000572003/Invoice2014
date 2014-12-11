@@ -11,7 +11,15 @@ import tw.com.wa.invoice.domain.Invoice;
  */
 public class CommomUtil {
 
+    static final int LAST_CHAR = 8;
+
     private GetDataCompent getDataCompent = null;
+
+    private final static int[] RANG =
+
+            {
+                    3, 4, 5, 6, 7, 8
+            };
 
     public CommomUtil() {
         getDataCompent = new GetDataCompentImpl();
@@ -28,6 +36,7 @@ public class CommomUtil {
 
 
     }
+
 
     public Award check3NumberAward(String number, List<Invoice> invoices) {
 
@@ -62,6 +71,49 @@ public class CommomUtil {
         }
 
         return Award.None;
+
+    }
+
+    /**
+     * @param invoice
+     * @param number
+     * @param numberOfChar
+     * @return
+     */
+    private boolean matchLastChar(Invoice invoice, String number, int numberOfChar) {
+
+
+        String matchString = invoice.getNumber().substring(LAST_CHAR - 3, LAST_CHAR);
+        return
+                number.matches("\\d*" + matchString + "$");
+
+    }
+
+
+    public Award checkAward(String number, List<Invoice> invoices) throws RuntimeException {
+        if (number.length() != 8) {
+            throw new RuntimeException("number legth is not 8");
+        }
+
+        int leavelNo = -1;
+        for (Invoice invoice : invoices) {
+            leavelNo = -1;
+            for (int leavel : RANG) {
+                if (matchLastChar(invoice, number, leavel)) {
+
+                    leavelNo = leavel;
+
+                } else {
+                    if (leavel != -1) {
+                        break;
+                    }
+                }
+
+            }
+
+
+        }
+
 
     }
 
