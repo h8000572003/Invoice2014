@@ -30,17 +30,17 @@
                 android:id="@+id/btn2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="1"
                 android:onClick="clickValue"
-                android:text="@string/two"
-                android:layout_column="1" />
+                android:text="@string/two" />
 
             <Button
                 android:id="@+id/btn3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="2"
                 android:onClick="clickValue"
-                android:text="@string/three"
-                android:layout_column="2" />
+                android:text="@string/three" />
         </TableRow>
 
         <TableRow
@@ -112,13 +112,12 @@
             android:layout_height="fill_parent">
 
             <Button
+                android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:onClick="clickValue"
-                android:id="@+id/button"
                 android:layout_span="3"
-                 />
+                android:onClick="clickValue"
+                android:text="0" />
         </TableRow>
 
         <TableRow
@@ -150,21 +149,45 @@
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown" />
 
-        <TextView
-            android:id="@+id/invoviceLabel"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-android:gravity="center"
-            android:hint="請輸入發票號碼"
-            android:padding="5dp"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/invoviceLabel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:hint="請輸入發票號碼"
+                android:padding="5dp"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/messageLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:background="#88000000"
+                android:gravity="center"
+
+                android:text="MESSAGE"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/holo_red_light" />
+
+
+        </RelativeLayout>
+
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="15dp"
-            android:fillViewport="false">
+            android:fillViewport="false"
+            android:padding="15dp">
 
             <TextView
                 android:id="@+id/invoiceContent"

@@ -9,12 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.MainDTO;
@@ -30,6 +26,7 @@ public class MainActivity extends ActionBarActivity {
 
     private TextView invoviceLabel = null;
     private TextView invoiceContent = null;
+    private TextView messageLabel = null;
 
     private MainDTO dto;
 
@@ -50,13 +47,9 @@ public class MainActivity extends ActionBarActivity {
 
 
         this.spinner = (Spinner) this.findViewById(R.id.monthSpinner);
-
-
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
-
-
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
-
+        this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
 
         String content = "";
         content += "特別獎\t22267127\n";
@@ -105,6 +98,7 @@ public class MainActivity extends ActionBarActivity {
      * @param view
      */
     public void clickValue(View view) {
+        this.messageLabel.setVisibility(View.INVISIBLE);
 
 
         final TextView label = (TextView) view;
@@ -115,74 +109,63 @@ public class MainActivity extends ActionBarActivity {
         invoviceLabel.setText(dto.getNumber());
 
 
-        new CountDownTimer(1000, 100) {
-            @Override
-            public void onTick(long millisUntilFinished) {
+        final Award award =
+                commomUtil.check3NumberAward(dto.getNumber(), dto.getInvoices());
 
-            }
-
-            @Override
-            public void onFinish() {
-                Award award =
-                        commomUtil.check3NumberAward(dto.getNumber(), dto.getInvoices());
-
-                switch (award) {
+        switch (award) {
 
 
-                    case Wait:
+            case Wait:
 
-                        break;
+                break;
 
-                    case None:
-
-                        invoviceLabel.setText("沒得獎，換一張");
-                        invoviceLabel.setTextColor(Color.RED);
-                        dto.setNumber("");
+            case None:
 
 
-                        break;
+                this.messageLabel.setVisibility(View.VISIBLE);
+                this.messageLabel.setText("沒得獎，換一張");
+
+                dto.setNumber("");
 
 
-                    case Finding:
-
-                        invoviceLabel.setText("有中大獎的可能，請輸入完整發票號");
-                        invoviceLabel.setTextColor(Color.RED);
-
-                        dto.setNumber("");
-                        break;
-
-                    case VerySpecial:
-                        break;
-                    case Special:
-                        break;
-                    case Top:
-                        break;
-                    case Second:
-                        break;
-                    case Thrid:
-                        break;
-                    case Fouth:
-                        break;
-                    case Fifth:
-                        break;
-                    case Sixth:
-
-                        invoviceLabel.setText("中一張六獎");
-                        invoviceLabel.setTextColor(Color.RED);
-                        dto.setNumber("");
-
-                        break;
+                break;
 
 
-                    case ExactSix:
-                        break;
-                }
+            case Finding:
 
-            }
-        }.start();
+                this.messageLabel.setVisibility(View.VISIBLE);
+                this.messageLabel.setText("有中大獎的可能，請輸入完整發票號");
 
 
+                dto.setNumber("");
+                break;
 
+            case VerySpecial:
+                break;
+            case Special:
+                break;
+            case Top:
+                break;
+            case Second:
+                break;
+            case Thrid:
+                break;
+            case Fouth:
+                break;
+            case Fifth:
+                break;
+            case Sixth:
+
+                invoviceLabel.setText("中一張六獎");
+                invoviceLabel.setTextColor(Color.RED);
+                dto.setNumber("");
+
+                break;
+
+
+            case ExactSix:
+                break;
+        }
 
 
     }
