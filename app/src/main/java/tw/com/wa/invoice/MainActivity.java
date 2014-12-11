@@ -1,14 +1,15 @@
 package tw.com.wa.invoice;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -107,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
 
         dto.setNumber(dto.getNumber() + label.getText());
 
-        invoviceLabel.setTextColor(Color.BLACK);
+
         invoviceLabel.setText(dto.getNumber());
 
 
@@ -139,6 +140,18 @@ public class MainActivity extends ActionBarActivity {
                 this.messageLabel.setText("有中大獎的可能，請輸入完整發票號");
 
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.app_name));
+                builder.setMessage("請輸入完整發票號");
+
+                EditText editText = new EditText(this);
+                builder.setView(editText);
+
+
+                builder.create().show();
+                ;
+
+
                 dto.setNumber("");
                 break;
 
@@ -158,7 +171,16 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case Sixth:
 
-                invoviceLabel.setText("中一張六獎");
+
+                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+
+                myAlertDialog.setTitle(getString(R.string.app_name));
+
+                myAlertDialog.setMessage("中一張六獎\n");
+                myAlertDialog.setNegativeButton("知道", null);
+                myAlertDialog.show();
+
+                invoviceLabel.setText("");
                 invoviceLabel.setTextColor(Color.RED);
                 dto.setNumber("");
 
