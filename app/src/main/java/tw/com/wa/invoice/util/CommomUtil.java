@@ -15,10 +15,12 @@ public class CommomUtil {
 
     private GetDataCompent getDataCompent = null;
 
-    private final static int[] RANG =
+    private final static Award[] Award_RANG =
 
             {
-                    3, 4, 5, 6, 7, 8
+                    Award.VerySpecial,
+                    Award.Second
+
             };
 
     public CommomUtil() {
@@ -95,9 +97,10 @@ public class CommomUtil {
             throw new RuntimeException("number legth is not 8");
         }
 
-        int leavelNo = -1;
+        Award award = Award.None;
         for (Invoice invoice : invoices) {
-            leavelNo = -1;
+            award = Award.None;
+
             for (int leavel : RANG) {
                 if (matchLastChar(invoice, number, leavel)) {
 
@@ -112,6 +115,9 @@ public class CommomUtil {
             }
 
 
+        }
+        if (leavelNo == -1) {
+            return Award.None;
         }
 
 
