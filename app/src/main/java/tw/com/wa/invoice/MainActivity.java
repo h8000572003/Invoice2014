@@ -1,10 +1,12 @@
 package tw.com.wa.invoice;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +15,11 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.ui.MyDiaglog;
@@ -22,7 +28,7 @@ import tw.com.wa.invoice.util.GetDataCompent;
 import tw.com.wa.invoice.util.GetDataCompentImpl;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
 
     private Spinner spinner = null;
@@ -55,6 +61,26 @@ public class MainActivity extends ActionBarActivity {
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
+
+
+        this.findViewById(R.id.button).setOnClickListener(this);
+        this.findViewById(R.id.btn1).setOnClickListener(this);
+        this.findViewById(R.id.btn2).setOnClickListener(this);
+        this.findViewById(R.id.btn3).setOnClickListener(this);
+        this.findViewById(R.id.btn4).setOnClickListener(this);
+        this.findViewById(R.id.btn5).setOnClickListener(this);
+        this.findViewById(R.id.btn6).setOnClickListener(this);
+        this.findViewById(R.id.btn7).setOnClickListener(this);
+        this.findViewById(R.id.btn8).setOnClickListener(this);
+        this.findViewById(R.id.btn9).setOnClickListener(this);
+
+
+        this.findViewById(R.id.cleanBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cleanValue(v);
+            }
+        });
 
         String content = "";
         content += "特別獎\t22267127\n";
@@ -146,11 +172,45 @@ public class MainActivity extends ActionBarActivity {
                 this.messageLabel.setText("有中大獎的可能，請輸入完整發票號");
 
 
-                MyDiaglog.create(this, dto.getInvoices()).show();
-                ;
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+
+                View dialog = LayoutInflater.from(this).inflate(R.layout.dialog_layout, null);
+                builder.setCancelable(false);
+                builder.setView(dialog);
+
+                final TextView textView = (TextView) dialog.findViewById(R.id.numberText);
+
+
+                final AlertDialog dialog1 = builder.create();
+
+
+                final TouchKey keyAction = new TouchKey(textView, dialog1);
+
+                dialog.findViewById(R.id.button).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn1).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn2).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn3).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn4).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn5).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn6).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn7).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn8).setOnClickListener(keyAction);
+                dialog.findViewById(R.id.btn9).setOnClickListener(keyAction);
+
+                dialog.findViewById(R.id.cleanBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        keyAction.number = "";
+                        keyAction.text.setText("");
+                    }
+                });
+                dialog1.show();
 
                 dto.setNumber("");
+
+
                 break;
 
 
@@ -159,7 +219,7 @@ public class MainActivity extends ActionBarActivity {
 
                 myAlertDialog.setTitle(getString(R.string.app_name));
 
-                myAlertDialog.setMessage("中一張六獎\n");
+                myAlertDialog.setMessage("中六獎");
                 myAlertDialog.setNegativeButton("知道", null);
                 myAlertDialog.show();
 
@@ -173,5 +233,66 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
+    }
+
+    private class TouchKey implements View.OnClickListener {
+        private String number = "";
+        private TextView text = null;
+        private AlertDialog dialog1;
+
+        private TouchKey(TextView text, AlertDialog dialog1) {
+            this.text = text;
+            this.dialog1 = dialog1;
+        }
+
+        @Override
+        public void onClick(View v) {
+            TextView textView = (TextView) v;
+
+
+            number += textView.getText();
+
+            text.setText(number);
+
+
+            if (number.length() == 8) {
+                CommomUtil commomUtil = new CommomUtil();
+
+
+                Award award =
+                        commomUtil.checkAward(number, dto.getInvoices());
+
+
+                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(MainActivity.this);
+
+                myAlertDialog.setTitle(getString(R.string.app_name));
+
+                if (award != null) {
+                    myAlertDialog.setMessage("中" + award.message);
+                } else {
+                    myAlertDialog.setMessage(" 沒有中獎下次再加油");
+                }
+
+                myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog1.dismiss();
+                    }
+                });
+                myAlertDialog.show();
+
+
+                Toast.makeText(MainActivity.this, award.message, Toast.LENGTH_LONG).show();
+
+                number = "";
+
+                ;
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        this.clickValue(v);
     }
 }

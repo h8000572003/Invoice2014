@@ -14,7 +14,10 @@
         android:padding="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+
+
     <include layout="@layout/keyboard"></include>
+
 
 
 </LinearLayout>

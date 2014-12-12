@@ -1,6 +1,8 @@
 package tw.com.wa.invoice.util;
 
 
+import android.util.Log;
+
 import java.util.List;
 
 import tw.com.wa.invoice.domain.Award;
@@ -11,6 +13,8 @@ import tw.com.wa.invoice.domain.Invoice;
  * Created by Andy on 14/12/9.
  */
 public class CommomUtil {
+
+    static final String TAG = "CommomUtil";
 
     static final int LAST_CHAR = 8;
 
@@ -40,10 +44,29 @@ public class CommomUtil {
      * @param numberOfChar
      * @return
      */
-    private boolean matchLastChar(Invoice invoice, String number, int numberOfChar) {
+    protected boolean matchLastChar(Invoice invoice, String number, int numberOfChar) {
+        Log.i(TAG, String.format("number=%s,numberOfChar=%d", number, numberOfChar));
 
 
-        String matchString = invoice.getNumber().substring(LAST_CHAR - 3, LAST_CHAR);
+        //ex : 12345678
+
+
+        String matchString = invoice.getNumber().substring(LAST_CHAR - numberOfChar, LAST_CHAR);
+
+
+        return
+                number.matches("\\d*" + matchString + "$");
+
+    }
+
+    protected boolean matchLast3Char(Invoice invoice, String number) {
+
+
+        //ex : 12345678
+
+        String matchString = number;
+
+
         return
                 number.matches("\\d*" + matchString + "$");
 
@@ -59,7 +82,7 @@ public class CommomUtil {
                 if (invoice.getNumber().length() == 3) {
 
 
-                    if (matchNumber.equals(number)&&number.length()==3) {
+                    if (matchNumber.equals(number) && number.length() == 3) {
                         return CheckStatus.Get;
                     }
 
@@ -123,7 +146,7 @@ public class CommomUtil {
 
             if (invoice.isSpecialize()) {//
 
-                if (this.matchLastChar(invoice, number, invoice.getNumber().length())) {
+                if (invoice.getNumber().equals(number)) {
                     return this.from(invoice, invoice.getNumber().length());
                 }
 
@@ -134,7 +157,7 @@ public class CommomUtil {
                         checkStatus = CheckStatus.Continue;
                     } else {
                         if (checkStatus == CheckStatus.Continue) {
-                            return this.from(invoice, i);
+                            return this.from(invoice, i-1);
                         }
                         break;
 
@@ -146,6 +169,7 @@ public class CommomUtil {
 
 
         }
+
         return null;
 
 
