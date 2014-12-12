@@ -67,17 +67,27 @@ public class LoadingActivity extends Activity {
                         BeanUtil.map.get(key).setDescribe(results.get(0).getString("info"));
                     }
                 } catch (Exception e) {
-                    Toast.makeText(LoadingActivity.this, "取得得獎發票錯誤，請確定網路正常再嘗試看看", Toast.LENGTH_SHORT).show();
+                    return "取得得獎發票錯誤，請確定網路正常再嘗試看看";
+
                 }
 
 
                 return null;
             }
 
+
             @Override
             protected void onPostExecute(String s) {
-                Intent it = new Intent(LoadingActivity.this, MainActivity.class);
-                startActivity(it);
+
+                if (s != null) {
+                    Toast.makeText(LoadingActivity.this, s, Toast.LENGTH_SHORT).show();
+                }else{
+
+                    Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                    startActivity(it);
+                }
+
+
             }
         }.execute("");
 
