@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,25 +13,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import tw.com.wa.invoice.domain.Award;
+import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
-import tw.com.wa.invoice.domain.CommonUtil;
+import tw.com.wa.invoice.domain.InVoiceInfo;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.MainDTO;
-import tw.com.wa.invoice.ui.MyDiaglog;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.GetDataCompent;
 import tw.com.wa.invoice.util.GetDataCompentImpl;
@@ -123,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         items = new ArrayList<>();
 
-        for (Map.Entry<String, List<Invoice>> entry : CommonUtil.map.entrySet()) {
+        for (Map.Entry<String, InVoiceInfo> entry : BeanUtil.map.entrySet()) {
             items.add(entry.getKey());
         }
 
@@ -134,7 +126,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                dto.setInvoices(CommonUtil.map.get(items.get(position)));
+                dto.setInvoices(BeanUtil.map.get(items.get(position)).getInvoice());
+
+
+                invoiceContent.setText(BeanUtil.map.get(items.get(position)).getDescribe());
             }
 
             @Override

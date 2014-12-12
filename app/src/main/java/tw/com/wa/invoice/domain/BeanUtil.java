@@ -7,9 +7,9 @@ import java.util.Map;
 /**
  * Created by Andy on 2014/12/12.
  */
-public class CommonUtil {
+public class BeanUtil {
 
-    public static Map<String, List<Invoice>> map = new HashMap<String, List<Invoice>>();
+    public static Map<String, InVoiceInfo> map = new HashMap<String, InVoiceInfo>();
 
 
 }
