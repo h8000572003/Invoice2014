@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import tw.com.wa.invoice.domain.Award;
+import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.GetDataCompent;
@@ -112,10 +112,10 @@ public class MainActivity extends ActionBarActivity {
         invoviceLabel.setText(dto.getNumber());
 
 
-        final Award award =
+        final CheckStatus checkStatus =
                 commomUtil.check3NumberAward(dto.getNumber(), dto.getInvoices());
 
-        switch (award) {
+        switch (checkStatus) {
 
 
             case Wait:

@@ -17,12 +17,25 @@ public class Invoice implements Serializable{
      */
     private String number;
 
-    public Invoice(String awards, String number) {
+    /**
+     *
+     */
+    private boolean specialize=false;
+
+
+    public Invoice(String awards, String number, boolean specialize) {
         this.awards = awards;
         this.number = number;
+        this.specialize = specialize;
     }
 
+    public boolean isSpecialize() {
+        return specialize;
+    }
 
+    public void setSpecialize(boolean specialize) {
+        this.specialize = specialize;
+    }
 
     public void setAwards(String awards) {
         this.awards = awards;
