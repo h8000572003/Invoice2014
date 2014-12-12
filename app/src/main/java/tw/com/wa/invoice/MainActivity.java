@@ -12,17 +12,26 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.CheckStatus;
+import tw.com.wa.invoice.domain.CommonUtil;
+import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.ui.MyDiaglog;
 import tw.com.wa.invoice.util.CommomUtil;
@@ -47,6 +56,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private GetDataCompent getDataCompent = new GetDataCompentImpl();
 
     private CommomUtil commomUtil = new CommomUtil();
+
+    private List<String> items = null;
 
 
     @Override
@@ -75,10 +86,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
 
         this.dto = new MainDTO();
-
-
-        //change
-        this.dto.setInvoices(this.getDataCompent.getInvoice(""));
 
 
         this.spinner = (Spinner) this.findViewById(R.id.monthSpinner);
@@ -114,14 +121,27 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         invoiceContent.setText(content);
 
 
-        String[] contents = new String[]{
+        items = new ArrayList<>();
 
-                "5-6月份", "7-8月份"
-        };
-        BaseAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, contents);
+        for (Map.Entry<String, List<Invoice>> entry : CommonUtil.map.entrySet()) {
+            items.add(entry.getKey());
+        }
+
+        BaseAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
 
 
         this.spinner.setAdapter(spinnerAdapter);
+        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dto.setInvoices(CommonUtil.map.get(items.get(position)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 
@@ -312,8 +332,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 });
                 myAlertDialog.show();
 
-
-                Toast.makeText(MainActivity.this, award.message, Toast.LENGTH_LONG).show();
 
                 number = "";
 
