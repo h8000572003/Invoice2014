@@ -82,7 +82,7 @@ public class LoadingActivity extends Activity {
                 if (s != null) {
                     Toast.makeText(LoadingActivity.this, s, Toast.LENGTH_SHORT).show();
                 }else{
-
+//FIXME
                     Intent it = new Intent(LoadingActivity.this, MainActivity.class);
                     startActivity(it);
                 }
