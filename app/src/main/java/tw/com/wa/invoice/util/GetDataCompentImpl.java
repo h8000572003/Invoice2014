@@ -3,6 +3,7 @@ package tw.com.wa.invoice.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.Invoice;
 
 /**
@@ -17,16 +18,16 @@ public class GetDataCompentImpl implements GetDataCompent {
         //FIXME 須改為網路上抓取
         List<Invoice> invoices = new ArrayList<Invoice>();
 
-        invoices.add(this.build("0", "22267127"));
-        invoices.add(this.build("1", "35396804"));
-        invoices.add(this.build("1", "15352117"));
-        invoices.add(this.build("1", "54709991"));
+        invoices.add(this.build(Award.Veryspecial.unCode, "22267127", true));
+        invoices.add(this.build(Award.Top.unCode, "35396804", false));
+        invoices.add(this.build(Award.Top.unCode, "15352117", false));
+        invoices.add(this.build(Award.Top.unCode, "54709991", false));
 
 
-        invoices.add(this.build("6", "114"));
-        invoices.add(this.build("6", "068"));
-        invoices.add(this.build("6", "476"));
-        invoices.add(this.build("6", "970"));
+        invoices.add(this.build(Award.Exactsix.unCode, "114", true));
+        invoices.add(this.build(Award.Exactsix.unCode, "068", true));
+        invoices.add(this.build(Award.Exactsix.unCode, "476", true));
+        invoices.add(this.build(Award.Exactsix.unCode, "970", true));
 
         return invoices;
     }
@@ -37,8 +38,8 @@ public class GetDataCompentImpl implements GetDataCompent {
     }
 
 
-    private Invoice build(String awards, String number) {
-        return new Invoice(awards, number);
+    private Invoice build(String awards, String number, boolean isSepecialze) {
+        return new Invoice(awards, number, isSepecialze);
     }
 
 }

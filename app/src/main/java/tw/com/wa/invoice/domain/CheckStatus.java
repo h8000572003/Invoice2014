@@ -13,9 +13,10 @@ public enum CheckStatus {
 //    fifth(6, 4),//第五
 //    sixth(7, 3),//六
 //    exactsix(8, 3),//額外六
-    None,
-    Wait,
-    Finding,;
+    None,//沒有
+    Continue,//上未確定
+    Get,//得到
+    Wait,//上未確定
 
 
 }

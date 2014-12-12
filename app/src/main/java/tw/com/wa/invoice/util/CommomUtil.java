@@ -16,66 +16,23 @@ public class CommomUtil {
 
     private GetDataCompent getDataCompent = null;
 
-    private final static CheckStatus[] CHECK_STATUS___RANG =
-
-            {
-                    CheckStatus.VerySpecial,
-                    CheckStatus.Second
-
-            };
 
     public CommomUtil() {
         getDataCompent = new GetDataCompentImpl();
     }
 
-    public CheckStatus checkAward(String number, String yyymmd) {
-        final Invoice invoice = getDataCompent.checkNumber(yyymmd, number);
+//    public CheckStatus checkAward(String number, String yyymmd) {
+//        final Invoice invoice = getDataCompent.checkNumber(yyymmd, number);
+//
+//
+//        if (invoice == null) {
+//            return CheckStatus.None;
+//        }
+//        return CheckStatus.VerySpecial;
+//
+//
+//    }
 
-
-        if (invoice == null) {
-            return CheckStatus.None;
-        }
-        return CheckStatus.VerySpecial;
-
-
-    }
-
-
-    public CheckStatus check3NumberAward(String number, List<Invoice> invoices) {
-
-
-        for (Invoice invoice : invoices) {
-
-
-            String math = "";
-            if (invoice.getAwards().equals("6")) {
-                math = invoice.getNumber();
-            } else {
-                math = invoice.getNumber().substring(5, 8);
-            }
-
-            int lengthOfCutting = number.length();
-
-            if (math.substring(0, lengthOfCutting).equals(number))
-                if (lengthOfCutting < 3) {//未達三碼
-                    return CheckStatus.Wait;
-
-                } else {
-                    if (invoice.getAwards().equals("6")) {
-                        return CheckStatus.Sixth;//
-                    } else {
-                        return CheckStatus.Finding;//
-                    }
-
-
-                }
-
-
-        }
-
-        return CheckStatus.None;
-
-    }
 
     /**
      * @param invoice
@@ -90,6 +47,53 @@ public class CommomUtil {
         return
                 number.matches("\\d*" + matchString + "$");
 
+    }
+
+    public CheckStatus checkAward3Number(String number, List<Invoice> invoices) throws RuntimeException {
+        CheckStatus checkStatus = CheckStatus.None;
+        for (Invoice invoice : invoices) {
+            checkStatus = CheckStatus.None;
+
+            String matchNumber = invoice.getNumber();
+            if (invoice.isSpecialize()) {//
+                if (invoice.getNumber().length() == 3) {
+
+
+                    if (matchNumber.equals(number)&&number.length()==3) {
+                        return CheckStatus.Get;
+                    }
+
+                    if (matchNumber.startsWith(number)) {
+                        return CheckStatus.Wait;
+                    }
+                } else {//
+                    matchNumber = matchNumber.substring(5, 8);
+
+
+                    if (matchNumber.equals(number) && number.length() == 3) {
+                        return CheckStatus.Continue;
+                    } else if (matchNumber.startsWith(number)) {
+                        return CheckStatus.Wait;
+                    }
+
+                }
+
+
+            } else {//原本的
+
+                matchNumber = matchNumber.substring(5, 8);
+
+                if (matchNumber.equals(number) && number.length() == 3) {
+                    return CheckStatus.Continue;
+                } else if (matchNumber.startsWith(number)) {
+                    return CheckStatus.Wait;
+                }
+
+            }
+
+
+        }
+        return CheckStatus.None;
     }
 
 
@@ -117,24 +121,52 @@ public class CommomUtil {
             checkStatus = CheckStatus.None;
 
 
-            int i = 0;
-            if (invoice.isSpecialize()) {
-                i = invoice.getNumber().length();
-            } else {
-                i = 3;
-            }
+            if (invoice.isSpecialize()) {//
+
+                if (this.matchLastChar(invoice, number, invoice.getNumber().length())) {
+                    return this.from(invoice, invoice.getNumber().length());
+                }
 
 
-            for (; i < invoice.getNumber().length(); i++) {
-               if( this.matchLastChar(invoice,number,i)){
+            } else {//原本的
+                for (int i = 3; i < invoice.getNumber().length(); i++) {
+                    if (this.matchLastChar(invoice, number, i)) {
+                        checkStatus = CheckStatus.Continue;
+                    } else {
+                        if (checkStatus == CheckStatus.Continue) {
+                            return this.from(invoice, i);
+                        }
+                        break;
 
-               }
+                    }
+
+
+                }
             }
 
 
         }
+        return null;
 
 
+    }
+
+    private Award from(Invoice invoice, int numberOfMatch) {
+        if (invoice.isSpecialize()) {
+            return Award.lookup(invoice.getAwards());
+        } else {
+
+            for (Award a : Award.values()) {
+
+                if (a.checKLegth == numberOfMatch) {
+                    return a;
+                }
+
+
+            }
+
+        }
+        return null;
     }
 
 }

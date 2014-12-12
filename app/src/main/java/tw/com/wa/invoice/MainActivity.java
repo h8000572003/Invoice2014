@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.MainDTO;
+import tw.com.wa.invoice.ui.MyDiaglog;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.GetDataCompent;
 import tw.com.wa.invoice.util.GetDataCompentImpl;
@@ -95,6 +97,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void cleanValue(View view) {
+        this.dto.setNumber("");
+        this.invoviceLabel.setText("");
+        this.messageLabel.setVisibility(View.INVISIBLE);
+    }
+
+
     /**
      * 點擊號碼
      *
@@ -113,14 +123,10 @@ public class MainActivity extends ActionBarActivity {
 
 
         final CheckStatus checkStatus =
-                commomUtil.check3NumberAward(dto.getNumber(), dto.getInvoices());
+                commomUtil.checkAward3Number(dto.getNumber(), dto.getInvoices());
 
         switch (checkStatus) {
 
-
-            case Wait:
-
-                break;
 
             case None:
 
@@ -134,44 +140,21 @@ public class MainActivity extends ActionBarActivity {
                 break;
 
 
-            case Finding:
+            case Continue:
 
                 this.messageLabel.setVisibility(View.VISIBLE);
                 this.messageLabel.setText("有中大獎的可能，請輸入完整發票號");
 
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(getString(R.string.app_name));
-                builder.setMessage("請輸入完整發票號");
-
-                EditText editText = new EditText(this);
-                builder.setView(editText);
-
-
-                builder.create().show();
+                MyDiaglog.create(this, dto.getInvoices()).show();
                 ;
 
 
                 dto.setNumber("");
                 break;
 
-            case VerySpecial:
-                break;
-            case Special:
-                break;
-            case Top:
-                break;
-            case Second:
-                break;
-            case Thrid:
-                break;
-            case Fouth:
-                break;
-            case Fifth:
-                break;
-            case Sixth:
 
-
+            case Get:
                 AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
 
                 myAlertDialog.setTitle(getString(R.string.app_name));
@@ -181,14 +164,12 @@ public class MainActivity extends ActionBarActivity {
                 myAlertDialog.show();
 
                 invoviceLabel.setText("");
-                invoviceLabel.setTextColor(Color.RED);
+
                 dto.setNumber("");
 
                 break;
 
 
-            case ExactSix:
-                break;
         }
 
 
