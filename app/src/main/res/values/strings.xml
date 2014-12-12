@@ -17,4 +17,14 @@
     <string name="seven">7</string>
     <string name="eight">8</string>
     <string name="nine">9</string>
+
+    <string name="teachTitle">操作說明</string>
+    <string name="teachContent">在畫面鍵盤上面，請輸入發票後三碼，以方便快速對獎，
+        由於本程式為了提升對獎之速度，因此使用者可能不用輸入完，
+        完整三碼就已經知道沒有中獎，因此可以提升兌獎時間。舉例來說若是特獎為[12345678]
+        且增開之六獎為[111]，若使用者發票為[8888888]時，當時使用者輸入8時，將得知此發票不會中獎，
+        因此不需要輸入完後三碼發票就知道結果。
+
+
+        </string>
 </resources>

@@ -1,7 +1,9 @@
 package tw.com.wa.invoice;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -39,6 +41,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private MainDTO dto;
 
+    private String Setting = "Setting";
+
 
     private GetDataCompent getDataCompent = new GetDataCompentImpl();
 
@@ -49,6 +53,26 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        SharedPreferences sp =
+                getSharedPreferences(Setting, Context.MODE_PRIVATE);
+
+
+        boolean isFirstTimeFlag = sp.getBoolean("isFirstTime", true);
+
+        if (isFirstTimeFlag) {
+            sp.edit().putBoolean("isFirstTime", true).commit();
+
+            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+
+            myAlertDialog.setTitle(R.string.teachTitle);
+            myAlertDialog.setMessage(R.string.teachContent);
+            myAlertDialog.setNegativeButton("知道", null);
+            myAlertDialog.show();
+
+
+        }
 
         this.dto = new MainDTO();
 
@@ -117,6 +141,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+
+            myAlertDialog.setTitle(R.string.teachTitle);
+            myAlertDialog.setMessage(R.string.teachContent);
+            myAlertDialog.setNegativeButton("知道", null);
+            myAlertDialog.show();
+
             return true;
         }
 
