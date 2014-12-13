@@ -12,8 +12,6 @@ import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.util.CommomUtil;
-import tw.com.wa.invoice.util.GetDataCompent;
-import tw.com.wa.invoice.util.GetDataCompentImpl;
 
 /**
  * Created by Andy on 2014/12/12.

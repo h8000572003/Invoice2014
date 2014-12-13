@@ -18,12 +18,8 @@ public class CommomUtil {
 
     static final int LAST_CHAR = 8;
 
-    private GetDataCompent getDataCompent = null;
 
 
-    public CommomUtil() {
-        getDataCompent = new GetDataCompentImpl();
-    }
 
 //    public CheckStatus checkAward(String number, String yyymmd) {
 //        final Invoice invoice = getDataCompent.checkNumber(yyymmd, number);

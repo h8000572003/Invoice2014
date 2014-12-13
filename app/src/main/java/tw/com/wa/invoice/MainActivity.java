@@ -29,8 +29,6 @@ import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfo;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.util.CommomUtil;
-import tw.com.wa.invoice.util.GetDataCompent;
-import tw.com.wa.invoice.util.GetDataCompentImpl;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
@@ -47,7 +45,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private String Setting = "Setting";
 
 
-    private GetDataCompent getDataCompent = new GetDataCompentImpl();
+
 
     private CommomUtil commomUtil = new CommomUtil();
 
