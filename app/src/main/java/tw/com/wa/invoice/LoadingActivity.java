@@ -4,29 +4,71 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import tw.com.wa.invoice.domain.BeanUtil;
-import tw.com.wa.invoice.domain.InVoiceInfo;
 import tw.com.wa.invoice.domain.Invoice;
+import tw.com.wa.invoice.domain.InvoiceInfo;
 
 /**
  * Created by Andy on 2014/12/12.
  */
 public class LoadingActivity extends Activity {
+
+    private static final String TAG = "LoadingActivity";
+
+    private List<Invoice> getInvoices(String title) throws Exception {
+
+
+        final ParseQuery<Invoice> query =
+                ParseQuery.getQuery(Invoice.class);
+        query.whereEqualTo("title", title);
+
+        try {
+            List<Invoice> invoices = query.find();
+            return invoices;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            throw new RuntimeException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
+        }
+
+
+    }
+
+    private List<InvoiceInfo> getInvoiceInf() throws Exception {
+
+
+        final ParseQuery<InvoiceInfo> inVoiceInfoParseQuery =
+                ParseQuery.getQuery(InvoiceInfo.class);
+        //  inVoiceInfoParseQuery.whereEqualTo("isCheck", true);
+
+        try {
+            List<InvoiceInfo> inVoiceInfons = inVoiceInfoParseQuery.find();
+            return inVoiceInfons;
+
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            throw new RuntimeException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
+        }
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_layout);
+
+        ParseObject.registerSubclass(Invoice.class);
+        ParseObject.registerSubclass(InvoiceInfo.class);
         Parse.initialize(this, "hgne1bjc7IaI7ZmpBN7dobThoeVzGy6RirURDo44", "K9Qum9KClGT789nE2fkleYqXa294NVO9I12cHxQI");
 
 
@@ -36,41 +78,23 @@ public class LoadingActivity extends Activity {
             @Override
             protected String doInBackground(String... params) {
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Invoice");
-                query.addAscendingOrder("title");
                 try {
-                    List<ParseObject> scoreList = query.find();
+                    BeanUtil.map.clear();
 
-                    for (ParseObject parseObject : scoreList) {
-                        String title = parseObject.getString("title");
-                        InVoiceInfo invoices = BeanUtil.map.get(title);
-                        if (invoices == null) {
+                    List<InvoiceInfo> infos = getInvoiceInf();
+                    for (InvoiceInfo info : infos) {
 
-                            invoices = new InVoiceInfo();
-                        }
+                        List<Invoice> invoices = getInvoices(info.getTitle());
 
-                        Invoice invoice = new Invoice(//
-                                parseObject.getString("awards"),//
-                                parseObject.getString("number"),//
-                                parseObject.getBoolean("specialize")
+                        info.getInvoice().addAll(invoices);
 
-                        );
-                        invoices.getInvoice().add(invoice);
-
-
-                        BeanUtil.map.put(title, invoices);
+                        BeanUtil.map.put(info.getTitle(), info);
 
                     }
-                    for (String key : BeanUtil.map.keySet()) {
-                        ParseQuery<ParseObject> queryInfo = ParseQuery.getQuery("InvoiceInfo");
-                        List<ParseObject> results = queryInfo.find();
-                        BeanUtil.map.get(key).setDescribe(results.get(0).getString("info"));
-                    }
+
                 } catch (Exception e) {
                     return "取得得獎發票錯誤，請確定網路正常再嘗試看看";
-
                 }
-
 
                 return null;
             }
@@ -81,10 +105,12 @@ public class LoadingActivity extends Activity {
 
                 if (s != null) {
                     Toast.makeText(LoadingActivity.this, s, Toast.LENGTH_SHORT).show();
-                }else{
-//FIXME
+                } else {
+
                     Intent it = new Intent(LoadingActivity.this, MainActivity.class);
                     startActivity(it);
+                    finish();
+                    ;
                 }
 
 

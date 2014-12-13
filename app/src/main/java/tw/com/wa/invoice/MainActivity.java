@@ -17,14 +17,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
-import tw.com.wa.invoice.domain.InVoiceInfo;
 import tw.com.wa.invoice.domain.Invoice;
+import tw.com.wa.invoice.domain.InvoiceInfo;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.GetDataCompent;
@@ -51,6 +53,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private List<String> items = null;
 
+    private class OrderObject {
+        private Invoice invoice;
+        private Award award;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +65,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
+
         SharedPreferences sp =
                 getSharedPreferences(Setting, Context.MODE_PRIVATE);
 
 
         boolean isFirstTimeFlag = sp.getBoolean("isFirstTime", true);
-
+    //fixme
         if (isFirstTimeFlag) {
             sp.edit().putBoolean("isFirstTime", true).commit();
 
@@ -105,17 +113,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
-        String content = "";
-        content += "特別獎\t22267127\n";
-        content += "特獎\t31075480\n";
-        content += "頭獎\t35396804、15352117、54709991\n";
-        content += "增開六獎\t114、068、476、970\n";
-        invoiceContent.setText(content);
 
 
         items = new ArrayList<>();
 
-        for (Map.Entry<String, InVoiceInfo> entry : BeanUtil.map.entrySet()) {
+        for (Map.Entry<String, InvoiceInfo> entry : BeanUtil.map.entrySet()) {
             items.add(entry.getKey());
         }
 
@@ -126,10 +128,45 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                dto.setInvoices(BeanUtil.map.get(items.get(position)).getInvoice());
 
 
-                invoiceContent.setText(BeanUtil.map.get(items.get(position)).getDescribe());
+                InvoiceInfo info =
+                        BeanUtil.map.get(items.get(position));
+
+                dto.setInvoices(info.getInvoice());
+
+
+                List<OrderObject> rrderObjects = new ArrayList<OrderObject>();
+
+
+                for (Invoice invoice : info.getInvoice()) {
+                    OrderObject obj = new OrderObject();
+                    obj.award = Award.lookup(invoice.getAwards());
+                    obj.invoice = invoice;
+                    rrderObjects.add(obj);
+
+
+                }
+
+                Collections.sort(rrderObjects, new Comparator<OrderObject>() {
+                    @Override
+                    public int compare(OrderObject lhs, OrderObject rhs) {
+
+                        return lhs.award.order > rhs.award.order ? 1 : -1;
+
+                    }
+                });
+
+                StringBuffer buffer = new StringBuffer();
+                for (OrderObject a : rrderObjects) {
+                    buffer.append(a.award.message);
+                    buffer.append("\t:\t");
+                    buffer.append(a.invoice.getNumber());
+                    buffer.append("\n");
+                }
+
+
+                invoiceContent.setText(buffer.toString());
             }
 
             @Override
