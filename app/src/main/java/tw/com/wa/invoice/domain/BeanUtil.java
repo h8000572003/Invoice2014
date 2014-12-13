@@ -1,7 +1,6 @@
 package tw.com.wa.invoice.domain;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,7 +8,7 @@ import java.util.Map;
  */
 public class BeanUtil {
 
-    public static Map<String, InVoiceInfo> map = new HashMap<String, InVoiceInfo>();
+    public static Map<String, InvoiceInfo> map = new HashMap<String, InvoiceInfo>();
 
 
 }
