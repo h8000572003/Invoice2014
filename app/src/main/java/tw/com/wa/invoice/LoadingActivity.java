@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -24,6 +25,12 @@ public class LoadingActivity extends Activity {
 
     private static final String TAG = "LoadingActivity";
 
+    /**
+     *
+     * @param title
+     * @return
+     * @throws Exception
+     */
     private List<Invoice> getInvoices(String title) throws Exception {
 
 
@@ -70,7 +77,7 @@ public class LoadingActivity extends Activity {
         ParseObject.registerSubclass(Invoice.class);
         ParseObject.registerSubclass(InvoiceInfoV2.class);
         Parse.initialize(this, "hgne1bjc7IaI7ZmpBN7dobThoeVzGy6RirURDo44", "K9Qum9KClGT789nE2fkleYqXa294NVO9I12cHxQI");
-
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         new AsyncTask<String, String, String>() {
 
