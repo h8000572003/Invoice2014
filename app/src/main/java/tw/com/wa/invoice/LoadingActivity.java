@@ -15,7 +15,7 @@ import java.util.List;
 
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
-import tw.com.wa.invoice.domain.InvoiceInfo;
+import tw.com.wa.invoice.domain.InvoiceInfoV2;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -42,15 +42,15 @@ public class LoadingActivity extends Activity {
 
     }
 
-    private List<InvoiceInfo> getInvoiceInf() throws Exception {
+    private List<InvoiceInfoV2> getInvoiceInf() throws Exception {
 
 
-        final ParseQuery<InvoiceInfo> inVoiceInfoParseQuery =
-                ParseQuery.getQuery(InvoiceInfo.class);
+        final ParseQuery<InvoiceInfoV2> inVoiceInfoParseQuery =
+                ParseQuery.getQuery(InvoiceInfoV2.class);
         //  inVoiceInfoParseQuery.whereEqualTo("isCheck", true);
 
         try {
-            List<InvoiceInfo> inVoiceInfons = inVoiceInfoParseQuery.find();
+            List<InvoiceInfoV2> inVoiceInfons = inVoiceInfoParseQuery.find();
             return inVoiceInfons;
 
 
@@ -68,7 +68,7 @@ public class LoadingActivity extends Activity {
         setContentView(R.layout.loading_layout);
 
         ParseObject.registerSubclass(Invoice.class);
-        ParseObject.registerSubclass(InvoiceInfo.class);
+        ParseObject.registerSubclass(InvoiceInfoV2.class);
         Parse.initialize(this, "hgne1bjc7IaI7ZmpBN7dobThoeVzGy6RirURDo44", "K9Qum9KClGT789nE2fkleYqXa294NVO9I12cHxQI");
 
 
@@ -81,8 +81,8 @@ public class LoadingActivity extends Activity {
                 try {
                     BeanUtil.map.clear();
 
-                    List<InvoiceInfo> infos = getInvoiceInf();
-                    for (InvoiceInfo info : infos) {
+                    List<InvoiceInfoV2> infos = getInvoiceInf();
+                    for (InvoiceInfoV2 info : infos) {
 
                         List<Invoice> invoices = getInvoices(info.getTitle());
 

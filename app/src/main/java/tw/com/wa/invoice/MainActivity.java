@@ -26,7 +26,7 @@ import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.Invoice;
-import tw.com.wa.invoice.domain.InvoiceInfo;
+import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.util.CommomUtil;
 
@@ -115,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         items = new ArrayList<>();
 
-        for (Map.Entry<String, InvoiceInfo> entry : BeanUtil.map.entrySet()) {
+        for (Map.Entry<String, InvoiceInfoV2> entry : BeanUtil.map.entrySet()) {
             items.add(entry.getKey());
         }
 
@@ -128,7 +128,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-                InvoiceInfo info =
+                InvoiceInfoV2 info =
                         BeanUtil.map.get(items.get(position));
 
                 dto.setInvoices(info.getInvoice());

@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class BeanUtil {
 
-    public static Map<String, InvoiceInfo> map = new HashMap<String, InvoiceInfo>();
+    public static Map<String, InvoiceInfoV2> map = new HashMap<String, InvoiceInfoV2>();
 
 
 }
