@@ -6,15 +6,20 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +33,7 @@ import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.MainDTO;
+import tw.com.wa.invoice.domain.MainNumber;
 import tw.com.wa.invoice.util.CommomUtil;
 
 
@@ -45,15 +51,80 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private String Setting = "Setting";
 
 
-
-
     private CommomUtil commomUtil = new CommomUtil();
 
     private List<String> items = null;
 
+    private RecyclerView my_recycler_view = null;
+    private NumberAdapter adapter = null;
+
     private class OrderObject {
         private Invoice invoice;
         private Award award;
+    }
+
+
+    private class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder> {
+
+
+        private List<MainNumber> mainNumbers = null;
+        private Context context;
+
+        private NumberAdapter(List<MainNumber> mainNumbers, Context context) {
+            this.mainNumbers = mainNumbers;
+            this.context = context;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.number_layout, null, false);
+            // set the view's size, margins, paddings and layout parameters
+
+            ViewHolder vh = new ViewHolder(v);
+            return vh;
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+
+
+            final MainNumber mainNumber = mainNumbers.get(position);
+
+
+            viewHolder.awardText.setText(mainNumber.getAward().message);
+            viewHolder.numberText.setText(mainNumber.getCountOfInvoice());
+            viewHolder.doorText.setText(mainNumber.sum() + "元");
+        }
+
+        @Override
+        public int getItemCount() {
+            return mainNumbers.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            public TextView awardText;
+            private TextView doorText;
+            private TextView numberText;
+
+            public ViewHolder(View v) {
+                super(v);
+                doorText = (TextView) v.findViewById(R.id.doorText);
+                awardText = (TextView) v.findViewById(R.id.awardText);
+                numberText = (TextView) v.findViewById(R.id.numberText);
+
+
+            }
+        }
+
+
+//        private NumberAdapter(List<MainNumber> mainNumbers, Context context) {
+//            this.mainNumbers = mainNumbers;
+//            this.context = context;
+//        }
+
+
     }
 
 
@@ -63,13 +134,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
-
         SharedPreferences sp =
                 getSharedPreferences(Setting, Context.MODE_PRIVATE);
 
 
         boolean isFirstTimeFlag = sp.getBoolean("isFirstTime", true);
-    //fixme
+        //fixme
         if (isFirstTimeFlag) {
             sp.edit().putBoolean("isFirstTime", true).commit();
 
@@ -90,6 +160,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
+        this.my_recycler_view = (RecyclerView) this.findViewById(R.id.my_recycler_view);
 
 
         this.findViewById(R.id.button).setOnClickListener(this);
@@ -111,17 +182,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
+        this.setInvoiceDataAdapter();
+        this.setInvoiceNumAdapter();
 
 
+    }
+
+    /**
+     * 設定對發票日期
+     */
+    private void setInvoiceDataAdapter() {
         items = new ArrayList<>();
 
         for (Map.Entry<String, InvoiceInfoV2> entry : BeanUtil.map.entrySet()) {
             items.add(entry.getKey());
         }
-
         BaseAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-
-
         this.spinner.setAdapter(spinnerAdapter);
         this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -172,6 +248,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             }
         });
+
+
+    }
+
+    private void setInvoiceNumAdapter() {
+        adapter = new NumberAdapter(dto.getMainNumbers(), this);
+        this.my_recycler_view.setAdapter(adapter);
+        this.refreshNumAdapter();
+        ;
+    }
+
+    private void refreshNumAdapter() {
+        adapter.notifyDataSetChanged();
+        ;
     }
 
 
@@ -197,6 +287,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             myAlertDialog.setMessage(R.string.teachContent);
             myAlertDialog.setNegativeButton("知道", null);
             myAlertDialog.show();
+
 
             return true;
         }
@@ -301,7 +392,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 myAlertDialog.setTitle(getString(R.string.app_name));
 
                 myAlertDialog.setMessage("中六獎");
-                myAlertDialog.setNegativeButton("知道", null);
+                myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        addAward(Award.Sixth);
+
+                    }
+                });
                 myAlertDialog.show();
 
                 invoviceLabel.setText("");
@@ -313,6 +411,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         }
 
+
+    }
+
+    private void addAward(Award award) {
+        final MainNumber number = new MainNumber(Award.Sixth);
+        number.setCountOfInvoice(1);
+
+
+        if (dto.getMainNumbers().contains(number)) {
+            MainNumber inDtoNumber =
+                    dto.getMainNumbers().get(dto.getMainNumbers().indexOf(number));
+
+            inDtoNumber.setCountOfInvoice(inDtoNumber.getCountOfInvoice() + 1);
+
+
+        } else {
+            dto.getMainNumbers().add(number);
+        }
+        this.refreshNumAdapter();
 
     }
 
@@ -349,6 +466,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 myAlertDialog.setTitle(getString(R.string.app_name));
 
                 if (award != null) {
+
+                    addAward(award);
+
+
                     myAlertDialog.setMessage("中" + award.message);
                 } else {
                     myAlertDialog.setMessage(" 沒有中獎下次再加油");

@@ -2,15 +2,24 @@ package tw.com.wa.invoice;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -25,8 +34,110 @@ public class LoadingActivity extends Activity {
 
     private static final String TAG = "LoadingActivity";
 
+    private TextView statuLabel;
+
+    private LoadAsyncTask task = null;
+
+    private Button refresh = null;
+    private ProgressBar progressBar = null;
+
+
+    private class LoadAsyncTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+
+
+            statuLabel.setText("取得兌獎資訊中");
+            progressBar.setVisibility(View.VISIBLE);
+            statuLabel.setTextColor(Color.WHITE);
+            refresh.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                BeanUtil.map.clear();
+
+
+                for (InvoiceInfoV2 info : getInvoiceInf()) {
+
+                    List<Invoice> invoices = getInvoices(info.getTitle());
+
+                    info.getInvoice().addAll(invoices);
+
+                    BeanUtil.map.put(info.getTitle(), info);
+
+                }
+
+            } catch (Exception e) {
+                return "取得得獎發票錯誤，請確定網路正常再嘗試看看";
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressBar.setVisibility(View.INVISIBLE);
+            task = null;
+
+            if (s != null) {
+                statuLabel.setText("資料取得錯誤，下拉重新刷新");
+                statuLabel.setTextColor(Color.RED);
+                refresh.setVisibility(View.VISIBLE);
+            } else {
+
+                Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                startActivity(it);
+                finish();
+                ;
+            }
+
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.loading_layout);
+
+
+        ParseObject.registerSubclass(Invoice.class);
+        ParseObject.registerSubclass(InvoiceInfoV2.class);
+        Parse.initialize(this, "hgne1bjc7IaI7ZmpBN7dobThoeVzGy6RirURDo44", "K9Qum9KClGT789nE2fkleYqXa294NVO9I12cHxQI");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+        this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
+        this.refresh = (Button) this.findViewById(R.id.refresh);
+        this.progressBar = (ProgressBar) this.findViewById(R.id.progressBar2);
+
+        this.setRefreshLister();
+
+
+        if (task == null) {
+            task = new LoadAsyncTask();
+            task.execute("");
+        }
+
+
+    }
+
+    private void setRefreshLister() {
+        this.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (task == null) {
+                    task = new LoadAsyncTask();
+                    task.execute("");
+                }
+            }
+        });
+    }
+
+
     /**
-     *
      * @param title
      * @return
      * @throws Exception
@@ -65,64 +176,6 @@ public class LoadingActivity extends Activity {
             Log.e(TAG, e.getMessage());
             throw new RuntimeException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
         }
-
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.loading_layout);
-
-        ParseObject.registerSubclass(Invoice.class);
-        ParseObject.registerSubclass(InvoiceInfoV2.class);
-        Parse.initialize(this, "hgne1bjc7IaI7ZmpBN7dobThoeVzGy6RirURDo44", "K9Qum9KClGT789nE2fkleYqXa294NVO9I12cHxQI");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-
-        new AsyncTask<String, String, String>() {
-
-
-            @Override
-            protected String doInBackground(String... params) {
-
-                try {
-                    BeanUtil.map.clear();
-
-                    List<InvoiceInfoV2> infos = getInvoiceInf();
-                    for (InvoiceInfoV2 info : infos) {
-
-                        List<Invoice> invoices = getInvoices(info.getTitle());
-
-                        info.getInvoice().addAll(invoices);
-
-                        BeanUtil.map.put(info.getTitle(), info);
-
-                    }
-
-                } catch (Exception e) {
-                    return "取得得獎發票錯誤，請確定網路正常再嘗試看看";
-                }
-
-                return null;
-            }
-
-
-            @Override
-            protected void onPostExecute(String s) {
-
-                if (s != null) {
-                    Toast.makeText(LoadingActivity.this, s, Toast.LENGTH_SHORT).show();
-                } else {
-
-                    Intent it = new Intent(LoadingActivity.this, MainActivity.class);
-                    startActivity(it);
-                    finish();
-                    ;
-                }
-
-
-            }
-        }.execute("");
 
 
     }
