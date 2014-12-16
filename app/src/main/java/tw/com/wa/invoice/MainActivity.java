@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -161,6 +162,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
         this.my_recycler_view = (RecyclerView) this.findViewById(R.id.my_recycler_view);
+        this.  my_recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
 
         this.findViewById(R.id.button).setOnClickListener(this);
