@@ -5,21 +5,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -64,13 +59,6 @@ public class LoadingActivity extends Activity {
 
                     List<Invoice> invoices = getInvoices(info.getTitle());
 
-
-
-
-
-
-
-
                     info.getInvoice().addAll(invoices);
 
                     BeanUtil.map.put(info.getTitle(), info);
@@ -96,7 +84,7 @@ public class LoadingActivity extends Activity {
                 refresh.setVisibility(View.VISIBLE);
             } else {
 
-                Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
+                Intent it = new Intent(LoadingActivity.this, MainActivity.class);
                 startActivity(it);
                 finish();
                 ;

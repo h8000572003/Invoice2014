@@ -17,11 +17,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -213,7 +210,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             return true;
         }
         if (id == R.id.action_recActivity) {
-            Intent it = new Intent(this, RecordActivity.class);
+            Intent it = new Intent(this, RecordActivityV2.class);
             startActivity(it);
 
 
