@@ -5,7 +5,7 @@ package tw.com.wa.invoice.domain;
  */
 public class MainNumber {
     private Award award;
-    private int countOfInvoice;
+    private int countOfInvoice = 0;
 
 
     public int getCountOfInvoice() {

@@ -64,6 +64,13 @@ public class LoadingActivity extends Activity {
 
                     List<Invoice> invoices = getInvoices(info.getTitle());
 
+
+
+
+
+
+
+
                     info.getInvoice().addAll(invoices);
 
                     BeanUtil.map.put(info.getTitle(), info);
@@ -89,7 +96,7 @@ public class LoadingActivity extends Activity {
                 refresh.setVisibility(View.VISIBLE);
             } else {
 
-                Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
                 startActivity(it);
                 finish();
                 ;

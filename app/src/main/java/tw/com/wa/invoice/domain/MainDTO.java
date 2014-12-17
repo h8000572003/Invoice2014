@@ -11,8 +11,6 @@ public class MainDTO {
 
 
     private List<Invoice> invoices = null;
-    private List<MainNumber>mainNumbers=new ArrayList<MainNumber>();
-
 
     public String getNumber() {
         return number;
@@ -30,11 +28,5 @@ public class MainDTO {
         this.invoices = invoices;
     }
 
-    public List<MainNumber> getMainNumbers() {
-        return mainNumbers;
-    }
 
-    public void setMainNumbers(List<MainNumber> mainNumbers) {
-        this.mainNumbers = mainNumbers;
-    }
 }

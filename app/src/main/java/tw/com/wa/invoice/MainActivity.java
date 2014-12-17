@@ -3,6 +3,7 @@ package tw.com.wa.invoice;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -56,76 +57,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private List<String> items = null;
 
-    private RecyclerView my_recycler_view = null;
-    private NumberAdapter adapter = null;
 
     private class OrderObject {
         private Invoice invoice;
         private Award award;
-    }
-
-
-    private class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder> {
-
-
-        private List<MainNumber> mainNumbers = null;
-        private Context context;
-
-        private NumberAdapter(List<MainNumber> mainNumbers, Context context) {
-            this.mainNumbers = mainNumbers;
-            this.context = context;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.number_layout, null, false);
-            // set the view's size, margins, paddings and layout parameters
-
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
-
-
-            final MainNumber mainNumber = mainNumbers.get(position);
-
-
-            viewHolder.awardText.setText(mainNumber.getAward().message);
-            viewHolder.numberText.setText(mainNumber.getCountOfInvoice());
-            viewHolder.doorText.setText(mainNumber.sum() + "元");
-        }
-
-        @Override
-        public int getItemCount() {
-            return mainNumbers.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            public TextView awardText;
-            private TextView doorText;
-            private TextView numberText;
-
-            public ViewHolder(View v) {
-                super(v);
-                doorText = (TextView) v.findViewById(R.id.doorText);
-                awardText = (TextView) v.findViewById(R.id.awardText);
-                numberText = (TextView) v.findViewById(R.id.numberText);
-
-
-            }
-        }
-
-
-//        private NumberAdapter(List<MainNumber> mainNumbers, Context context) {
-//            this.mainNumbers = mainNumbers;
-//            this.context = context;
-//        }
-
-
     }
 
 
@@ -161,8 +96,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
-        this.my_recycler_view = (RecyclerView) this.findViewById(R.id.my_recycler_view);
-        this.  my_recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
 
         this.findViewById(R.id.button).setOnClickListener(this);
@@ -185,8 +118,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         });
 
         this.setInvoiceDataAdapter();
-        this.setInvoiceNumAdapter();
-
 
     }
 
@@ -254,18 +185,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
-    private void setInvoiceNumAdapter() {
-        adapter = new NumberAdapter(dto.getMainNumbers(), this);
-        this.my_recycler_view.setAdapter(adapter);
-        this.refreshNumAdapter();
-        ;
-    }
-
-    private void refreshNumAdapter() {
-        adapter.notifyDataSetChanged();
-        ;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -289,6 +208,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             myAlertDialog.setMessage(R.string.teachContent);
             myAlertDialog.setNegativeButton("知道", null);
             myAlertDialog.show();
+
+
+            return true;
+        }
+        if (id == R.id.action_recActivity) {
+            Intent it = new Intent(this, RecordActivity.class);
+            startActivity(it);
 
 
             return true;
@@ -420,18 +346,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         final MainNumber number = new MainNumber(Award.Sixth);
         number.setCountOfInvoice(1);
 
-
-        if (dto.getMainNumbers().contains(number)) {
+        if (BeanUtil.mainNumbers.contains(number)) {
             MainNumber inDtoNumber =
-                    dto.getMainNumbers().get(dto.getMainNumbers().indexOf(number));
+                    BeanUtil.mainNumbers.get(BeanUtil.mainNumbers.indexOf(number));
 
             inDtoNumber.setCountOfInvoice(inDtoNumber.getCountOfInvoice() + 1);
 
 
         } else {
-            dto.getMainNumbers().add(number);
+            BeanUtil.mainNumbers.add(number);
         }
-        this.refreshNumAdapter();
+
 
     }
 

@@ -1,114 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/laySwipe"
-    android:layout_height="match_parent"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical">
 
-    android:padding="15dp">
+    <include layout="@layout/keyboard"></include>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/tableLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <include layout="@layout/keyboard"></include>
+        <android.support.v7.widget.Toolbar
+            android:id='@+id/my_awesome_toolbar'
+            android:layout_width='match_parent'
+            android:layout_height="5dp"
+            android:background='?attr/colorPrimary'
+            android:minHeight='?attr/actionBarSize' />
+
+        <Spinner
+            android:id="@+id/monthSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_floating_material_dark"
+            android:spinnerMode="dropdown" />
 
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@+id/tableLayout"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id='@+id/my_awesome_toolbar'
-                android:layout_width='match_parent'
-                android:layout_height="5dp"
-                android:background='?attr/colorPrimary'
-                android:minHeight='?attr/actionBarSize' />
-
-            <Spinner
-                android:id="@+id/monthSpinner"
+            <TextView
+                android:id="@+id/invoviceLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/background_floating_material_dark"
-                android:spinnerMode="dropdown" />
+                android:gravity="center"
+                android:hint="請輸入發票後三碼"
+                android:padding="5dp"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/messageLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/background_material_light"
+                android:gravity="center"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="invisible" />
+
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#20000000"
+                android:fillViewport="false"
+                android:padding="15dp">
 
                 <TextView
-                    android:id="@+id/invoviceLabel"
-                    android:layout_width="match_parent"
+                    android:id="@+id/invoiceContent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:hint="請輸入發票後三碼"
-                    android:padding="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <TextView
-                    android:id="@+id/messageLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentStart="true"
-                    android:background="@color/background_material_light"
-                    android:gravity="center"
-
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/holo_red_light"
-                    android:visibility="invisible" />
-
-
-
-
-                <ScrollView
-                    android:id="@+id/scrollView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#20000000"
-                    android:fillViewport="false"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/invoiceContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:hint="發票資訊:"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                </ScrollView>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/my_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="vertical" />
-
-
-
-            </LinearLayout>
-
-
-
+                    android:hint="發票資訊:"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </ScrollView>
 
 
         </LinearLayout>
 
 
-    </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

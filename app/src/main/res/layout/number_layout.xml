@@ -1,63 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="15dp"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-
-    <TextView
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="00"
-        android:id="@+id/awardText"
 
 
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
 
-    <TextView
-        android:layout_marginLeft="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="x"
+    card_view:cardCornerRadius="4dp">
 
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/awardText"
-        android:layout_toEndOf="@+id/awardText" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_marginLeft="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="000"
-        android:id="@+id/numberText"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/awardText"
-        android:layout_toEndOf="@+id/awardText" />
 
-    <TextView
-        android:layout_marginLeft="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="="
+        <TextView
 
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/awardText"
-        android:layout_toEndOf="@+id/awardText" />
+            android:id="@+id/awardText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/background_material_dark" />
 
-    <TextView
-        android:layout_marginLeft="5dp"
-        android:id="@+id/doorText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="100元"
+        <TextView
 
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/awardText"
-        android:layout_toEndOf="@+id/awardText" />
-</LinearLayout>
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="message"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/background_material_dark"
+             />
+
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
+
+
+    <!--<TextView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentTop="true"--><!--android:layout_marginLeft="5dp"--><!--android:layout_toEndOf="@+id/awardText"--><!--android:layout_toRightOf="@+id/awardText"-->
+
+    <!--android:text="x"--><!--android:textAppearance="?android:attr/textAppearanceLarge"--><!--android:textColor="@color/background_material_dark" />-->
+
+    <!--<TextView--><!--android:id="@+id/numberText"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentTop="true"--><!--android:layout_marginLeft="5dp"--><!--android:layout_toEndOf="@+id/awardText"--><!--android:layout_toRightOf="@+id/awardText"--><!--android:text="000"--><!--android:textAppearance="?android:attr/textAppearanceLarge"--><!--android:textColor="@color/background_material_dark" />-->
+
+    <!--<TextView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentTop="true"--><!--android:layout_marginLeft="5dp"--><!--android:layout_toEndOf="@+id/awardText"-->
+
+
+    <!--android:layout_toRightOf="@+id/awardText"--><!--android:text="="--><!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+    <!--<TextView--><!--android:id="@+id/doorText"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentTop="true"--><!--android:layout_marginLeft="5dp"--><!--android:layout_toEndOf="@+id/awardText"-->
+
+    <!--android:layout_toRightOf="@+id/awardText"--><!--android:text="100元"--><!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+

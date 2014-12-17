@@ -4,29 +4,36 @@
     <string name="app_name">對發票</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
-
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>
-
     <string name="four">4</string>
     <string name="five">5</string>
     <string name="six">6</string>
-
     <string name="seven">7</string>
     <string name="eight">8</string>
     <string name="nine">9</string>
-
     <string name="teachTitle">操作說明</string>
     <string name="teachContent">在畫面鍵盤上面，請輸入發票後三碼，以方便快速對獎，
         由於本程式為了提升對獎之速度，因此使用者可能不用輸入完，
         完整三碼就已經知道沒有中獎，因此可以提升兌獎時間。舉例來說若是特獎為[12345678]
         且增開之六獎為[111]，若使用者發票為[8888888]時，當時使用者輸入8時，將得知此發票不會中獎，
-        因此不需要輸入完後三碼發票就知道結果。
-
-
-        </string>
-
+        因此不需要輸入完後三碼發票就知道結果。</string>
     <string name="pulldown2KeepCalendar">下拉將設定兌獎日期於日曆</string>
+    <string name="lookInvoice">觀看目前中獎發票</string>
+
+    <array name="invoicesStatus">
+        <item>全部</item>
+        <item>中獎</item>
+        <item>未中獎</item>
+    </array>
+
+    <string name="title_activity_main_activity_v2">MainActivityV2</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+
 </resources>
