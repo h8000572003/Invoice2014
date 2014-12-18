@@ -6,15 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -34,7 +30,6 @@ import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
 import tw.com.wa.invoice.domain.MainDTO;
-import tw.com.wa.invoice.domain.MainNumber;
 import tw.com.wa.invoice.util.CommomUtil;
 
 
@@ -57,13 +52,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private List<String> items = null;
 
     private InvoiceKeyIn keyIn = null;
-
-
-    private class OrderObject {
-        private Invoice invoice;
-        private Award award;
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +176,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -215,24 +202,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             return true;
         }
-        if (id == R.id.action_recActivity) {
-            Intent it = new Intent(this, RecordActivityV2.class);
-            startActivity(it);
-
-
-            return true;
-        }
+//        if (id == R.id.action_recActivity) {
+//            Intent it = new Intent(this, RecordActivityV2.class);
+//            startActivity(it);
+//
+//
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     public void cleanValue(View view) {
         this.dto.setNumber("");
         this.invoviceLabel.setText("");
         this.messageLabel.setVisibility(View.INVISIBLE);
     }
-
 
     /**
      * 點擊號碼
@@ -262,7 +247,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 this.messageLabel.setVisibility(View.VISIBLE);
                 this.messageLabel.setText("沒得獎，換一張");
-
+                detialDialog();
 
                 BeanUtil.allInvoices.add(new InvoiceKeyIn(dto.getNumber()));
 
@@ -353,21 +338,51 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         InvoiceKeyIn keyIn = new InvoiceKeyIn(dto.getNumber());
         keyIn.setAward(award);
 
-//        final MainNumber number = new MainNumber(Award.Sixth);
-//        number.setCountOfInvoice(1);
-//
-//        if (BeanUtil.mainNumbers.contains(number)) {
-//            MainNumber inDtoNumber =
-//                    BeanUtil.mainNumbers.get(BeanUtil.mainNumbers.indexOf(number));
-//
-//            inDtoNumber.setCountOfInvoice(inDtoNumber.getCountOfInvoice() + 1);
-//
-//
-//        } else {
-//            BeanUtil.mainNumbers.add(number);
-//        }
+
+    }
+
+    private void detialDialog() {
+        final AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(MainActivity.this);
 
 
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.message_layout, null);
+
+        TextView nuberView = (TextView) dialogView.findViewById(R.id.nuberView);
+        myAlertDialog.setView(dialogView);
+
+
+        if (dto.getNumber().length() == 3) {
+
+            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" + "？？？？？%s", dto.getNumber()));
+            ;
+        } else if (dto.getNumber().length() == 2) {
+            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" + "？？？？%s？", dto.getNumber()));
+        } else {
+            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" +"？？？？？%s？？", dto.getNumber()));
+        }
+
+
+        final AlertDialog dialog =
+                myAlertDialog.show();
+        dialogView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        this.clickValue(v);
+    }
+
+    private class OrderObject {
+        private Invoice invoice;
+        private Award award;
     }
 
     private class TouchKey implements View.OnClickListener {
@@ -426,10 +441,5 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 ;
             }
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        this.clickValue(v);
     }
 }
