@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
+import tw.com.wa.invoice.domain.InvoiceKeyIn;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.domain.MainNumber;
 import tw.com.wa.invoice.util.CommomUtil;
@@ -53,6 +55,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private CommomUtil commomUtil = new CommomUtil();
 
     private List<String> items = null;
+
+    private InvoiceKeyIn keyIn = null;
 
 
     private class OrderObject {
@@ -129,6 +133,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         BaseAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         this.spinner.setAdapter(spinnerAdapter);
+
+
         this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -257,8 +263,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 this.messageLabel.setVisibility(View.VISIBLE);
                 this.messageLabel.setText("沒得獎，換一張");
 
-                dto.setNumber("");
 
+                BeanUtil.allInvoices.add(new InvoiceKeyIn(dto.getNumber()));
+
+                dto.setNumber("");
 
                 break;
 
@@ -327,6 +335,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 });
                 myAlertDialog.show();
 
+
                 invoviceLabel.setText("");
 
                 dto.setNumber("");
@@ -340,19 +349,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void addAward(Award award) {
-        final MainNumber number = new MainNumber(Award.Sixth);
-        number.setCountOfInvoice(1);
 
-        if (BeanUtil.mainNumbers.contains(number)) {
-            MainNumber inDtoNumber =
-                    BeanUtil.mainNumbers.get(BeanUtil.mainNumbers.indexOf(number));
+        InvoiceKeyIn keyIn = new InvoiceKeyIn(dto.getNumber());
+        keyIn.setAward(award);
 
-            inDtoNumber.setCountOfInvoice(inDtoNumber.getCountOfInvoice() + 1);
-
-
-        } else {
-            BeanUtil.mainNumbers.add(number);
-        }
+//        final MainNumber number = new MainNumber(Award.Sixth);
+//        number.setCountOfInvoice(1);
+//
+//        if (BeanUtil.mainNumbers.contains(number)) {
+//            MainNumber inDtoNumber =
+//                    BeanUtil.mainNumbers.get(BeanUtil.mainNumbers.indexOf(number));
+//
+//            inDtoNumber.setCountOfInvoice(inDtoNumber.getCountOfInvoice() + 1);
+//
+//
+//        } else {
+//            BeanUtil.mainNumbers.add(number);
+//        }
 
 
     }

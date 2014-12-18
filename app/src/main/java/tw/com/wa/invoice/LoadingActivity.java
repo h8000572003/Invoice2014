@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
@@ -33,8 +36,9 @@ public class LoadingActivity extends Activity {
 
     private LoadAsyncTask task = null;
 
-    private Button refresh = null;
+
     private ProgressBar progressBar = null;
+    private SwipeRefreshLayout laySwipe;
 
 
     private class LoadAsyncTask extends AsyncTask<String, String, String> {
@@ -42,11 +46,11 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPreExecute() {
 
-
+            laySwipe.setRefreshing(true);
             statuLabel.setText("取得兌獎資訊中");
             progressBar.setVisibility(View.VISIBLE);
-            statuLabel.setTextColor(Color.WHITE);
-            refresh.setVisibility(View.GONE);
+
+
         }
 
         @Override
@@ -76,12 +80,13 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             progressBar.setVisibility(View.INVISIBLE);
+            laySwipe.setRefreshing(false);
             task = null;
 
             if (s != null) {
                 statuLabel.setText("資料取得錯誤，下拉重新刷新");
                 statuLabel.setTextColor(Color.RED);
-                refresh.setVisibility(View.VISIBLE);
+
             } else {
 
                 Intent it = new Intent(LoadingActivity.this, MainActivity.class);
@@ -105,10 +110,15 @@ public class LoadingActivity extends Activity {
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
-        this.refresh = (Button) this.findViewById(R.id.refresh);
-        this.progressBar = (ProgressBar) this.findViewById(R.id.progressBar2);
 
-        this.setRefreshLister();
+        this.progressBar = (ProgressBar) this.findViewById(R.id.progressBar2);
+        this.laySwipe = (SwipeRefreshLayout) this.findViewById(R.id.laySwipe);
+        this.laySwipe.setColorSchemeResources(
+                android.R.color.holo_red_light,
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light);
+        this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
 
 
         if (task == null) {
@@ -119,17 +129,14 @@ public class LoadingActivity extends Activity {
 
     }
 
-    private void setRefreshLister() {
-        this.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (task == null) {
-                    task = new LoadAsyncTask();
-                    task.execute("");
-                }
-            }
-        });
-    }
+
+    private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            task = new LoadAsyncTask();
+            task.execute("");
+        }
+    };
 
 
     /**
@@ -160,6 +167,8 @@ public class LoadingActivity extends Activity {
 
         final ParseQuery<InvoiceInfoV2> inVoiceInfoParseQuery =
                 ParseQuery.getQuery(InvoiceInfoV2.class);
+        inVoiceInfoParseQuery.addAscendingOrder("createdAt");
+
         //  inVoiceInfoParseQuery.whereEqualTo("isCheck", true);
 
         try {

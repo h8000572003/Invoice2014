@@ -14,18 +14,11 @@ public class BeanUtil {
 
     public static List<MainNumber> mainNumbers = new ArrayList<MainNumber>();
 
+    public static List<InvoiceKeyIn> allInvoices = new ArrayList<InvoiceKeyIn>();
+
     static {
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Top));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Top));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Fifth));
-        mainNumbers.add(new MainNumber(Award.Fifth));
+        mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special));
+
     }
 }
