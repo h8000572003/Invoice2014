@@ -8,9 +8,9 @@
         android:title="@string/teachTitle"
         app:showAsAction="never" />
 
-    <!--<item-->
-        <!--android:id="@+id/action_recActivity"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="@string/lookInvoice"-->
-        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_recActivity"
+        android:orderInCategory="100"
+        android:title="@string/lookInvoice"
+        app:showAsAction="never" />
 </menu>

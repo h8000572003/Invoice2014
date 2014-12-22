@@ -1,9 +1,11 @@
 package tw.com.wa.invoice.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Andy on 2014/12/18.
  */
-public class InvoiceKeyIn {
+public class InvoiceKeyIn  implements Serializable{
     private String keyNumber = "";
     private Award award = null;
     private String title = "";

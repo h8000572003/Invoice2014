@@ -11,6 +11,7 @@ public class MainDTO {
 
 
     private List<Invoice> invoices = null;
+    private List<InvoiceKeyIn> keyIns = new ArrayList<>();
 
     public String getNumber() {
         return number;
@@ -29,4 +30,11 @@ public class MainDTO {
     }
 
 
+    public List<InvoiceKeyIn> getKeyIns() {
+        return keyIns;
+    }
+
+    public void setKeyIns(List<InvoiceKeyIn> keyIns) {
+        this.keyIns = keyIns;
+    }
 }

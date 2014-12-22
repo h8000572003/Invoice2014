@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,40 +56,71 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private InvoiceKeyIn keyIn = null;
 
+    private RecyclerView recyclerView = null;
+
+
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.dto = new MainDTO();
 
 
+        if (this.isTechDiaglogFlag()) {
+            AlertDialog.Builder diaglogOfTech = new AlertDialog.Builder(this);
+            diaglogOfTech.setTitle(R.string.teachTitle);
+            diaglogOfTech.setMessage(R.string.teachContent);
+            diaglogOfTech.setNegativeButton("知道", null);
+            diaglogOfTech.show();
+        }
+
+
+        this.setViewById();
+        this.setActionListener();
+        this.setInvoiceDataAdapter();
+
+    }
+
+    private boolean isTechDiaglogFlag() {
         SharedPreferences sp =
                 getSharedPreferences(Setting, Context.MODE_PRIVATE);
 
 
-        boolean isFirstTimeFlag = sp.getBoolean("isFirstTime", true);
-        //fixme
-        if (isFirstTimeFlag) {
-            sp.edit().putBoolean("isFirstTime", true).commit();
+        return sp.getBoolean("isFirstTime", true);
+    }
 
-            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-
-            myAlertDialog.setTitle(R.string.teachTitle);
-            myAlertDialog.setMessage(R.string.teachContent);
-            myAlertDialog.setNegativeButton("知道", null);
-            myAlertDialog.show();
-
-
-        }
-
-        this.dto = new MainDTO();
-
-
+    /**
+     * SET VIEW OBJECT BY ID
+     */
+    private void setViewById() {
+        this.recyclerView = (RecyclerView) this.findViewById(R.id.my_recycler_view);
         this.spinner = (Spinner) this.findViewById(R.id.monthSpinner);
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
 
 
+        this.setViewParmeters();
+
+
+    }
+
+    /**
+     * set view parmeter..
+     */
+    private void setViewParmeters() {
+
+        this.mLayoutManager = new LinearLayoutManager(this);
+        this.recyclerView.setLayoutManager(mLayoutManager);
+        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    /**
+     * set action listner
+     */
+    public void setActionListener() {
         this.findViewById(R.id.button).setOnClickListener(this);
         this.findViewById(R.id.btn1).setOnClickListener(this);
         this.findViewById(R.id.btn2).setOnClickListener(this);
@@ -105,10 +139,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 cleanValue(v);
             }
         });
-
-        this.setInvoiceDataAdapter();
-
     }
+
 
     /**
      * 設定對發票日期
@@ -146,6 +178,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 }
 
+                /**
+                 * sort
+                 */
                 Collections.sort(rrderObjects, new Comparator<OrderObject>() {
                     @Override
                     public int compare(OrderObject lhs, OrderObject rhs) {
@@ -202,13 +237,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             return true;
         }
-//        if (id == R.id.action_recActivity) {
-//            Intent it = new Intent(this, RecordActivityV2.class);
-//            startActivity(it);
-//
-//
-//            return true;
-//        }
+        if (id == R.id.action_recActivity) {
+            Intent it = new Intent(this, RecordActivityV2.class);
+
+            it.putExtra("value", (java.io.Serializable) dto.getKeyIns());
+
+            startActivity(it);
+
+
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -338,6 +376,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         InvoiceKeyIn keyIn = new InvoiceKeyIn(dto.getNumber());
         keyIn.setAward(award);
 
+        dto.getKeyIns().add(keyIn);
+
 
     }
 
@@ -358,7 +398,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } else if (dto.getNumber().length() == 2) {
             nuberView.setText(String.format(getString(R.string.notWinning) + "\n" + "？？？？%s？", dto.getNumber()));
         } else {
-            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" +"？？？？？%s？？", dto.getNumber()));
+            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" + "？？？？？%s？？", dto.getNumber()));
         }
 
 

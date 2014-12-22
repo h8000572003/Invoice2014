@@ -18,6 +18,23 @@ public class BeanUtil {
 
     static {
         mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
+        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
         mainNumbers.add(new MainNumber(Award.Special));
 
     }
