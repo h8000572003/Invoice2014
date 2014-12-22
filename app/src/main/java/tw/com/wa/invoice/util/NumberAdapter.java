@@ -21,7 +21,7 @@ import tw.com.wa.invoice.domain.InvoiceKeyIn;
 public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
-        public void onItemClick(InvoiceKeyIn item);
+        public void onItemClick(View view, int location);
     }
 
 
@@ -54,7 +54,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
 
 
         final InvoiceKeyIn mainNumber = mainNumbers.get(position);
@@ -67,6 +67,14 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
 
         viewHolder.titileView.setText(mainNumber.getTitle());
         viewHolder.contentView.setText(mainNumber.getKeyNumber());
+        viewHolder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(viewHolder.container, position);
+                }
+            }
+        });
 
         this.setAnimation(viewHolder.container, position);
 
