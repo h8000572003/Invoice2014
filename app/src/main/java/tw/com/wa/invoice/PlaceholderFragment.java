@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.List;
 
+import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
 
 /**
@@ -57,18 +59,25 @@ public class PlaceholderFragment extends Fragment {
 
 
     public PlaceholderFragment() {
+        keyIns = BeanUtil.allInvoices;
     }
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PlaceholderFragment newInstance(int sectionNumber,List<InvoiceKeyIn> keyIns) {
-        PlaceholderFragment fragment = new PlaceholderFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putSerializable("value", (Serializable) keyIns);
-        fragment.setArguments(args);
+    public static PlaceholderFragment newInstance(int sectionNumber, List<InvoiceKeyIn> keyIns) {
+
+        final PlaceholderFragment fragment = new PlaceholderFragment();
+        {
+
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            fragment.keyIns = keyIns;
+        }
+
+
         return fragment;
     }
 
@@ -76,8 +85,6 @@ public class PlaceholderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        keyIns =
-                (List<InvoiceKeyIn>) getArguments().getSerializable("value");
     }
 
     @Override
@@ -133,8 +140,7 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((RecordActivityV2) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+
     }
 
 
@@ -143,6 +149,7 @@ public class PlaceholderFragment extends Fragment {
 
         this.adapter = new NumberAdapter(keyIns, getActivity());
         this.recyclerView.setAdapter(adapter);
+
         this.refreshNumAdapter();
         ;
     }
@@ -153,17 +160,29 @@ public class PlaceholderFragment extends Fragment {
         ;
     }
 
-    private class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder> {
+    public  class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder> {
+
+        public interface OnItemClickListener {
+            public void onItemClick(InvoiceKeyIn item);
+        }
 
 
         private int lastPosition = -1;
         private List<InvoiceKeyIn> mainNumbers = null;
         private Context context;
+        private OnItemClickListener listener;
 
 
-        private NumberAdapter(List<InvoiceKeyIn> mainNumbers, Context context) {
+        public NumberAdapter(Context context, OnItemClickListener listener) {
+        /* ... */
+            this.listener = listener;
+        }
+
+
+        private NumberAdapter(List<InvoiceKeyIn> mainNumbers, Context context, OnItemClickListener listener) {
             this.mainNumbers = mainNumbers;
             this.context = context;
+            this.listener = listener;
         }
 
         @Override
@@ -188,6 +207,9 @@ public class PlaceholderFragment extends Fragment {
                     getString(R.string.now_win));//
 
             mainNumber.setKeyNumber(mainNumber.getKeyNumber());
+
+            viewHolder.titileView.setText(mainNumber.getTitle());
+            viewHolder.contentView.setText(mainNumber.getKeyNumber());
 
             this.setAnimation(viewHolder.container, position);
 

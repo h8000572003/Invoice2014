@@ -3,8 +3,10 @@
     <color name="light">#FFFFEB37</color>
 
     <color name="isBlank">#00000000</color>
-    <color name="white">#000000</color>
-    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="text_primary">#D9FFFFFF</color>
 
     <color name="background_material_dark">#ff212121</color>
     <color name="background_material_light">#fffafafa</color>
@@ -18,11 +20,15 @@
     <color name="bright_foreground_material_dark">@color/white</color>
     <color name="bright_foreground_material_light">@color/black</color>
 
-    <color name="bright_foreground_disabled_material_dark">#80ffffff</color> <!-- White 50% -->
-    <color name="bright_foreground_disabled_material_light">#80000000</color> <!-- Black 50% -->
+    <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
+    <!-- White 50% -->
+    <color name="bright_foreground_disabled_material_light">#80000000</color>
+    <!-- Black 50% -->
 
-    <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light</color>
-    <color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark</color>
+    <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light
+    </color>
+    <color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark
+    </color>
 
     <color name="dim_foreground_material_dark">#ffbebebe</color>
     <color name="dim_foreground_material_light">#ff323232</color>
@@ -32,18 +38,26 @@
     <color name="hint_foreground_material_dark">#80ffffff</color>
     <color name="hint_foreground_material_light">#80000000</color>
 
-    <color name="highlighted_text_material_dark">#6640c4ff</color> <!-- TODO: This is 40% alpha on the default accent color. -->
-    <color name="highlighted_text_material_light">#6640c4ff</color> <!-- TODO: This is 40% alpha on the default accent color. -->
+    <color name="highlighted_text_material_dark">#6640c4ff</color>
+    <!-- TODO: This is 40% alpha on the default accent color. -->
+    <color name="highlighted_text_material_light">#6640c4ff</color>
+    <!-- TODO: This is 40% alpha on the default accent color. -->
 
     <!-- Text & foreground colors -->
 
-    <color name="primary_text_default_material_light">#de000000</color> <!-- Black 87% -->
-    <color name="secondary_text_material_light">#8a000000</color> <!-- Black 54% -->
-    <color name="tertiary_text_material_light">#8a000000</color> <!-- Black 54% (TODO: same as secondary?) -->
+    <color name="primary_text_default_material_light">#de000000</color>
+    <!-- Black 87% -->
+    <color name="secondary_text_material_light">#8a000000</color>
+    <!-- Black 54% -->
+    <color name="tertiary_text_material_light">#8a000000</color>
+    <!-- Black 54% (TODO: same as secondary?) -->
 
-    <color name="primary_text_default_material_dark">#deffffff</color> <!-- White 87% -->
-    <color name="secondary_text_material_dark">#61ffffff</color> <!-- White 38% -->
-    <color name="tertiary_text_material_dark">#61ffffff</color> <!-- White 38% (TODO: same as secondary?) -->
+    <color name="primary_text_default_material_dark">#deffffff</color>
+    <!-- White 87% -->
+    <color name="secondary_text_material_dark">#61ffffff</color>
+    <!-- White 38% -->
+    <color name="tertiary_text_material_dark">#61ffffff</color>
+    <!-- White 38% (TODO: same as secondary?) -->
 
     <!-- Primary & accent colors -->
 
@@ -71,7 +85,8 @@
     <color name="material_teal_A400">#ff00e5ff</color>
 
 
-    <color name="material_dark_teal_A400">#ff009688</color> <!-- Accent color used by Settings -->
+    <color name="material_dark_teal_A400">#ff009688</color>
+    <!-- Accent color used by Settings -->
 
     <color name="material_green_100">#ffb7e1cd</color>
     <color name="material_green_300">#ff57bb8a</color>
@@ -126,8 +141,10 @@
     <color name="material_blue_grey_600">#ff546e7a</color>
     <color name="material_blue_grey_700">#ff455a64</color>
     <color name="material_blue_grey_800">#ff37474f</color>
-    <color name="material_blue_grey_900">#ff263238</color> <!-- Primary color used by Settings -->
-    <color name="material_blue_grey_950">#ff21272b</color> <!-- Primary dark color used by Settings -->
+    <color name="material_blue_grey_900">#ff263238</color>
+    <!-- Primary color used by Settings -->
+    <color name="material_blue_grey_950">#ff21272b</color>
+    <!-- Primary dark color used by Settings -->
 
     <color name="material_brown_100">#ffd7ccc8</color>
     <color name="material_brown_300">#ffa1887f</color>

@@ -12,30 +12,8 @@ public class BeanUtil {
 
     public static Map<String, InvoiceInfoV2> map = new HashMap<String, InvoiceInfoV2>();
 
-    public static List<MainNumber> mainNumbers = new ArrayList<MainNumber>();
 
     public static List<InvoiceKeyIn> allInvoices = new ArrayList<InvoiceKeyIn>();
 
-    static {
-        mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special)); mainNumbers.add(new MainNumber(Award.Veryspecial));
-        mainNumbers.add(new MainNumber(Award.Special));
 
-    }
 }

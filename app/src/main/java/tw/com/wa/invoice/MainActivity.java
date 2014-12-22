@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -36,6 +37,7 @@ import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.util.CommomUtil;
 
 
+
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
 
@@ -44,6 +46,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private TextView invoviceLabel = null;
     private TextView invoiceContent = null;
     private TextView messageLabel = null;
+    private ViewGroup content = null;
 
     private MainDTO dto;
 
@@ -100,6 +103,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
+        this.content = (ViewGroup) this.findViewById(R.id.content);
 
 
         this.setViewParmeters();
@@ -240,8 +244,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (id == R.id.action_recActivity) {
             Intent it = new Intent(this, RecordActivityV2.class);
 
-            it.putExtra("value", (java.io.Serializable) dto.getKeyIns());
 
+            BeanUtil.allInvoices = dto.getKeyIns();
             startActivity(it);
 
 
@@ -285,7 +289,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 this.messageLabel.setVisibility(View.VISIBLE);
                 this.messageLabel.setText("沒得獎，換一張");
-                detialDialog();
+//                detialDialog();
 
                 BeanUtil.allInvoices.add(new InvoiceKeyIn(dto.getNumber()));
 
@@ -352,7 +356,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        addAward(Award.Sixth);
+                        addAward(Award.Sixth, dto.getNumber());
 
                     }
                 });
@@ -371,9 +375,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
-    private void addAward(Award award) {
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent it = new Intent(this, AwardActivity.class);
+        startActivity(it);
+    }
 
-        InvoiceKeyIn keyIn = new InvoiceKeyIn(dto.getNumber());
+    private void addAward(Award award, String number) {
+
+        InvoiceKeyIn keyIn = new InvoiceKeyIn(number);
         keyIn.setAward(award);
 
         dto.getKeyIns().add(keyIn);
@@ -385,7 +396,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         final AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(MainActivity.this);
 
 
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.message_layout, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.message_layout, this.content, false);
 
         TextView nuberView = (TextView) dialogView.findViewById(R.id.nuberView);
         myAlertDialog.setView(dialogView);
@@ -459,7 +470,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 if (award != null) {
 
-                    addAward(award);
+                    addAward(award, dto.getNumber());
 
 
                     myAlertDialog.setMessage("中" + award.message);

@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,9 +49,15 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPreExecute() {
 
+
+            AnimationSet animationset = new AnimationSet(true);
+            animationset.addAnimation(AnimationUtils.loadAnimation(LoadingActivity.this, android.R.anim.fade_in));
+            animationset.addAnimation(AnimationUtils.loadAnimation(LoadingActivity.this, android.R.anim.fade_out));
+
+            animationset.setRepeatCount(-1);
+            statuLabel.startAnimation(animationset);
+
             laySwipe.setRefreshing(true);
-            statuLabel.setText("取得兌獎資訊中");
-            progressBar.setVisibility(View.VISIBLE);
 
 
         }
@@ -79,7 +88,8 @@ public class LoadingActivity extends Activity {
 
         @Override
         protected void onPostExecute(String s) {
-            progressBar.setVisibility(View.INVISIBLE);
+            statuLabel.clearAnimation();
+            ;
             laySwipe.setRefreshing(false);
             task = null;
 
@@ -88,6 +98,7 @@ public class LoadingActivity extends Activity {
                 statuLabel.setTextColor(Color.RED);
 
             } else {
+
 
                 Intent it = new Intent(LoadingActivity.this, MainActivity.class);
                 startActivity(it);

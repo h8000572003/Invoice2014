@@ -3,12 +3,15 @@ package tw.com.wa.invoice.domain;
 import java.io.Serializable;
 
 /**
+ * 使用者輸入發票內容
  * Created by Andy on 2014/12/18.
  */
 public class InvoiceKeyIn  implements Serializable{
     private String keyNumber = "";
     private Award award = null;
     private String title = "";
+
+
 
     public String getTitle() {
         return title;

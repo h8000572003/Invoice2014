@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
 
 
@@ -25,14 +26,13 @@ public class RecordActivityV2 extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private List<InvoiceKeyIn> keyInList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_v2);
 
-        this.keyInList = (List<InvoiceKeyIn>) getIntent().getSerializableExtra("value");
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -45,25 +45,28 @@ public class RecordActivityV2 extends ActionBarActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        this.finish();
+        ;
+    }
+
+    @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, this.keyInList))
+                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, BeanUtil.allInvoices))
                 .commit();
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
+
             case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+
         }
     }
 
@@ -81,7 +84,7 @@ public class RecordActivityV2 extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main_activity_v2, menu);
+            //   getMenuInflater().inflate(R.menu.main_activity_v2, menu);
             restoreActionBar();
             return true;
         }
