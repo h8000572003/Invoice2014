@@ -120,28 +120,15 @@ public class LoadingActivity extends Activity {
                 AnimationSet animationset = new AnimationSet(true);
                 animationset.addAnimation(AnimationUtils.loadAnimation(LoadingActivity.this, android.R.anim.slide_out_right));
                 statuLabel.startAnimation(animationset);
-                animationset.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
 
-                    }
+                finish();
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        statuLabel.setVisibility(View.INVISIBLE);
-                        Intent it = new Intent(LoadingActivity.this, MainActivity.class);
-                        startActivity(it);
-                        finish();
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
+                statuLabel.setVisibility(View.INVISIBLE);
+                Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                startActivity(it);
 
 
-                ;
+
             }
 
         }
