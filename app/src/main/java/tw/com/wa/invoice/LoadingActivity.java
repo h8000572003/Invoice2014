@@ -52,14 +52,7 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPreExecute() {
 
-
-            AnimationSet animationset = new AnimationSet(true);
-            animationset.addAnimation(AnimationUtils.loadAnimation(LoadingActivity.this, android.R.anim.fade_in));
-            animationset.addAnimation(AnimationUtils.loadAnimation(LoadingActivity.this, android.R.anim.fade_out));
-
-            animationset.setRepeatCount(-1);
-            statuLabel.startAnimation(animationset);
-
+            progressBar.setVisibility(View.VISIBLE);
             laySwipe.setRefreshing(true);
 
 
@@ -113,7 +106,7 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             statuLabel.clearAnimation();
-            ;
+            progressBar.setVisibility(View.GONE);
             laySwipe.setRefreshing(false);
             task = null;
 

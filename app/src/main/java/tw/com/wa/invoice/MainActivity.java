@@ -15,9 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,6 +49,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private TextView invoiceContent = null;
     private TextView messageLabel = null;
     private ViewGroup content = null;
+    private Button addCalendarBtn;
 
     private MainDTO dto;
 
@@ -107,7 +111,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
         this.content = (ViewGroup) this.findViewById(R.id.content);
-
+        this.addCalendarBtn = (Button) this.findViewById(R.id.addCalendarBtn);
 
         this.setViewParmeters();
 
@@ -146,6 +150,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 cleanValue(v);
             }
         });
+
+        this.addCalendarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(MainActivity.this, AwardActivity.class);
+                BeanUtil.infoV2 = dto.getInvoiceInfoV2();
+                startActivity(it);
+            }
+        });
+        if (!BeanUtil.allInvoices.isEmpty()) {
+            if (addCalendarBtn.getVisibility() == View.GONE) {
+                addCalendarBtn.setVisibility(View.VISIBLE);
+                AnimationSet animationset = new AnimationSet(true);
+                animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
+                addCalendarBtn.startAnimation(animationset);
+            }
+
+
+        }
     }
 
 
@@ -366,6 +389,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     }
                 });
+
+
+                if (addCalendarBtn.getVisibility() == View.GONE) {
+                    addCalendarBtn.setVisibility(View.VISIBLE);
+                    AnimationSet animationset = new AnimationSet(true);
+                    animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
+                    addCalendarBtn.startAnimation(animationset);
+
+
+                }
                 myAlertDialog.show();
 
 
@@ -378,38 +411,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         }
 
-
-    }
-
-    @Override
-    public void onBackPressed() {
-
-
-        if (!BeanUtil.allInvoices.isEmpty()) {
-
-            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-            myAlertDialog.setTitle(getString(R.string.app_name));
-            myAlertDialog.setMessage("有中獎發票，是否將在行事曆加入領獎日期");
-            myAlertDialog.setNegativeButton("好", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent it = new Intent(MainActivity.this, AwardActivity.class);
-                    BeanUtil.infoV2 = dto.getInvoiceInfoV2();
-                    startActivity(it);
-                }
-            });
-            myAlertDialog.setPositiveButton("不用", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    MainActivity.
-                            super.onBackPressed();
-
-                }
-            });
-            myAlertDialog.show();
-        } else {
-            super.onBackPressed();
-        }
 
     }
 
@@ -495,6 +496,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     keyIn.setAward(award);
                     BeanUtil.allInvoices.add(keyIn);
+
+
+                    if (addCalendarBtn.getVisibility() == View.GONE) {
+                        addCalendarBtn.setVisibility(View.VISIBLE);
+                        AnimationSet animationset = new AnimationSet(true);
+                        animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
+                        addCalendarBtn.startAnimation(animationset);
+
+
+                    }
 
 
                     myAlertDialog.setMessage("中" + award.message);

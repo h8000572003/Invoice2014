@@ -207,7 +207,7 @@ public class PlaceholderFragment extends Fragment {
                 message.append("總金額-" + totalMoney + "元");
 
 
-                calendarIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, message.toString());
+                calendarIntent.putExtra(CalendarContract.Events.DESCRIPTION, message.toString());
 
                 startActivity(calendarIntent);
             }

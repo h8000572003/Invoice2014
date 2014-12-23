@@ -26,21 +26,20 @@
 
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/tableLayout"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:id="@+id/content">
+            android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/invoviceLabel"
@@ -68,15 +67,28 @@
                     android:visibility="invisible" />
 
 
-                <TextView
-                    android:id="@+id/invoiceContent"
+                <Button
+                    android:id="@+id/addCalendarBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#20000000"
-                    android:hint="發票資訊:"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/addCalendarBtn"
+                    android:visibility="gone" />
 
-                    android:padding="15dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/invoiceContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#20000000"
+                        android:hint="發票資訊:"
+
+                        android:padding="15dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </ScrollView>
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/my_recycler_view"
