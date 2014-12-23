@@ -117,16 +117,13 @@ public class LoadingActivity extends Activity {
             } else {
 
 
-                AnimationSet animationset = new AnimationSet(true);
-                animationset.addAnimation(AnimationUtils.loadAnimation(LoadingActivity.this, android.R.anim.slide_out_right));
-                statuLabel.startAnimation(animationset);
 
-                finish();
+
 
                 statuLabel.setVisibility(View.INVISIBLE);
                 Intent it = new Intent(LoadingActivity.this, MainActivity.class);
                 startActivity(it);
-
+                finish();
 
 
             }
@@ -140,12 +137,7 @@ public class LoadingActivity extends Activity {
         setContentView(R.layout.loading_layout);
 
 
-        ParseObject.registerSubclass(Invoice.class);
-        ParseObject.registerSubclass(InvoiceInfoV2.class);
 
-        Parse.enableLocalDatastore(this);//本地存資料
-        Parse.initialize(this, "hgne1bjc7IaI7ZmpBN7dobThoeVzGy6RirURDo44", "K9Qum9KClGT789nE2fkleYqXa294NVO9I12cHxQI");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
 

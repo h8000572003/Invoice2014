@@ -39,7 +39,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <TextView
                     android:id="@+id/invoviceLabel"
@@ -59,12 +60,13 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/background_material_light"
+                    android:textColor="@color/link_text_material_dark"
                     android:gravity="center"
+                    android:hint="@string/messageBoxHint"
 
                     android:textAppearance="?android:attr/textAppearanceMedium"
 
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
 
                 <Button
@@ -73,6 +75,12 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/addCalendarBtn"
                     android:visibility="gone" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                </RelativeLayout>
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -90,12 +98,12 @@
                 </ScrollView>
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/my_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scrollbars="vertical" />
+                <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/my_recycler_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:scrollbars="vertical" />-->
 
 
             </LinearLayout>

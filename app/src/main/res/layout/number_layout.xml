@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
 
 
@@ -40,8 +40,19 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="message"
+
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/background_material_dark" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:hint="$"
+
+            android:textColor="@color/material_green_500"
+            android:id="@+id/moneyView" />
 
 
     </LinearLayout>

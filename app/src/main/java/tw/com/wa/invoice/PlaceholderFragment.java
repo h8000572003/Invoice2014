@@ -173,7 +173,7 @@ public class PlaceholderFragment extends Fragment {
 
 
                 calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
-                calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
+                calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis());
                 calendarIntent.putExtra(CalendarContract.Events.TITLE, "發票獎金");
 
                 Map<Award, Integer> map = new HashMap<Award, Integer>();

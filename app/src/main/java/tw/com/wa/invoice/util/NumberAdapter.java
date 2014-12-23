@@ -20,25 +20,18 @@ import tw.com.wa.invoice.domain.InvoiceKeyIn;
  */
 public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder> {
 
-    public interface OnItemClickListener {
-        public void onItemClick(View view, int location);
-    }
-
-
     private int lastPosition = -1;
     private List<InvoiceKeyIn> mainNumbers = null;
     private Context context;
     private OnItemClickListener listener;
 
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-
     public NumberAdapter(List<InvoiceKeyIn> mainNumbers, Context context) {
         this.mainNumbers = mainNumbers;
         this.context = context;
+        this.listener = listener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -67,6 +60,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
 
         viewHolder.titileView.setText(mainNumber.getTitle());
         viewHolder.contentView.setText(mainNumber.getKeyNumber());
+        viewHolder.moneyView.setText("$" + mainNumber.getAward().dollar);
         viewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,18 +91,25 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
         }
     }
 
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int location);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
 
         private TextView titileView;
         private TextView contentView;
+        private TextView moneyView;
         private CardView container;
+
 
         public ViewHolder(View v) {
             super(v);
-            titileView = (TextView) v.findViewById(R.id.titileView);
-            contentView = (TextView) v.findViewById(R.id.contentView);
-            container = (CardView) v.findViewById(R.id.container);
+            this.titileView = (TextView) v.findViewById(R.id.titileView);
+            this.contentView = (TextView) v.findViewById(R.id.contentView);
+            this.container = (CardView) v.findViewById(R.id.container);
+            this.moneyView = (TextView) v.findViewById(R.id.moneyView);
 
 
         }

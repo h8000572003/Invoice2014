@@ -7,16 +7,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -62,12 +63,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private InvoiceKeyIn keyIn = null;
 
-    private RecyclerView recyclerView = null;
+    // private RecyclerView recyclerView = null;
 
 
     private RecyclerView.LayoutManager mLayoutManager;
 
-    Map<String, InvoiceInfoV2> map = null;
+    private Map<String, InvoiceInfoV2> map = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * SET VIEW OBJECT BY ID
      */
     private void setViewById() {
-        this.recyclerView = (RecyclerView) this.findViewById(R.id.my_recycler_view);
+        //    this.recyclerView = (RecyclerView) this.findViewById(R.id.my_recycler_view);
         this.spinner = (Spinner) this.findViewById(R.id.monthSpinner);
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
@@ -128,9 +129,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
     private void setViewParmeters() {
 
-        this.mLayoutManager = new LinearLayoutManager(this);
-        this.recyclerView.setLayoutManager(mLayoutManager);
-        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        this.mLayoutManager = new LinearLayoutManager(this);
+//        this.recyclerView.setLayoutManager(mLayoutManager);
+//        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     /**
@@ -156,6 +157,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
+
         this.addCalendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,6 +172,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 AnimationSet animationset = new AnimationSet(true);
                 animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
                 addCalendarBtn.startAnimation(animationset);
+                addCalendarBtn.setText(getString(R.string.addCalendarBtn,BeanUtil.allInvoices.size()));
             }
 
 
@@ -289,7 +292,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void cleanValue(View view) {
         this.dto.setNumber("");
         this.invoviceLabel.setText("");
-        this.messageLabel.setVisibility(View.INVISIBLE);
+
     }
 
     /**
@@ -298,7 +301,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * @param view
      */
     public void clickValue(View view) {
-        this.messageLabel.setVisibility(View.INVISIBLE);
+        this.messageLabel.setText(getString(R.string.plsEnter));
 
 
         final TextView label = (TextView) view;
@@ -396,14 +399,32 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 keyIn.setAward(Award.Fifth.Sixth);
                 BeanUtil.allInvoices.add(keyIn);
 
+                addCalendarBtn.setText(getString(R.string.addCalendarBtn,BeanUtil.allInvoices.size()));
+
 
                 if (addCalendarBtn.getVisibility() == View.GONE) {
                     addCalendarBtn.setVisibility(View.VISIBLE);
                     AnimationSet animationset = new AnimationSet(true);
-                    animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
+                    animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.slide_in_left));
                     addCalendarBtn.startAnimation(animationset);
 
 
+                } else {
+
+
+                    AnimationSet animationset = new AnimationSet(true);
+
+                    Animation animation=new ScaleAnimation(0, 0, 0, 20);
+                    animation.setDuration(100);
+                    animation.setRepeatCount(3);
+
+                    Animation translateAnimation=new TranslateAnimation(0, 0, 0, 20);
+                    translateAnimation.setDuration(100);
+                    animationset.addAnimation(translateAnimation);
+
+                    animationset.setRepeatCount(3);
+
+                    addCalendarBtn.startAnimation(animationset);
                 }
 
 //                myAlertDialog.show();
@@ -508,11 +529,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     if (addCalendarBtn.getVisibility() == View.GONE) {
                         addCalendarBtn.setVisibility(View.VISIBLE);
                         AnimationSet animationset = new AnimationSet(true);
-                        animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
+                        animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.slide_in_left));
                         addCalendarBtn.startAnimation(animationset);
 
 
+                    } else {
+
+
+                        AnimationSet animationset = new AnimationSet(true);
+
+                        Animation animation=new ScaleAnimation(0, 0, 0, 20);
+                        animation.setDuration(100);
+                        animation.setRepeatCount(3);
+
+                        Animation translateAnimation=new TranslateAnimation(0, 0, 0, 20);
+                        translateAnimation.setDuration(100);
+                        animationset.addAnimation(translateAnimation);
+
+                        animationset.setRepeatCount(3);
+
+                        addCalendarBtn.startAnimation(animationset);
                     }
+                    addCalendarBtn.setText(getString(R.string.addCalendarBtn,BeanUtil.allInvoices.size()));
 
 
                     myAlertDialog.setMessage("中" + award.message);
