@@ -407,9 +407,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
 
 //                myAlertDialog.show();
+                this.messageLabel.setText("中六獎");
 
-
-                invoviceLabel.setText("中六獎");
+                invoviceLabel.setText("");
 
                 dto.setNumber("");
 
