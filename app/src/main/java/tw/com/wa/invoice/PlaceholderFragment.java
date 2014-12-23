@@ -95,45 +95,44 @@ public class PlaceholderFragment extends Fragment {
 
 
         this.recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        {
+            this.mLayoutManager = new LinearLayoutManager(getActivity());
+            this.recyclerView.setLayoutManager(mLayoutManager);
+            this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+            this.recyclerView.setOnScrollListener(
+                    new RecyclerView.OnScrollListener() {
 
+                        @Override
+                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+                        }
 
-        this.mLayoutManager = new LinearLayoutManager(getActivity());
-
-
-        this.recyclerView.setLayoutManager(mLayoutManager);
-        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-        this.laySwipe = (SwipeRefreshLayout) rootView.findViewById(R.id.laySwipe);
-        this.laySwipe.setColorSchemeResources(
-                android.R.color.holo_red_light,
-                android.R.color.holo_blue_light,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light);
-
-        this.recyclerView.setOnScrollListener(
-                new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                    }
-
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-                        int lastVisibleItem = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
-
-
-                        if (lastVisibleItem == 0) {
-                            laySwipe.setEnabled(true);
-                        } else {
-                            laySwipe.setEnabled(false);
+                        @Override
+                        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                            int lastVisibleItem = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
+                            if (lastVisibleItem == 0) {
+                                laySwipe.setEnabled(true);
+                            } else {
+                                laySwipe.setEnabled(false);
+                            }
                         }
                     }
-                }
-        );
-        this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
-        setInvoiceNumAdapter();
+            );
+
+        }
+
+        this.laySwipe = (SwipeRefreshLayout) rootView.findViewById(R.id.laySwipe);
+        {
+            this.laySwipe.setColorSchemeResources(
+                    android.R.color.holo_red_light,
+                    android.R.color.holo_blue_light,
+                    android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light);
+            this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
+        }
+
+
+        this.setInvoiceNumAdapter();
 
         return rootView;
     }
@@ -150,6 +149,12 @@ public class PlaceholderFragment extends Fragment {
 
         this.adapter = new NumberAdapter(keyIns, getActivity());
         this.recyclerView.setAdapter(adapter);
+        this.adapter.setOnItemClickListener(new NumberAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int location) {
+                Toast.makeText(getActivity(), "location=" + location, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         this.refreshNumAdapter();
         ;
