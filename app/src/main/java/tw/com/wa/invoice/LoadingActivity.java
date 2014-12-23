@@ -1,7 +1,9 @@
 package tw.com.wa.invoice;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import java.util.List;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
+import tw.com.wa.invoice.util.DbHelper;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -64,22 +67,43 @@ public class LoadingActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
+
+
             try {
-                BeanUtil.map.clear();
+                List<InvoiceInfoV2> releaseInfos =
+                        BeanUtil.getInvoiceInfByLocal();
+                List<Invoice> releaseInvoice = BeanUtil.getInvoicesByLocal();
+
+
+                for (InvoiceInfoV2 info : releaseInfos) {
+                    info.unpin();
+                }
+                for (Invoice info : releaseInvoice) {
+                    info.unpin();
+                }
 
 
                 for (InvoiceInfoV2 info : getInvoiceInf()) {
 
+
+                    info.pinInBackground();
+
                     List<Invoice> invoices = getInvoices(info.getTitle());
 
+
+                    for (Invoice invoice : invoices) {
+                        invoice.pinInBackground();
+                    }
                     info.getInvoice().addAll(invoices);
 
-                    BeanUtil.map.put(info.getTitle(), info);
 
                 }
 
+
             } catch (Exception e) {
                 return "取得得獎發票錯誤，請確定網路正常再嘗試看看";
+            } finally {
+
             }
 
 
@@ -100,9 +124,30 @@ public class LoadingActivity extends Activity {
             } else {
 
 
-                Intent it = new Intent(LoadingActivity.this, MainActivity.class);
-                startActivity(it);
-                finish();
+                AnimationSet animationset = new AnimationSet(true);
+                animationset.addAnimation(AnimationUtils.loadAnimation(LoadingActivity.this, android.R.anim.slide_out_right));
+                statuLabel.startAnimation(animationset);
+                animationset.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        statuLabel.setVisibility(View.INVISIBLE);
+                        Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                        startActivity(it);
+                        finish();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+
                 ;
             }
 
@@ -117,6 +162,8 @@ public class LoadingActivity extends Activity {
 
         ParseObject.registerSubclass(Invoice.class);
         ParseObject.registerSubclass(InvoiceInfoV2.class);
+
+        Parse.enableLocalDatastore(this);//本地存資料
         Parse.initialize(this, "hgne1bjc7IaI7ZmpBN7dobThoeVzGy6RirURDo44", "K9Qum9KClGT789nE2fkleYqXa294NVO9I12cHxQI");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 

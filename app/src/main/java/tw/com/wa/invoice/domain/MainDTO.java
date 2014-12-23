@@ -11,7 +11,17 @@ public class MainDTO {
 
 
     private List<Invoice> invoices = null;
-    private List<InvoiceKeyIn> keyIns = new ArrayList<>();
+    //private List<InvoiceKeyIn> keyIns = new ArrayList<>();
+    private InvoiceInfoV2 invoiceInfoV2;
+
+
+    public InvoiceInfoV2 getInvoiceInfoV2() {
+        return invoiceInfoV2;
+    }
+
+    public void setInvoiceInfoV2(InvoiceInfoV2 invoiceInfoV2) {
+        this.invoiceInfoV2 = invoiceInfoV2;
+    }
 
     public String getNumber() {
         return number;
@@ -30,11 +40,11 @@ public class MainDTO {
     }
 
 
-    public List<InvoiceKeyIn> getKeyIns() {
-        return keyIns;
-    }
-
-    public void setKeyIns(List<InvoiceKeyIn> keyIns) {
-        this.keyIns = keyIns;
-    }
+//    public List<InvoiceKeyIn> getKeyIns() {
+//        return keyIns;
+//    }
+//
+//    public void setKeyIns(List<InvoiceKeyIn> keyIns) {
+//        this.keyIns = keyIns;
+//    }
 }

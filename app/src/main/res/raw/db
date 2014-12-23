@@ -1,0 +1,8 @@
+CREATE TABLE `Invoice` (
+	`awards`	TEXT,
+	`number`	TEXT,
+	`specialize`	TEXT
+);
+CREATE TABLE `InvoiceInfo` (
+	`title`	TEXT
+);

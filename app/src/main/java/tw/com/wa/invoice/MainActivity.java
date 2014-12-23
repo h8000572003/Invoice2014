@@ -37,7 +37,6 @@ import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.util.CommomUtil;
 
 
-
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
 
@@ -64,11 +63,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private RecyclerView.LayoutManager mLayoutManager;
 
+    Map<String, InvoiceInfoV2> map = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.dto = new MainDTO();
+
+        map = BeanUtil.getMap();
 
 
         if (this.isTechDiaglogFlag()) {
@@ -152,7 +155,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void setInvoiceDataAdapter() {
         items = new ArrayList<>();
 
-        for (Map.Entry<String, InvoiceInfoV2> entry : BeanUtil.map.entrySet()) {
+        for (Map.Entry<String, InvoiceInfoV2> entry : map.entrySet()) {
             items.add(entry.getKey());
         }
         BaseAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
@@ -165,10 +168,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
                 InvoiceInfoV2 info =
-                        BeanUtil.map.get(items.get(position));
+                        map.get(items.get(position));
 
                 dto.setInvoices(info.getInvoice());
-
+                dto.setInvoiceInfoV2(info);
 
                 List<OrderObject> rrderObjects = new ArrayList<OrderObject>();
 
@@ -245,7 +248,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Intent it = new Intent(this, RecordActivityV2.class);
 
 
-            BeanUtil.allInvoices = dto.getKeyIns();
+            // BeanUtil.allInvoices = dto.getKeyIns();
             startActivity(it);
 
 
@@ -281,6 +284,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         final CheckStatus checkStatus =
                 commomUtil.checkAward3Number(dto.getNumber(), dto.getInvoices());
 
+        keyIn = new InvoiceKeyIn(dto.getNumber());
+
         switch (checkStatus) {
 
 
@@ -291,7 +296,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 this.messageLabel.setText("沒得獎，換一張");
 //                detialDialog();
 
-                BeanUtil.allInvoices.add(new InvoiceKeyIn(dto.getNumber()));
 
                 dto.setNumber("");
 
@@ -356,7 +360,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        addAward(Award.Sixth, dto.getNumber());
+                        keyIn.setAward(Award.Fifth.Sixth);
+                        BeanUtil.allInvoices.add(keyIn);
+
 
                     }
                 });
@@ -377,20 +383,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        Intent it = new Intent(this, AwardActivity.class);
-        startActivity(it);
+
+
+        if (!BeanUtil.allInvoices.isEmpty()) {
+
+            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+            myAlertDialog.setTitle(getString(R.string.app_name));
+            myAlertDialog.setMessage("有中獎發票，是否將在行事曆加入領獎日期");
+            myAlertDialog.setNegativeButton("好", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent it = new Intent(MainActivity.this, AwardActivity.class);
+                    BeanUtil.infoV2 = dto.getInvoiceInfoV2();
+                    startActivity(it);
+                }
+            });
+            myAlertDialog.setPositiveButton("不用", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    MainActivity.
+                            super.onBackPressed();
+
+                }
+            });
+            myAlertDialog.show();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 
-    private void addAward(Award award, String number) {
-
-        InvoiceKeyIn keyIn = new InvoiceKeyIn(number);
-        keyIn.setAward(award);
-
-        dto.getKeyIns().add(keyIn);
-
-
-    }
 
     private void detialDialog() {
         final AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(MainActivity.this);
@@ -455,7 +477,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             text.setText(number);
 
-
+            keyIn = new InvoiceKeyIn(number);
             if (number.length() == 8) {
                 CommomUtil commomUtil = new CommomUtil();
 
@@ -470,7 +492,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 if (award != null) {
 
-                    addAward(award, dto.getNumber());
+
+                    keyIn.setAward(award);
+                    BeanUtil.allInvoices.add(keyIn);
 
 
                     myAlertDialog.setMessage("中" + award.message);

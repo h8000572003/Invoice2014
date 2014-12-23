@@ -4,6 +4,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +19,9 @@ public class InvoiceInfoV2 extends ParseObject {
 //    private String info = "";
 //    private String title = "";
 //    private boolean isCheck;
+
+//    private Date dateOfBegin;
+//    private Date dateOfEnd;
 
     public List<Invoice> getInvoice() {
         return invoice;
@@ -53,6 +57,26 @@ public class InvoiceInfoV2 extends ParseObject {
 
     public void setCheck(boolean isCheck) {
         put("isCheck", isCheck);
+
+    }
+
+    public Date getDateOfBegin() {
+
+        return getDate("dateOfBegin");
+    }
+
+    public void setDateOfBegin(Date dateOfBegin) {
+        this.put("dateOfBegin", dateOfBegin);
+
+    }
+
+    public Date getDateOfEnd() {
+
+        return getDate("dateOfEnd");
+    }
+
+    public void setDateOfEnd(Date dateOfEnd) {
+        this.put("dateOfEnd", dateOfEnd);
 
     }
 }
