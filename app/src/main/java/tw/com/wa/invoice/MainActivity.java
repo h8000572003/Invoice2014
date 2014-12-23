@@ -84,6 +84,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             diaglogOfTech.setMessage(R.string.teachContent);
             diaglogOfTech.setNegativeButton("知道", null);
             diaglogOfTech.show();
+
+            SharedPreferences sp =
+                    getSharedPreferences(Setting, Context.MODE_PRIVATE);
+            int nowTime = sp.getInt("isFirstTimeCount", 0);
+            sp.edit().putInt("isFirstTimeCount", ++nowTime).commit();
         }
 
 
@@ -98,7 +103,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 getSharedPreferences(Setting, Context.MODE_PRIVATE);
 
 
-        return sp.getBoolean("isFirstTime", true);
+        return sp.getInt("isFirstTimeCount", 0) < 5;
     }
 
     /**
@@ -267,16 +272,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             return true;
         }
-        if (id == R.id.action_recActivity) {
-            Intent it = new Intent(this, RecordActivityV2.class);
-
-
-            // BeanUtil.allInvoices = dto.getKeyIns();
-            startActivity(it);
-
-
-            return true;
-        }
+//        if (id == R.id.action_recActivity) {
+//            Intent it = new Intent(this, RecordActivityV2.class);
+//
+//
+//            // BeanUtil.allInvoices = dto.getKeyIns();
+//            startActivity(it);
+//
+//
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -374,21 +379,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
             case Get:
-                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+//                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+//
+//                myAlertDialog.setTitle(getString(R.string.app_name));
+//
+//                myAlertDialog.setMessage("中六獎");
+//                myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//
+//
+//                    }
+//                });
 
-                myAlertDialog.setTitle(getString(R.string.app_name));
-
-                myAlertDialog.setMessage("中六獎");
-                myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        keyIn.setAward(Award.Fifth.Sixth);
-                        BeanUtil.allInvoices.add(keyIn);
-
-
-                    }
-                });
+                keyIn.setAward(Award.Fifth.Sixth);
+                BeanUtil.allInvoices.add(keyIn);
 
 
                 if (addCalendarBtn.getVisibility() == View.GONE) {
@@ -399,7 +405,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
                 }
-                myAlertDialog.show();
+
+//                myAlertDialog.show();
 
 
                 invoviceLabel.setText("");
