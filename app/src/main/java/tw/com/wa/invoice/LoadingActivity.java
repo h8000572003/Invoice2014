@@ -2,9 +2,12 @@ package tw.com.wa.invoice;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,6 +65,15 @@ public class LoadingActivity extends Activity {
         protected String doInBackground(String... params) {
 
 
+            ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
+
+            NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
+
+            if (networInfo == null || !networInfo.isAvailable()) { //判斷是否有網路
+                return "尚未連接網路，請連接網路在測試一次";
+            }
+
+
             try {
                 List<InvoiceInfoV2> releaseInfos =
                         BeanUtil.getInvoiceInfByLocal();
@@ -111,13 +123,10 @@ public class LoadingActivity extends Activity {
             task = null;
 
             if (s != null) {
-                statuLabel.setText("資料取得錯誤，下拉重新刷新");
+                statuLabel.setText(s);
                 statuLabel.setTextColor(Color.RED);
 
             } else {
-
-
-
 
 
                 statuLabel.setVisibility(View.INVISIBLE);
@@ -135,8 +144,6 @@ public class LoadingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_layout);
-
-
 
 
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);

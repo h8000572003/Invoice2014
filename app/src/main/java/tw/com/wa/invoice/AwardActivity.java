@@ -15,4 +15,10 @@ public class AwardActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.award_layout);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.finish();;
+    }
 }
