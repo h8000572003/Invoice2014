@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -70,6 +71,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private Map<String, InvoiceInfoV2> map = null;
 
+    private Vibrator myVibrator = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +99,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.setViewById();
         this.setActionListener();
         this.setInvoiceDataAdapter();
+
+        myVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
     }
 
@@ -172,7 +177,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 AnimationSet animationset = new AnimationSet(true);
                 animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
                 addCalendarBtn.startAnimation(animationset);
-                addCalendarBtn.setText(getString(R.string.addCalendarBtn,BeanUtil.allInvoices.size()));
+                addCalendarBtn.setText(getString(R.string.addCalendarBtn, BeanUtil.allInvoices.size()));
             }
 
 
@@ -264,7 +269,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_helper) {
             AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
 
             myAlertDialog.setTitle(R.string.teachTitle);
@@ -275,8 +280,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             return true;
         }
-//        if (id == R.id.action_recActivity) {
-//            Intent it = new Intent(this, RecordActivityV2.class);
+//        if (id == R.id.action_settings) {
+//            Intent it = new Intent(this, SettingsActivity.class);
 //
 //
 //            // BeanUtil.allInvoices = dto.getKeyIns();
@@ -285,6 +290,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //            return true;
 //        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -330,6 +336,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 dto.setNumber("");
 
+                myVibrator.vibrate(50);
                 break;
 
 
@@ -395,11 +402,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //                    }
 //                });
-
+                myVibrator.vibrate(200);
                 keyIn.setAward(Award.Fifth.Sixth);
                 BeanUtil.allInvoices.add(keyIn);
 
-                addCalendarBtn.setText(getString(R.string.addCalendarBtn,BeanUtil.allInvoices.size()));
+                addCalendarBtn.setText(getString(R.string.addCalendarBtn, BeanUtil.allInvoices.size()));
 
 
                 if (addCalendarBtn.getVisibility() == View.GONE) {
@@ -414,11 +421,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     AnimationSet animationset = new AnimationSet(true);
 
-                    Animation animation=new ScaleAnimation(0, 0, 0, 20);
+                    Animation animation = new ScaleAnimation(0, 0, 0, 20);
                     animation.setDuration(100);
                     animation.setRepeatCount(3);
 
-                    Animation translateAnimation=new TranslateAnimation(0, 0, 0, 20);
+                    Animation translateAnimation = new TranslateAnimation(0, 0, 0, 20);
                     translateAnimation.setDuration(100);
                     animationset.addAnimation(translateAnimation);
 
@@ -538,11 +545,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                         AnimationSet animationset = new AnimationSet(true);
 
-                        Animation animation=new ScaleAnimation(0, 0, 0, 20);
+                        Animation animation = new ScaleAnimation(0, 0, 0, 20);
                         animation.setDuration(100);
                         animation.setRepeatCount(3);
 
-                        Animation translateAnimation=new TranslateAnimation(0, 0, 0, 20);
+                        Animation translateAnimation = new TranslateAnimation(0, 0, 0, 20);
                         translateAnimation.setDuration(100);
                         animationset.addAnimation(translateAnimation);
 
@@ -550,13 +557,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                         addCalendarBtn.startAnimation(animationset);
                     }
-                    addCalendarBtn.setText(getString(R.string.addCalendarBtn,BeanUtil.allInvoices.size()));
+                    addCalendarBtn.setText(getString(R.string.addCalendarBtn, BeanUtil.allInvoices.size()));
 
 
                     myAlertDialog.setMessage("中" + award.message);
                 } else {
                     myAlertDialog.setMessage(" 沒有中獎下次再加油");
                 }
+
 
                 myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
                     @Override
