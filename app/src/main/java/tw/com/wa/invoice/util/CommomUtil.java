@@ -133,35 +133,34 @@ public class CommomUtil {
     public Award checkAward(String number, List<Invoice> invoices) throws RuntimeException {
 
 
-        CheckStatus checkStatus = CheckStatus.None;
+
         for (Invoice invoice : invoices) {
-            checkStatus = CheckStatus.None;
+            CheckStatus  checkStatus = CheckStatus.None;
 
-
+            Log.d(TAG, "number=" + invoice.getNumber());
             if (invoice.isSpecialize()) {//
-
+                Log.d(TAG, "isSpecialize");
                 if (invoice.getNumber().equals(number)) {
                     return this.from(invoice, invoice.getNumber().length());
                 }
 
-
             } else {//原本的
-                for (int i = 3; i < invoice.getNumber().length(); i++) {
+                Log.d(TAG, "isNotSpecialize");
+                for (int i = 3; i <= invoice.getNumber().length(); i++) {
                     if (this.matchLastChar(invoice, number, i)) {
+                        Log.d(TAG, "match..." + i);
                         checkStatus = CheckStatus.Continue;
                     } else {
                         if (checkStatus == CheckStatus.Continue) {
                             return this.from(invoice, i - 1);
                         }
                         break;
-
                     }
-
-
+                }
+                if (checkStatus == CheckStatus.Continue) {
+                    return this.from(invoice, invoice.getNumber().length());
                 }
             }
-
-
         }
 
         return null;
@@ -180,10 +179,7 @@ public class CommomUtil {
                     if (invoice.getAwards().substring(0, 1).startsWith(a.unCode.substring(0, 1))) {
                         return a;
                     }
-
                 }
-
-
             }
 
         }

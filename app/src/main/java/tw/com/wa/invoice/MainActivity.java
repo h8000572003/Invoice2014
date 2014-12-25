@@ -44,9 +44,10 @@ import tw.com.wa.invoice.util.CommomUtil;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
+    private final static int GO_SEE_INVOICE_CODE = 001;
+    private final static String Setting = "Setting";
 
     private Spinner spinner = null;
-
     private TextView invoviceLabel = null;
     private TextView invoiceContent = null;
     private TextView messageLabel = null;
@@ -54,24 +55,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private Button addCalendarBtn;
 
     private MainDTO dto;
-
-    private String Setting = "Setting";
-
-
-    private CommomUtil commomUtil = new CommomUtil();
-
+    private Map<String, InvoiceInfoV2> map = null;
     private List<String> items = null;
-
     private InvoiceKeyIn keyIn = null;
 
-    // private RecyclerView recyclerView = null;
-    private final static int GO_SEE_INVOICE_CODE = 001;
-
-
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    private Map<String, InvoiceInfoV2> map = null;
-
+    private CommomUtil commomUtil = new CommomUtil();
     private Vibrator myVibrator = null;
 
     @Override
@@ -127,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * SET VIEW OBJECT BY ID
      */
     private void setViewById() {
-        //    this.recyclerView = (RecyclerView) this.findViewById(R.id.my_recycler_view);
+
         this.spinner = (Spinner) this.findViewById(R.id.monthSpinner);
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
@@ -359,7 +347,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 final AlertDialog dialog1 = builder.create();
 
 
-                final TouchKey keyAction = new TouchKey(textView, dialog1);
+                final DialogTouchClickListener keyAction = new DialogTouchClickListener(textView, dialog1);
 
                 dialog.findViewById(R.id.button).setOnClickListener(keyAction);
                 dialog.findViewById(R.id.btn1).setOnClickListener(keyAction);
@@ -438,40 +426,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-    private void detialDialog() {
-        final AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(MainActivity.this);
-
-
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.message_layout, this.content, false);
-
-        TextView nuberView = (TextView) dialogView.findViewById(R.id.nuberView);
-        myAlertDialog.setView(dialogView);
-
-
-        if (dto.getNumber().length() == 3) {
-
-            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" + "？？？？？%s", dto.getNumber()));
-            ;
-        } else if (dto.getNumber().length() == 2) {
-            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" + "？？？？%s？", dto.getNumber()));
-        } else {
-            nuberView.setText(String.format(getString(R.string.notWinning) + "\n" + "？？？？？%s？？", dto.getNumber()));
-        }
-
-
-        final AlertDialog dialog =
-                myAlertDialog.show();
-        dialogView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-
-            }
-        });
-
-
-    }
-
     @Override
     public void onClick(View v) {
         this.clickValue(v);
@@ -482,14 +436,75 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         private Award award;
     }
 
-    private class TouchKey implements View.OnClickListener {
+    private class DialogTouchClickListener implements View.OnClickListener {
         private String number = "";
         private TextView text = null;
         private AlertDialog dialog1;
 
-        private TouchKey(TextView text, AlertDialog dialog1) {
+        private DialogTouchClickListener(TextView text, AlertDialog dialog1) {
             this.text = text;
             this.dialog1 = dialog1;
+        }
+
+        private void doCheck() {
+            CommomUtil commomUtil = new CommomUtil();
+
+
+            Award award =
+                    commomUtil.checkAward(number, dto.getInvoices());
+
+
+            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(MainActivity.this);
+
+            myAlertDialog.setTitle(getString(R.string.app_name));
+
+            if (award != null) {
+
+
+                keyIn.setAward(award);
+                BeanUtil.allInvoices.add(keyIn);
+
+
+                if (addCalendarBtn.getVisibility() == View.GONE) {
+                    addCalendarBtn.setVisibility(View.VISIBLE);
+                    AnimationSet animationset = new AnimationSet(true);
+                    animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.slide_in_left));
+                    addCalendarBtn.startAnimation(animationset);
+
+
+                } else {
+
+
+                    AnimationSet animationset = new AnimationSet(true);
+
+                    Animation animation = new ScaleAnimation(0, 0, 0, 20);
+                    animation.setDuration(100);
+                    animation.setRepeatCount(3);
+
+                    Animation translateAnimation = new TranslateAnimation(0, 0, 0, 20);
+                    translateAnimation.setDuration(100);
+                    animationset.addAnimation(translateAnimation);
+
+                    animationset.setRepeatCount(3);
+
+                    addCalendarBtn.startAnimation(animationset);
+                }
+                addCalendarBtn.setText(getString(R.string.addCalendarBtn, BeanUtil.allInvoices.size()));
+
+
+                myAlertDialog.setMessage("中" + award.message);
+            } else {
+                myAlertDialog.setMessage(" 沒有中獎下次再加油");
+            }
+
+
+            myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog1.dismiss();
+                }
+            });
+            myAlertDialog.show();
         }
 
         @Override
@@ -502,65 +517,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             text.setText(number);
 
             keyIn = new InvoiceKeyIn(number);
+
             if (number.length() == 8) {
-                CommomUtil commomUtil = new CommomUtil();
 
-
-                Award award =
-                        commomUtil.checkAward(number, dto.getInvoices());
-
-
-                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(MainActivity.this);
-
-                myAlertDialog.setTitle(getString(R.string.app_name));
-
-                if (award != null) {
-
-
-                    keyIn.setAward(award);
-                    BeanUtil.allInvoices.add(keyIn);
-
-
-                    if (addCalendarBtn.getVisibility() == View.GONE) {
-                        addCalendarBtn.setVisibility(View.VISIBLE);
-                        AnimationSet animationset = new AnimationSet(true);
-                        animationset.addAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.slide_in_left));
-                        addCalendarBtn.startAnimation(animationset);
-
-
-                    } else {
-
-
-                        AnimationSet animationset = new AnimationSet(true);
-
-                        Animation animation = new ScaleAnimation(0, 0, 0, 20);
-                        animation.setDuration(100);
-                        animation.setRepeatCount(3);
-
-                        Animation translateAnimation = new TranslateAnimation(0, 0, 0, 20);
-                        translateAnimation.setDuration(100);
-                        animationset.addAnimation(translateAnimation);
-
-                        animationset.setRepeatCount(3);
-
-                        addCalendarBtn.startAnimation(animationset);
-                    }
-                    addCalendarBtn.setText(getString(R.string.addCalendarBtn, BeanUtil.allInvoices.size()));
-
-
-                    myAlertDialog.setMessage("中" + award.message);
-                } else {
-                    myAlertDialog.setMessage(" 沒有中獎下次再加油");
-                }
-
-
-                myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog1.dismiss();
-                    }
-                });
-                myAlertDialog.show();
+                this.doCheck();
 
 
                 number = "";

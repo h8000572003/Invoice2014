@@ -10,8 +10,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.parse.codec.binary.StringUtils;
-
 import java.util.List;
 
 import tw.com.wa.invoice.R;
@@ -67,7 +65,9 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
 
 
         viewHolder.contentView.setText(this.leftPandSignal("□", distinct, mainNumber.getKeyNumber()));
-        viewHolder.moneyView.setText("$" + mainNumber.getAward().dollar);
+        viewHolder.moneyView.setText(String.format("+$%,d", mainNumber.getAward().dollar));
+
+
         viewHolder.keyTime.setText(mainNumber.getKeyInTime());
         viewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
