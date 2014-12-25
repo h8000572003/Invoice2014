@@ -1,30 +1,20 @@
 package tw.com.wa.invoice;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.internal.widget.AdapterViewCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.TranslateAnimation;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +41,7 @@ public class PlaceholderFragment extends Fragment {
     private SwipeRefreshLayout laySwipe;
     private RecyclerView.LayoutManager mLayoutManager;
     private ViewGroup containerView = null;
-    private int orgHeight = 0;
+
 
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -82,13 +72,10 @@ public class PlaceholderFragment extends Fragment {
     public static PlaceholderFragment newInstance(int sectionNumber, List<InvoiceKeyIn> keyIns) {
 
         final PlaceholderFragment fragment = new PlaceholderFragment();
-        {
-
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            fragment.keyIns = keyIns;
-        }
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        fragment.keyIns = keyIns;
 
 
         return fragment;
@@ -107,58 +94,23 @@ public class PlaceholderFragment extends Fragment {
 
 
         this.containerView = (ViewGroup) rootView.findViewById(R.id.bottombar);
-        {
-            this.orgHeight = this.containerView.getHeight();
-
-        }
-
-
         this.recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
-        {
-            this.mLayoutManager = new LinearLayoutManager(getActivity());
-            this.recyclerView.setLayoutManager(mLayoutManager);
-            this.recyclerView.setItemAnimator(new DefaultItemAnimator());
-            this.recyclerView.setOnScrollListener(
-                    new RecyclerView.OnScrollListener() {
-
-                        @Override
-                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                            super.onScrollStateChanged(recyclerView, newState);
-                        }
-
-                        @Override
-                        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-                            if (isLookUp(dy)) {
-                                if (containerView.getHeight() >= orgHeight) {
-
-                                }
-                            } else {
-
-                            }
-
-                            int lastVisibleItem = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
-                            if (lastVisibleItem == 0) {
-                                laySwipe.setEnabled(true);
-                            } else {
-                                laySwipe.setEnabled(false);
-                            }
-                        }
-                    }
-            );
-
-        }
-
-
         this.laySwipe = (SwipeRefreshLayout) rootView.findViewById(R.id.laySwipe);
-        {
-            this.laySwipe.setColorSchemeResources(
-                    android.R.color.holo_red_light,
-                    android.R.color.holo_blue_light,
-                    android.R.color.holo_green_light,
-                    android.R.color.holo_orange_light);
-            this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
-        }
+
+        this.mLayoutManager = new LinearLayoutManager(getActivity());
+        this.recyclerView.setLayoutManager(mLayoutManager);
+        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
+        this.laySwipe.setEnabled(false);
+        this.laySwipe.setColorSchemeResources(//
+                android.R.color.holo_red_light,//
+                android.R.color.holo_blue_light,//
+                android.R.color.holo_green_light,//
+                android.R.color.holo_orange_light);//
+
+
         //insert  Calendar
         rootView.findViewById(R.id.ccalendarBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,25 +128,23 @@ public class PlaceholderFragment extends Fragment {
                 calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis());
                 calendarIntent.putExtra(CalendarContract.Events.TITLE, "發票獎金");
 
-                Map<Award, Integer> map = new HashMap<Award, Integer>();
+                //取得獎項與數量之關係
+                final Map<Award, Integer> map = new HashMap<Award, Integer>();
 
                 for (InvoiceKeyIn keyIn : keyIns) {
-                    if (keyIn.getAward() == null) {
-                        continue;
-
+                    if (!keyIn.isAwardFlag()) {
+                        continue;//沒有得獎的跳過
                     }
                     Integer no = map.get(keyIn.getAward());
-
                     if (no == null) {
                         map.put(keyIn.getAward(), new Integer(1));
                     } else {
                         map.put(keyIn.getAward(), ++no);
                     }
 
-
                 }
 
-                StringBuffer message = new StringBuffer();
+                final StringBuffer message = new StringBuffer();
                 int totalMoney = 0;
 
                 for (Map.Entry<Award, Integer> pMap : map.entrySet()) {

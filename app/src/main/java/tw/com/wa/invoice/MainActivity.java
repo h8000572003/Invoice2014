@@ -280,16 +280,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             return true;
         }
-//        if (id == R.id.action_settings) {
-//            Intent it = new Intent(this, SettingsActivity.class);
-//
-//
-//            // BeanUtil.allInvoices = dto.getKeyIns();
-//            startActivity(it);
-//
-//
-//            return true;
-//        }
 
 
         return super.onOptionsItemSelected(item);
@@ -336,7 +326,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 dto.setNumber("");
 
-                myVibrator.vibrate(50);
                 break;
 
 
