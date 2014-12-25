@@ -22,6 +22,15 @@
             android:layout_gravity="center"
             android:scrollbars="vertical" />
 
+        <TextView
+            android:id="@+id/blankView"
+            style="@style/Base.TextAppearance.AppCompat.Display1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/now_win"
+            android:visibility="gone" />
+
         <include
             android:id="@+id/bottombar"
             layout="@layout/bottom_view"

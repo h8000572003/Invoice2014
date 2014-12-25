@@ -1,6 +1,8 @@
 package tw.com.wa.invoice;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +15,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -41,6 +48,8 @@ public class PlaceholderFragment extends Fragment {
     private SwipeRefreshLayout laySwipe;
     private RecyclerView.LayoutManager mLayoutManager;
     private ViewGroup containerView = null;
+    private Button ccalendarBtn = null;
+    private TextView blankView = null;
 
 
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,10 +105,11 @@ public class PlaceholderFragment extends Fragment {
         this.containerView = (ViewGroup) rootView.findViewById(R.id.bottombar);
         this.recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         this.laySwipe = (SwipeRefreshLayout) rootView.findViewById(R.id.laySwipe);
+        this.ccalendarBtn = (Button) rootView.findViewById(R.id.ccalendarBtn);
+        this.blankView = (TextView) rootView.findViewById(R.id.blankView);
 
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
-        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
         this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
@@ -110,9 +120,13 @@ public class PlaceholderFragment extends Fragment {
                 android.R.color.holo_green_light,//
                 android.R.color.holo_orange_light);//
 
+        AnimationSet animationset = new AnimationSet(true);
+        animationset.addAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
+        this.ccalendarBtn.startAnimation(animationset);
+
 
         //insert  Calendar
-        rootView.findViewById(R.id.ccalendarBtn).setOnClickListener(new View.OnClickListener() {
+        this.ccalendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -169,6 +183,7 @@ public class PlaceholderFragment extends Fragment {
         return rootView;
     }
 
+
     private boolean isLookUp(int dy) {
         return dy > 0;
     }
@@ -187,14 +202,63 @@ public class PlaceholderFragment extends Fragment {
         this.recyclerView.setAdapter(adapter);
         this.adapter.setOnItemClickListener(new NumberAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int location) {
+            public void onItemClick(View view, final int location) {
+
+                AlertDialog.Builder diaglogOfTech = new AlertDialog.Builder(getActivity());
+                diaglogOfTech.setTitle(R.string.teachTitle);
+                diaglogOfTech.setMessage(R.string.cleanInvoice);
+                diaglogOfTech.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        BeanUtil.allInvoices.remove(location);
+                        refreshNumAdapter();
+                        checkIsBlankInvoices();
+                        ;
+                    }
+                });
+                diaglogOfTech.setPositiveButton(R.string.cancer, null);
+                diaglogOfTech.show();
+
+                ;
                 //   Toast.makeText(getActivity(), "location=" + location, Toast.LENGTH_SHORT).show();
             }
         });
 
+
         this.refreshNumAdapter();
         ;
     }
+
+    private void checkIsBlankInvoices() {
+        if (BeanUtil.allInvoices.isEmpty()) {
+            AnimationSet animationset = new AnimationSet(true);
+            animationset.addAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_out_right));
+
+            animationset.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ccalendarBtn.setVisibility(View.GONE);
+                    blankView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            this.ccalendarBtn.startAnimation(animationset);
+
+
+        }
+
+    }
+
 
     private void refreshNumAdapter() {
         adapter.notifyDataSetChanged();

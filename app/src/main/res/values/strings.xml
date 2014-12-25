@@ -47,4 +47,8 @@
     <string name="addCalendarBtn">%d張中獎發票!</string>
     <string name="messageBoxHint">訊號說明</string>
     <string name="plsEnter">輸入．．．</string>
+    <string name="cleanInvoice">清除此發票輸入紀錄</string>
+    <string name="ok">好</string>
+    <string name="cancer">不用</string>
+    <string name="goMain">無中獎發票，返回首頁</string>
 </resources>

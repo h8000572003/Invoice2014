@@ -65,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private InvoiceKeyIn keyIn = null;
 
     // private RecyclerView recyclerView = null;
+    private final static int GO_SEE_INVOICE_CODE = 001;
 
 
     private RecyclerView.LayoutManager mLayoutManager;
@@ -72,6 +73,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private Map<String, InvoiceInfoV2> map = null;
 
     private Vibrator myVibrator = null;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GO_SEE_INVOICE_CODE) {
+            this.initView();
+        }
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,20 +135,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.content = (ViewGroup) this.findViewById(R.id.content);
         this.addCalendarBtn = (Button) this.findViewById(R.id.addCalendarBtn);
 
-        this.setViewParmeters();
-
 
     }
 
-    /**
-     * set view parmeter..
-     */
-    private void setViewParmeters() {
-
-//        this.mLayoutManager = new LinearLayoutManager(this);
-//        this.recyclerView.setLayoutManager(mLayoutManager);
-//        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
-    }
 
     /**
      * set action listner
@@ -168,9 +168,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, AwardActivity.class);
                 BeanUtil.infoV2 = dto.getInvoiceInfoV2();
+                startActivityForResult(it, GO_SEE_INVOICE_CODE);
                 startActivity(it);
             }
         });
+        this.initView();
+
+    }
+
+    private void initView() {
         if (!BeanUtil.allInvoices.isEmpty()) {
             if (addCalendarBtn.getVisibility() == View.GONE) {
                 addCalendarBtn.setVisibility(View.VISIBLE);
@@ -285,10 +291,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Clean 畫面輸入
+     *
+     * @param view
+     */
     public void cleanValue(View view) {
         this.dto.setNumber("");
         this.invoviceLabel.setText("");
-
+        this.messageLabel.setText("");
     }
 
     /**
@@ -302,10 +313,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         final TextView label = (TextView) view;
 
-        dto.setNumber(dto.getNumber() + label.getText());
+        this.dto.setNumber(dto.getNumber() + label.getText());
 
 
-        invoviceLabel.setText(dto.getNumber());
+        this.invoviceLabel.setText(dto.getNumber());
 
 
         final CheckStatus checkStatus =
@@ -321,11 +332,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 this.messageLabel.setVisibility(View.VISIBLE);
                 this.messageLabel.setText("沒得獎，換一張");
-//                detialDialog();
-
-
-                dto.setNumber("");
-
+                this.dto.setNumber("");
                 break;
 
 
@@ -378,19 +385,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
             case Get:
-//                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-//
-//                myAlertDialog.setTitle(getString(R.string.app_name));
-//
-//                myAlertDialog.setMessage("中六獎");
-//                myAlertDialog.setNegativeButton("知道", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//
-//
-//                    }
-//                });
+
                 myVibrator.vibrate(200);
                 keyIn.setAward(Award.Fifth.Sixth);
                 BeanUtil.allInvoices.add(keyIn);
