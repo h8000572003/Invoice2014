@@ -19,41 +19,83 @@
         android:orientation="vertical">
 
 
-        <TextView
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            android:id="@+id/titileView"
+            <TextView
+
+                android:id="@+id/titileView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/background_material_dark" />
+
+
+
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="title"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/background_material_dark" />
+            android:layout_height="wrap_content">
+
+
+            <TextView
+
+                android:id="@+id/contentView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="message"
+
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/background_material_dark" />
+
+            <TextView
+
+                android:id="@+id/moneyView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="$"
+                android:layout_alignParentRight="true"
+
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/material_red_300" />
+            </RelativeLayout>
+
 
         <TextView
 
-            android:id="@+id/contentView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="message"
+            android:layout_margin="5dp"
 
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/background_material_dark" />
+
+            android:background="@color/material_grey_600" />
 
         <TextView
 
+            android:id="@+id/keyTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
+
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:hint="$"
-
-            android:textColor="@color/material_green_500"
-            android:id="@+id/moneyView" />
-
+            android:textColor="@color/material_grey_600" />
 
     </LinearLayout>
 

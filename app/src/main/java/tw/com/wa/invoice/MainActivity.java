@@ -318,6 +318,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         this.invoviceLabel.setText(dto.getNumber());
 
+        if(dto.getNumber().length()<3){
+            return;
+        }
+
 
         final CheckStatus checkStatus =
                 commomUtil.checkAward3Number(dto.getNumber(), dto.getInvoices());
@@ -387,7 +391,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case Get:
 
                 myVibrator.vibrate(200);
-                keyIn.setAward(Award.Fifth.Sixth);
+                keyIn.setAward(Award.Exactsix);
                 BeanUtil.allInvoices.add(keyIn);
 
                 addCalendarBtn.setText(getString(R.string.addCalendarBtn, BeanUtil.allInvoices.size()));

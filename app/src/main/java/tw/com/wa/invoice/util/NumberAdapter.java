@@ -68,6 +68,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
 
         viewHolder.contentView.setText(this.leftPandSignal("□", distinct, mainNumber.getKeyNumber()));
         viewHolder.moneyView.setText("$" + mainNumber.getAward().dollar);
+        viewHolder.keyTime.setText(mainNumber.getKeyInTime());
         viewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +118,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
         private TextView titileView;
         private TextView contentView;
         private TextView moneyView;
+        private TextView keyTime;
         private CardView container;
 
 
@@ -126,6 +128,8 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
             this.contentView = (TextView) v.findViewById(R.id.contentView);
             this.container = (CardView) v.findViewById(R.id.container);
             this.moneyView = (TextView) v.findViewById(R.id.moneyView);
+            this.keyTime= (TextView) v.findViewById(R.id.keyTime);
+
 
 
         }

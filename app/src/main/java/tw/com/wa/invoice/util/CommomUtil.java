@@ -19,8 +19,6 @@ public class CommomUtil {
     static final int LAST_CHAR = 8;
 
 
-
-
 //    public CheckStatus checkAward(String number, String yyymmd) {
 //        final Invoice invoice = getDataCompent.checkNumber(yyymmd, number);
 //
@@ -153,7 +151,7 @@ public class CommomUtil {
                         checkStatus = CheckStatus.Continue;
                     } else {
                         if (checkStatus == CheckStatus.Continue) {
-                            return this.from(invoice, i-1);
+                            return this.from(invoice, i - 1);
                         }
                         break;
 
@@ -179,7 +177,10 @@ public class CommomUtil {
             for (Award a : Award.values()) {
 
                 if (a.checKLegth == numberOfMatch) {
-                    return a;
+                    if (invoice.getAwards().substring(0, 1).startsWith(a.unCode.substring(0, 1))) {
+                        return a;
+                    }
+
                 }
 
 

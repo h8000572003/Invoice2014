@@ -15,12 +15,10 @@
     <string name="eight">8</string>
     <string name="nine">9</string>
     <string name="teachTitle">操作說明</string>
-    <string name="teachContent">畫面鍵盤上面，請輸入發票後三碼，以方便快速對獎\n，
-    由於本程式為了提升對獎之速度\n，因此使用者可能不用輸入完，
-    完整三碼就已經知道沒有中獎\n，因此可以提升兌獎時間。\n舉例來說若是特獎為[12345678]
-    且增開之六獎為[111]，若使用者發票為[8888888]時，當時使用者輸入8時，將得知此發票不會中獎，
-    因此不需要輸入完後三碼發票就知道結果。
-</string>
+    <string name="teachContent">輸入後發票後三碼，
+        若有不只六獎中獎機會，將輸入8碼發票號碼，
+        已更精準的對獎。若是發票有中獎，將可以記錄於行事曆。
+    </string>
     <string name="pulldown2KeepCalendar">下拉將設定兌獎日期於日曆</string>
     <string name="lookInvoice">觀看目前中獎發票</string>
 
@@ -51,4 +49,5 @@
     <string name="ok">好</string>
     <string name="cancer">不用</string>
     <string name="goMain">無中獎發票，返回首頁</string>
+    <string name="no_award_message">無中獎發票</string>
 </resources>

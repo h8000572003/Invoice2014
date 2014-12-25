@@ -207,7 +207,7 @@ public class PlaceholderFragment extends Fragment {
                 AlertDialog.Builder diaglogOfTech = new AlertDialog.Builder(getActivity());
                 diaglogOfTech.setTitle(R.string.teachTitle);
                 diaglogOfTech.setMessage(R.string.cleanInvoice);
-                diaglogOfTech.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                diaglogOfTech.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -217,7 +217,7 @@ public class PlaceholderFragment extends Fragment {
                         ;
                     }
                 });
-                diaglogOfTech.setPositiveButton(R.string.cancer, null);
+                diaglogOfTech.setNegativeButton(R.string.cancer, null);
                 diaglogOfTech.show();
 
                 ;
