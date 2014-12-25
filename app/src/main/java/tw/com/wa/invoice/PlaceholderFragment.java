@@ -233,7 +233,7 @@ public class PlaceholderFragment extends Fragment {
     private void checkIsBlankInvoices() {
         if (BeanUtil.allInvoices.isEmpty()) {
             AnimationSet animationset = new AnimationSet(true);
-            animationset.addAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_out_right));
+            animationset.addAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_down));
 
             animationset.setAnimationListener(new Animation.AnimationListener() {
                 @Override

@@ -10,8 +10,8 @@
     <fragment
         android:id="@+id/fragment"
         android:name="tw.com.wa.invoice.PlaceholderFragment"
-        android:layout_width="372dp"
-        android:layout_height="548dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="left|top"
         tools:layout="@layout/number_layout" />
 </FrameLayout>

@@ -10,6 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.parse.codec.binary.StringUtils;
+
 import java.util.List;
 
 import tw.com.wa.invoice.R;
@@ -24,6 +26,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
     private List<InvoiceKeyIn> mainNumbers = null;
     private Context context;
     private OnItemClickListener listener;
+
 
     public NumberAdapter(List<InvoiceKeyIn> mainNumbers, Context context) {
         this.mainNumbers = mainNumbers;
@@ -59,7 +62,11 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
         mainNumber.setKeyNumber(mainNumber.getKeyNumber());
 
         viewHolder.titileView.setText(mainNumber.getTitle());
-        viewHolder.contentView.setText(mainNumber.getKeyNumber());
+
+        int distinct = 8 - mainNumber.getKeyNumber().length();
+
+
+        viewHolder.contentView.setText(this.leftPandSignal("□", distinct, mainNumber.getKeyNumber()));
         viewHolder.moneyView.setText("$" + mainNumber.getAward().dollar);
         viewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +82,15 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
 //            viewHolder.awardText.setText(mainNumber.getAward().message);
         //   viewHolder.numberText.setText(mainNumber.getCountOfInvoice());
         //          viewHolder.doorText.setText(mainNumber.sum() + "元");
+    }
+
+    private String leftPandSignal(String signal, int legth, String orgContent) {
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < legth; i++) {
+            buffer.append(signal);
+        }
+        return buffer.toString() + orgContent;
+
     }
 
     @Override

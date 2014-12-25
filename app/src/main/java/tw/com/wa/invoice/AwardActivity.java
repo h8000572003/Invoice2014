@@ -19,6 +19,6 @@ public class AwardActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        this.finish();;
+
     }
 }
