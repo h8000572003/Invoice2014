@@ -41,6 +41,8 @@ public class LoadingActivity extends Activity {
 
     private static final String TAG = "LoadingActivity";
 
+    private Activity activity=this;
+
     private TextView statuLabel;
 
     private LoadAsyncTask task = null;
@@ -128,11 +130,32 @@ public class LoadingActivity extends Activity {
 
             } else {
 
+                Animation animation = AnimationUtils.loadAnimation(activity, R.anim.scale);
+                statuLabel.startAnimation(animation);
 
-                statuLabel.setVisibility(View.INVISIBLE);
-                Intent it = new Intent(LoadingActivity.this, MainActivity.class);
-                startActivity(it);
-                finish();
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        statuLabel.setVisibility(View.INVISIBLE);
+                        Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                        startActivity(it);
+                        finish();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+
+
+
 
 
             }

@@ -40,6 +40,7 @@
     <string name="now_win">沒中獎</string>
 
     <string name="know">知道</string>
+    <string name="noReminder">不再提醒</string>
 
     <string name="addCalendar">加入行事曆</string>
     <string name="addCalendarBtn">%d張中獎發票!</string>

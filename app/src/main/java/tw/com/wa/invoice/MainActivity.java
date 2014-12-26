@@ -1,5 +1,6 @@
 package tw.com.wa.invoice;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,7 +25,9 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +49,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private final static int GO_SEE_INVOICE_CODE = 001;
     private final static String Setting = "Setting";
+    private String TEACH_DIALOG_VISIBLE_FLAG = "isVisibleFlag";
 
     private Spinner spinner = null;
     private TextView invoviceLabel = null;
@@ -53,6 +57,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private TextView messageLabel = null;
     private ViewGroup content = null;
     private Button addCalendarBtn;
+    private TableLayout keyboardLayout = null;
 
     private MainDTO dto;
     private Map<String, InvoiceInfoV2> map = null;
@@ -61,6 +66,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private CommomUtil commomUtil = new CommomUtil();
     private Vibrator myVibrator = null;
+
+    private Activity activity = this;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -86,12 +93,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             diaglogOfTech.setTitle(R.string.teachTitle);
             diaglogOfTech.setMessage(R.string.teachContent);
             diaglogOfTech.setNegativeButton("知道", null);
+            diaglogOfTech.setPositiveButton(R.string.noReminder, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    SharedPreferences sp =
+                            getSharedPreferences(Setting, Context.MODE_PRIVATE);
+                    sp.edit().putBoolean(TEACH_DIALOG_VISIBLE_FLAG, false).commit();
+
+                }
+            });
             diaglogOfTech.show();
 
-            SharedPreferences sp =
-                    getSharedPreferences(Setting, Context.MODE_PRIVATE);
-            int nowTime = sp.getInt("isFirstTimeCount", 0);
-            sp.edit().putInt("isFirstTimeCount", ++nowTime).commit();
+
         }
 
 
@@ -108,7 +122,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 getSharedPreferences(Setting, Context.MODE_PRIVATE);
 
 
-        return sp.getInt("isFirstTimeCount", 0) < 5;
+        return sp.getBoolean(TEACH_DIALOG_VISIBLE_FLAG, true);
     }
 
     /**
@@ -122,6 +136,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
         this.content = (ViewGroup) this.findViewById(R.id.content);
         this.addCalendarBtn = (Button) this.findViewById(R.id.addCalendarBtn);
+        this.keyboardLayout = (TableLayout) this.findViewById(R.id.keyboardLayout);
 
 
     }
@@ -183,7 +198,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * 設定對發票日期
      */
     private void setInvoiceDataAdapter() {
-        items = new ArrayList<>();
+        items = new ArrayList<String>();
 
         for (Map.Entry<String, InvoiceInfoV2> entry : map.entrySet()) {
             items.add(entry.getKey());
@@ -306,7 +321,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         this.invoviceLabel.setText(dto.getNumber());
 
-        if(dto.getNumber().length()<3){
+        if (dto.getNumber().length() < 3) {
             return;
         }
 
@@ -333,11 +348,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 this.messageLabel.setVisibility(View.VISIBLE);
                 this.messageLabel.setText("有中大獎的可能，請輸入完整發票號");
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-
-                View dialog = LayoutInflater.from(this).inflate(R.layout.dialog_layout, null);
+                View dialog = LayoutInflater.from(activity).inflate(R.layout.dialog_layout, null);
                 builder.setCancelable(false);
                 builder.setView(dialog);
 
@@ -345,7 +359,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
                 final AlertDialog dialog1 = builder.create();
+                dialog1.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Toast.makeText(activity, "dismiss..", Toast.LENGTH_SHORT).show();
 
+                        keyboardLayout.setVisibility(View.VISIBLE);
+                    }
+                });
+                dialog1.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        Toast.makeText(activity, "cancel..", Toast.LENGTH_SHORT).show();
+                        keyboardLayout.setVisibility(View.VISIBLE);
+                    }
+                });
 
                 final DialogTouchClickListener keyAction = new DialogTouchClickListener(textView, dialog1);
 
@@ -370,7 +398,33 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 });
                 dialog1.show();
 
-                dto.setNumber("");
+
+                Animation animation = AnimationUtils.loadAnimation(activity, android.R.anim.fade_out);
+
+
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        keyboardLayout.setVisibility(View.INVISIBLE);
+
+
+
+
+                        dto.setNumber("");
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                this.keyboardLayout.startAnimation(animation);
 
 
                 break;
@@ -396,10 +450,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
                     AnimationSet animationset = new AnimationSet(true);
-
-                    Animation animation = new ScaleAnimation(0, 0, 0, 20);
-                    animation.setDuration(100);
-                    animation.setRepeatCount(3);
 
                     Animation translateAnimation = new TranslateAnimation(0, 0, 0, 20);
                     translateAnimation.setDuration(100);
