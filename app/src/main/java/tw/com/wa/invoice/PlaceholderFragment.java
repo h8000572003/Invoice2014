@@ -209,6 +209,8 @@ public class PlaceholderFragment extends Fragment {
 
         this.adapter = new NumberAdapter(keyIns, getActivity());
         this.recyclerView.setAdapter(adapter);
+
+
         this.adapter.setOnItemClickListener(new NumberAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, final int location) {
@@ -230,7 +232,7 @@ public class PlaceholderFragment extends Fragment {
                 diaglogOfTech.show();
 
                 ;
-                //   Toast.makeText(getActivity(), "location=" + location, Toast.LENGTH_SHORT).show();
+
             }
         });
 
