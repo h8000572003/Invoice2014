@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Andy on 14/12/9.
  */
 public class MainDTO {
-    private String number = "";
+
 
 
     private List<Invoice> invoices = null;
@@ -23,13 +23,7 @@ public class MainDTO {
         this.invoiceInfoV2 = invoiceInfoV2;
     }
 
-    public String getNumber() {
-        return number;
-    }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
 
     public List<Invoice> getInvoices() {
         return invoices;

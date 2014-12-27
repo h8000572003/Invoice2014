@@ -2,6 +2,7 @@
 
 
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/laySwipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,34 +14,55 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/topLayout"
+        <LinearLayout
+            android:id="@+id/messageLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bottombar"
-            android:orientation="vertical"
-            android:padding="15dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_gravity="center"
-                android:scrollbars="vertical" />
 
             <TextView
-                android:id="@+id/blankView"
-                style="@style/Base.TextAppearance.AppCompat.Display1"
+                android:id="@+id/dateOfAwardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:ellipsize="marquee"
+                android:gravity="left|center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="11" />
+
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/topLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/no_award_message"
-                android:visibility="gone" />
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bottombar"
+                android:orientation="vertical"
+                android:padding="5dp">
 
 
-        </RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/my_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_gravity="center"
+                    android:scrollbars="vertical" />
+
+                <TextView
+                    android:id="@+id/blankView"
+                    style="@style/Base.TextAppearance.AppCompat.Display1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/no_award_message"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <include
             android:id="@+id/bottombar"

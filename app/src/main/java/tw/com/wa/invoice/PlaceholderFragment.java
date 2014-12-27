@@ -23,19 +23,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
+import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
+import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.NumberAdapter;
 
 /**
  * Created by Andy on 14/12/18.
  */
 public class PlaceholderFragment extends Fragment {
+
 
     /**
      * The fragment argument representing the section number for this
@@ -50,6 +54,7 @@ public class PlaceholderFragment extends Fragment {
     private ViewGroup containerView = null;
     private Button ccalendarBtn = null;
     private TextView blankView = null;
+    private TextView dateOfAwardView = null;
 
 
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
@@ -94,6 +99,12 @@ public class PlaceholderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+    }
+
+    private Date checkTheInvoiceIsOutOfDate(InvoiceInfoV2 invoiceInfo) throws RuntimeException {
+        return CommomUtil.getDateOfSanity(invoiceInfo);
+
     }
 
     @Override
@@ -107,9 +118,12 @@ public class PlaceholderFragment extends Fragment {
         this.laySwipe = (SwipeRefreshLayout) rootView.findViewById(R.id.laySwipe);
         this.ccalendarBtn = (Button) rootView.findViewById(R.id.ccalendarBtn);
         this.blankView = (TextView) rootView.findViewById(R.id.blankView);
+        this.dateOfAwardView = (TextView) rootView.findViewById(R.id.dateOfAwardView);
 
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
+
+        this.dateOfAwardView.setText(CommomUtil.getTitleDate(BeanUtil.infoV2, getActivity()));
 
 
         this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
@@ -123,75 +137,70 @@ public class PlaceholderFragment extends Fragment {
         AnimationSet animationset = new AnimationSet(true);
         animationset.addAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
         this.ccalendarBtn.startAnimation(animationset);
-
-
         //insert  Calendar
         this.ccalendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                Intent calendarIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
-                Calendar beginTime = Calendar.getInstance();
-                beginTime.setTime(BeanUtil.infoV2.getDateOfBegin());
-                Calendar endTime = Calendar.getInstance();
-                endTime.setTime(BeanUtil.infoV2.getDateOfEnd());
-
-
-                calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
-                calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis());
-                calendarIntent.putExtra(CalendarContract.Events.TITLE, "發票獎金");
-
-                //取得獎項與數量之關係
-                final Map<Award, Integer> map = new HashMap<Award, Integer>();
-
-                for (InvoiceKeyIn keyIn : keyIns) {
-                    if (!keyIn.isAwardFlag()) {
-                        continue;//沒有得獎的跳過
-                    }
-                    Integer no = map.get(keyIn.getAward());
-                    if (no == null) {
-                        map.put(keyIn.getAward(), new Integer(1));
-                    } else {
-                        map.put(keyIn.getAward(), ++no);
-                    }
-
-                }
-
-                final StringBuffer message = new StringBuffer();
-                int totalMoney = 0;
-
-                for (Map.Entry<Award, Integer> pMap : map.entrySet()) {
-                    message.append(pMap.getKey().message);
-                    message.append("-");
-                    message.append(pMap.getValue() + "張\n");
-
-                    totalMoney += pMap.getKey().dollar * pMap.getValue();
-                }
-                message.append("總金額-" + totalMoney + "元");
-
-
-                calendarIntent.putExtra(CalendarContract.Events.DESCRIPTION, message.toString());
+                Intent calendarIntent = buildCalendarIntent();
 
                 startActivity(calendarIntent);
             }
         });
-
-
         this.setInvoiceNumAdapter();
+
+
+        try {
+            CommomUtil.checkIsOverDateOfAward(BeanUtil.infoV2);
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            this.ccalendarBtn.setEnabled(false);
+        }
+
 
         return rootView;
     }
 
+    private Intent buildCalendarIntent() throws RuntimeException {
+        Intent calendarIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.setTime(checkTheInvoiceIsOutOfDate(BeanUtil.infoV2));
+        calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
+        calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis());
+        calendarIntent.putExtra(CalendarContract.Events.TITLE, "發票獎金");
 
-    private boolean isLookUp(int dy) {
-        return dy > 0;
-    }
+        //取得獎項與數量之關係
+        final Map<Award, Integer> map = new HashMap<Award, Integer>();
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+        for (InvoiceKeyIn keyIn : keyIns) {
 
+            Integer no = map.get(keyIn.getAward());
+            if (no == null) {
+                map.put(keyIn.getAward(), new Integer(1));
+            } else {
+                map.put(keyIn.getAward(), ++no);
+            }
+
+        }
+
+        final StringBuffer message = new StringBuffer();
+        int totalMoney = 0;
+
+        for (Map.Entry<Award, Integer> pMap : map.entrySet()) {
+            message.append(pMap.getKey().message);
+            message.append("-");
+            message.append(pMap.getValue() + "張\n");
+
+            totalMoney += pMap.getKey().dollar * pMap.getValue();
+        }
+        message.append("總金額-" + totalMoney + "元");
+
+
+        calendarIntent.putExtra(CalendarContract.Events.DESCRIPTION, message.toString());
+
+        return
+                calendarIntent;
     }
 
 

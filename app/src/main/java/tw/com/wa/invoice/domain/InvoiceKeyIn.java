@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class InvoiceKeyIn implements Serializable {
 
-    final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd  HH:mm:ss.SSS");
+    final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd  HH:mm:ss");
 
     private String keyNumber = "";
     private Award award = null;

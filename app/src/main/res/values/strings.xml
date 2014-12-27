@@ -51,4 +51,8 @@
     <string name="cancer">不用</string>
     <string name="goMain">無中獎發票，返回首頁</string>
     <string name="no_award_message">無中獎發票</string>
+    <string name="no_award_change">沒得獎，換一張</string>
+    <string name="haveOpportunity">有中大獎的可能，請輸入完整發票號</string>
+    <string name="dateOfAward">領獎日期</string>
+
 </resources>

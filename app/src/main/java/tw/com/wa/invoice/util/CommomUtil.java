@@ -1,19 +1,27 @@
 package tw.com.wa.invoice.util;
 
 
+import android.content.Context;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.Invoice;
+import tw.com.wa.invoice.domain.InvoiceInfoV2;
 
 /**
  * Created by Andy on 14/12/9.
  */
 public class CommomUtil {
 
+
+    static final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
     static final String TAG = "CommomUtil";
 
     static final int LAST_CHAR = 8;
@@ -114,6 +122,38 @@ public class CommomUtil {
     }
 
 
+    public static void checkIsOverDateOfAward(InvoiceInfoV2 invoiceInfo) throws RuntimeException {
+        Date nowDate = new Date();
+        if (nowDate.after(invoiceInfo.getDateOfEnd())) {
+            throw new RuntimeException("此期發票已經超過領獎時間");
+        }
+    }
+
+    /*
+    取得合理時間時間
+     */
+    public static Date getDateOfSanity(InvoiceInfoV2 invoiceInfo) throws RuntimeException {
+        checkIsOverDateOfAward(invoiceInfo);
+
+        Date nowDate = new Date();
+        if (nowDate.before(invoiceInfo.getDateOfBegin())) {//還不到領獎時間
+            return invoiceInfo.getDateOfBegin();
+        } else if (nowDate.before(invoiceInfo.getDateOfEnd())) {//再領獎日期截止之前
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(nowDate);
+
+            calendar.add(Calendar.HOUR, 2);
+
+            return calendar.getTime();
+
+        } else {//還在領獎日期裡面
+            return nowDate;
+        }
+
+
+    }
+
+
 //    中獎號碼
 //    特別獎	22267127
 //    同期統一發票收執聯8位數號碼與上列號碼相同者獎金1,000 萬元
@@ -133,9 +173,8 @@ public class CommomUtil {
     public Award checkAward(String number, List<Invoice> invoices) throws RuntimeException {
 
 
-
         for (Invoice invoice : invoices) {
-            CheckStatus  checkStatus = CheckStatus.None;
+            CheckStatus checkStatus = CheckStatus.None;
 
             Log.d(TAG, "number=" + invoice.getNumber());
             if (invoice.isSpecialize()) {//
@@ -186,4 +225,14 @@ public class CommomUtil {
         return null;
     }
 
+
+    public static String getTitleDate(InvoiceInfoV2 info, Context context) {
+        StringBuffer bur = new StringBuffer();
+        bur.append(context.getString(R.string.dateOfAward));
+        bur.append(":");
+        bur.append(sdFormat.format(info.getDateOfBegin()));
+        bur.append("-");
+        bur.append(sdFormat.format(info.getDateOfEnd()));
+        return bur.toString();
+    }
 }

@@ -64,7 +64,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
         int distinct = 8 - mainNumber.getKeyNumber().length();
 
 
-        viewHolder.contentView.setText(this.leftPandSignal("□", distinct, mainNumber.getKeyNumber()));
+        viewHolder.contentView.setText(this.leftPandSignal("●", distinct, mainNumber.getKeyNumber()));
         viewHolder.moneyView.setText(String.format("+$%,d", mainNumber.getAward().dollar));
 
 
