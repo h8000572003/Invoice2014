@@ -46,6 +46,7 @@ import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
 import tw.com.wa.invoice.domain.MainDTO;
+import tw.com.wa.invoice.ui.DialogUtil;
 import tw.com.wa.invoice.ui.KeyBoardLayout;
 import tw.com.wa.invoice.util.CommomUtil;
 
@@ -53,8 +54,7 @@ import tw.com.wa.invoice.util.CommomUtil;
 public class MainActivity extends ActionBarActivity {
 
     private final static int GO_SEE_INVOICE_CODE = 001;
-    private final static String Setting = "Setting";
-    private String TEACH_DIALOG_VISIBLE_FLAG = "isVisibleFlag";
+
 
     private Spinner spinner = null;
     private TextView invoviceLabel = null;
@@ -98,43 +98,30 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPreExecute() {
-
             this.loadProgress = ProgressDialog.show(activity, "", "", true, false);
-
-
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
 
+            setInvoiceDataAdapter();
+
             this.loadProgress.dismiss();
 
             if (isTechDiaglogFlag()) {
-                AlertDialog.Builder diaglogOfTech = new AlertDialog.Builder(activity);
-                diaglogOfTech.setTitle(R.string.teachTitle);
-                diaglogOfTech.setMessage(R.string.teachContent);
-                diaglogOfTech.setNegativeButton("知道", null);
-                diaglogOfTech.setPositiveButton(R.string.noReminder, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences sp =
-                                getSharedPreferences(Setting, Context.MODE_PRIVATE);
-                        sp.edit().putBoolean(TEACH_DIALOG_VISIBLE_FLAG, false).commit();
-                    }
-                });
-                diaglogOfTech.show();
-
+                DialogUtil.showTeching(activity);
 
             }
 
         }
+
 
         @Override
         protected Void doInBackground(Void... params) {
             this.map = BeanUtil.getMap();
             setViewById();
             setKeyBoardListener();
-            setInvoiceDataAdapter();
+
             return null;
         }
     }
@@ -156,10 +143,10 @@ public class MainActivity extends ActionBarActivity {
 
     private boolean isTechDiaglogFlag() {
         SharedPreferences sp =
-                getSharedPreferences(Setting, Context.MODE_PRIVATE);
+                getSharedPreferences(DialogUtil.Setting, Context.MODE_PRIVATE);
 
 
-        return sp.getBoolean(TEACH_DIALOG_VISIBLE_FLAG, true);
+        return sp.getBoolean(DialogUtil.TEACH_DIALOG_VISIBLE_FLAG, true);
     }
 
     /**
@@ -238,7 +225,7 @@ public class MainActivity extends ActionBarActivity {
 
         TextView showView = (TextView) dialogView.findViewById(R.id.numberText);
         KeyBoardLayout keyBoardLayout = (KeyBoardLayout) dialogView.findViewById(R.id.keyboardLayout);
-        keyBoardLayout.setChangeView(showView);
+        keyBoardLayout.setMonitorView(showView);
 
         final AlertDialog dialog = builder.create();
         dialog.show();
@@ -257,7 +244,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void work2Continue(String value) {
-        messageLabel.setText(R.string.haveOpportunity);
+
         showNumberDiaglog();
     }
 
@@ -294,7 +281,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
-        messageLabel.setText("中六獎");
+
 
     }
 
@@ -305,7 +292,7 @@ public class MainActivity extends ActionBarActivity {
     public void setKeyBoardListener() {
 
 
-        this.keyBoard.setChangeView(this.invoviceLabel);
+        this.keyBoard.setMonitorView(this.invoviceLabel);
         this.keyBoard.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override
             public void onChange(String value) {
@@ -313,6 +300,7 @@ public class MainActivity extends ActionBarActivity {
                 messageLabel.setText(getString(R.string.plsEnter));
 
                 if (value.length() == 3) {
+                    keyBoard.cleanValueWithoutUI();
 
                     final CheckStatus checkStatus =
                             commomUtil.checkAward3Number(value, dto.getInvoices());
@@ -323,14 +311,16 @@ public class MainActivity extends ActionBarActivity {
                             break;
 
                         case Continue:
+                            messageLabel.setText(R.string.haveOpportunity);
                             work2Continue(value);
                             break;
 
                         case Get:
+                            messageLabel.setText(getString(R.string.get6Award));
                             workForSixAward(value);
                             break;
                     }
-                    keyBoard.cleanValueWithoutUI();
+
                 }
             }
         });
@@ -410,6 +400,7 @@ public class MainActivity extends ActionBarActivity {
                 });
 
                 StringBuffer buffer = new StringBuffer();
+                buffer.append(CommomUtil.getTitleDate(info,activity)+"\n");
                 for (OrderObject a : rrderObjects) {
                     buffer.append(a.award.message);
                     buffer.append("\t:\t");

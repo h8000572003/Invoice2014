@@ -19,7 +19,7 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
     private String value = "";
     private OnValueChangeListener onValueChangeListener;
-    private TextView changeView;
+    private TextView monitorView;
 
 
     public interface OnValueChangeListener {
@@ -88,8 +88,8 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
         if (onValueChangeListener != null) {
             onValueChangeListener.onChange(value);
         }
-        if (changeView != null) {
-            changeView.setText(value);
+        if (getMonitorView() != null) {
+            getMonitorView().setText(value);
         }
 
     }
@@ -122,12 +122,12 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
         this.onValueChangeListener = onValueChangeListener;
     }
 
-    /**
-     * 顯示之資料
-     *
-     * @param changeView
-     */
-    public void setChangeView(TextView changeView) {
-        this.changeView = changeView;
+
+    public TextView getMonitorView() {
+        return monitorView;
+    }
+
+    public void setMonitorView(TextView monitorView) {
+        this.monitorView = monitorView;
     }
 }
