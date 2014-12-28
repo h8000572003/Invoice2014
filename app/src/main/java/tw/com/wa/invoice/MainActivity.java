@@ -94,6 +94,7 @@ public class MainActivity extends ActionBarActivity {
 
 
             } else {
+                this.messageLabel.setText(R.string.plsOtherQr);
                 Toast.makeText(getApplicationContext(), R.string.plsOtherQr, Toast.LENGTH_SHORT).show();
             }
 
@@ -312,6 +313,7 @@ public class MainActivity extends ActionBarActivity {
                     //開啟 QRDroid App 的掃描功能，等待 call back onActivityResult()
                     startActivityForResult(i, QR_CODE);
                 } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(getApplicationContext(), R.string.downloadFromGooglePlay, Toast.LENGTH_LONG).show();
                     //若沒安裝 QRDroid，則開啟 Google Play商店，並顯示 QRDroid App
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=la.droid.qr"));
                     startActivity(intent);

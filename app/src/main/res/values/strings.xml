@@ -57,4 +57,5 @@
 
     <string name="get6Award">中六獎</string>
     <string name="plsOtherQr">此QR條碼並非為發票號碼，請掃描別組條碼。</string>
+    <string name="downloadFromGooglePlay">請先安裝QR CODE 掃描APP，將可以用QR CODE 掃描方式對發票。</string>
 </resources>
