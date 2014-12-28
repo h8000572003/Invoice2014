@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -213,30 +212,19 @@ public class LoadingActivity extends Activity {
                 Animation animation = AnimationUtils.loadAnimation(activity, R.anim.scale);
                 statuLabel.startAnimation(animation);
 
-                final CountDownTimer countDownTimer = new CountDownTimer(200, 200) {
-
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        Intent it = new Intent(LoadingActivity.this, MainActivity.class);
-                        startActivity(it);
-                        finish();
-                    }
-                };
 
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        countDownTimer.start();
+
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         statuLabel.setVisibility(View.INVISIBLE);
+                        Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                        startActivity(it);
+                        finish();
 
                     }
 

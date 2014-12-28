@@ -2,7 +2,6 @@ package tw.com.wa.invoice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +28,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,8 +84,19 @@ public class MainActivity extends ActionBarActivity {
             //掃描結果存放在 key 為 la.droid.qr.result 的值中
             String result = data.getExtras().getString("la.droid.qr.result");
 
+            String seq = result.substring(2, 10);
 
-            keyBoard.setValue(result);
+            if (seq.matches("[0-9]{8}")) {
+                seq = "31075480";
+                keyBoard.setValue(seq);
+                check8NumberAction(seq);
+                keyBoard.cleanValueWithoutUI();
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.plsOtherQr, Toast.LENGTH_SHORT).show();
+            }
+
 
         }
 
@@ -174,8 +185,10 @@ public class MainActivity extends ActionBarActivity {
 
 
             myAlertDialog.setMessage("中" + award.message);
+            messageLabel.setText("中" + award.message);
         } else {
             myAlertDialog.setMessage("沒有中獎");
+            messageLabel.setText("沒有中獎");
         }
 
 
@@ -434,7 +447,6 @@ public class MainActivity extends ActionBarActivity {
     private class SettingJob extends AsyncTask<Void, Void, Void> {
 
 
-        private ProgressDialog loadProgress = null;
         private Map<String, InvoiceInfoV2> map = null;
 
         private SettingJob(Map<String, InvoiceInfoV2> map) {
@@ -443,15 +455,16 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPreExecute() {
-            this.loadProgress = ProgressDialog.show(activity, "", "", true, false);
+
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
+            this.map = BeanUtil.getMap();
+            setViewById();
+            setKeyBoardListener();
             setInvoiceDataAdapter();
 
-            this.loadProgress.dismiss();
 
             if (isTechDiaglogFlag()) {
                 DialogUtil.showTeching(activity);
@@ -463,9 +476,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            this.map = BeanUtil.getMap();
-            setViewById();
-            setKeyBoardListener();
+
 
             return null;
         }

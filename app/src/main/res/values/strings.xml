@@ -56,4 +56,5 @@
     <string name="dateOfAward">領獎日期</string>
 
     <string name="get6Award">中六獎</string>
+    <string name="plsOtherQr">此QR條碼並非為發票號碼，請掃描別組條碼。</string>
 </resources>
