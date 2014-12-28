@@ -3,16 +3,15 @@ package tw.com.wa.invoice;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.inputmethodservice.KeyboardView;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,11 +26,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +51,7 @@ import tw.com.wa.invoice.util.CommomUtil;
 public class MainActivity extends ActionBarActivity {
 
     private final static int GO_SEE_INVOICE_CODE = 001;
+    private static final int QR_CODE = 002;
 
 
     private Spinner spinner = null;
@@ -63,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
     private ViewGroup content = null;
     private Button addCalendarBtn;
     private KeyBoardLayout keyBoard = null;
+    private ImageButton cameraBtn = null;
 
 
     private MainDTO dto;
@@ -81,49 +80,16 @@ public class MainActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GO_SEE_INVOICE_CODE) {
             this.initView();
-        }
+        } else if (requestCode == QR_CODE & null != data && data.getExtras() != null) {
+            //掃描結果存放在 key 為 la.droid.qr.result 的值中
+            String result = data.getExtras().getString("la.droid.qr.result");
 
 
-    }
-
-    private class SettingJob extends AsyncTask<Void, Void, Void> {
-
-
-        private ProgressDialog loadProgress = null;
-        private Map<String, InvoiceInfoV2> map = null;
-
-        private SettingJob(Map<String, InvoiceInfoV2> map) {
-            this.map = map;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            this.loadProgress = ProgressDialog.show(activity, "", "", true, false);
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-            setInvoiceDataAdapter();
-
-            this.loadProgress.dismiss();
-
-            if (isTechDiaglogFlag()) {
-                DialogUtil.showTeching(activity);
-
-            }
+            keyBoard.setValue(result);
 
         }
 
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            this.map = BeanUtil.getMap();
-            setViewById();
-            setKeyBoardListener();
-
-            return null;
-        }
     }
 
     @Override
@@ -161,6 +127,7 @@ public class MainActivity extends ActionBarActivity {
         this.content = (ViewGroup) this.findViewById(R.id.content);
         this.addCalendarBtn = (Button) this.findViewById(R.id.addCalendarBtn);
         this.keyBoard = (KeyBoardLayout) this.findViewById(R.id.keyboardLayout);
+        this.cameraBtn = (ImageButton) this.findViewById(R.id.cameraBtn);
 
 
     }
@@ -215,7 +182,6 @@ public class MainActivity extends ActionBarActivity {
         myAlertDialog.setNegativeButton("知道", null);
         myAlertDialog.show();
     }
-
 
     private void showNumberDiaglog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -281,10 +247,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
-
-
     }
-
 
     /**
      * 設定鍵盤監控事件
@@ -325,6 +288,23 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        this.cameraBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent i = new Intent("la.droid.qr.scan");    //使用QRDroid的掃描功能
+                i.putExtra("la.droid.qr.complete", true);   //完整回傳，不截掉scheme
+                try {
+                    //開啟 QRDroid App 的掃描功能，等待 call back onActivityResult()
+                    startActivityForResult(i, QR_CODE);
+                } catch (ActivityNotFoundException ex) {
+                    //若沒安裝 QRDroid，則開啟 Google Play商店，並顯示 QRDroid App
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=la.droid.qr"));
+                    startActivity(intent);
+                }
+            }
+        });
 
         this.addCalendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,7 +333,6 @@ public class MainActivity extends ActionBarActivity {
 
         }
     }
-
 
     /**
      * 設定對發票日期
@@ -400,7 +379,7 @@ public class MainActivity extends ActionBarActivity {
                 });
 
                 StringBuffer buffer = new StringBuffer();
-                buffer.append(CommomUtil.getTitleDate(info,activity)+"\n");
+                buffer.append(CommomUtil.getTitleDate(info, activity) + "\n");
                 for (OrderObject a : rrderObjects) {
                     buffer.append(a.award.message);
                     buffer.append("\t:\t");
@@ -452,6 +431,45 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private class SettingJob extends AsyncTask<Void, Void, Void> {
+
+
+        private ProgressDialog loadProgress = null;
+        private Map<String, InvoiceInfoV2> map = null;
+
+        private SettingJob(Map<String, InvoiceInfoV2> map) {
+            this.map = map;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            this.loadProgress = ProgressDialog.show(activity, "", "", true, false);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            setInvoiceDataAdapter();
+
+            this.loadProgress.dismiss();
+
+            if (isTechDiaglogFlag()) {
+                DialogUtil.showTeching(activity);
+
+            }
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            this.map = BeanUtil.getMap();
+            setViewById();
+            setKeyBoardListener();
+
+            return null;
+        }
+    }
 
     private class OrderObject {
         private Invoice invoice;

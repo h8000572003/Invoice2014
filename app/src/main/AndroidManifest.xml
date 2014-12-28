@@ -30,7 +30,7 @@
         <activity
             android:name=".RecordActivityV2"
             android:label="@string/title_activity_main_activity_v2"
-            android:parentActivityName=".LoadingActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tw.com.wa.invoice.MainActivity" />
