@@ -87,17 +87,15 @@ public class MainActivity extends ActionBarActivity {
             String seq = result.substring(2, 10);
 
             if (seq.matches("[0-9]{8}")) {
-                seq = "31075480";
                 keyBoard.setValue(seq);
                 check8NumberAction(seq);
-                keyBoard.cleanValueWithoutUI();
-
 
             } else {
+
                 this.messageLabel.setText(R.string.plsOtherQr);
                 Toast.makeText(getApplicationContext(), R.string.plsOtherQr, Toast.LENGTH_SHORT).show();
             }
-
+            keyBoard.cleanValueWithoutUI();
 
         }
 
