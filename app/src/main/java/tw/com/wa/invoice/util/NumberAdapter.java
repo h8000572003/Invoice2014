@@ -59,15 +59,12 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
 
         mainNumber.setKeyNumber(mainNumber.getKeyNumber());
 
-        viewHolder.titileView.setText(mainNumber.getTitle());
 
         int distinct = 8 - mainNumber.getKeyNumber().length();
 
-
+        viewHolder.titileView.setText(mainNumber.getTitle());
         viewHolder.contentView.setText(this.leftPandSignal("●", distinct, mainNumber.getKeyNumber()));
         viewHolder.moneyView.setText(String.format("+$%,d", mainNumber.getAward().dollar));
-
-
         viewHolder.keyTime.setText(mainNumber.getKeyInTime());
         viewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,9 +77,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
 
         this.setAnimation(viewHolder.container, position);
 
-//            viewHolder.awardText.setText(mainNumber.getAward().message);
-        //   viewHolder.numberText.setText(mainNumber.getCountOfInvoice());
-        //          viewHolder.doorText.setText(mainNumber.sum() + "元");
+
     }
 
     private String leftPandSignal(String signal, int legth, String orgContent) {
@@ -128,8 +123,7 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
             this.contentView = (TextView) v.findViewById(R.id.contentView);
             this.container = (CardView) v.findViewById(R.id.container);
             this.moneyView = (TextView) v.findViewById(R.id.moneyView);
-            this.keyTime= (TextView) v.findViewById(R.id.keyTime);
-
+            this.keyTime = (TextView) v.findViewById(R.id.keyTime);
 
 
         }

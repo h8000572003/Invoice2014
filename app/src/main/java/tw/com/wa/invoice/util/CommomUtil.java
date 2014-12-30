@@ -138,11 +138,13 @@ public class CommomUtil {
         Date nowDate = new Date();
         if (nowDate.before(invoiceInfo.getDateOfBegin())) {//還不到領獎時間
             return invoiceInfo.getDateOfBegin();
+
         } else if (nowDate.before(invoiceInfo.getDateOfEnd())) {//再領獎日期截止之前
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(nowDate);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);//+一天
+            calendar.set(Calendar.HOUR_OF_DAY, 9);//九點
 
-            calendar.add(Calendar.HOUR, 2);
 
             return calendar.getTime();
 

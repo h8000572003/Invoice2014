@@ -429,13 +429,16 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_helper) {
-            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+//            AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+//
+//            myAlertDialog.setTitle(R.string.teachTitle);
+//            myAlertDialog.setMessage(R.string.teachContent);
+//            myAlertDialog.setNegativeButton("知道", null);
+//            myAlertDialog.show();
 
-            myAlertDialog.setTitle(R.string.teachTitle);
-            myAlertDialog.setMessage(R.string.teachContent);
-            myAlertDialog.setNegativeButton("知道", null);
-            myAlertDialog.show();
 
+            Intent it = new Intent(this, TeachungActivity.class);
+            startActivity(it);
 
             return true;
         }
