@@ -56,7 +56,7 @@ public class GetCompent {
 
         TypeToken<WiningBean> typeToken = new TypeToken<WiningBean>() {
         };
-
+//
 
         StringBuffer buffer = new StringBuffer();
         buffer.append("action=QryWinningList");
