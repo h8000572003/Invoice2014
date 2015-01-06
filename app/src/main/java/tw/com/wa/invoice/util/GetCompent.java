@@ -56,6 +56,25 @@ public class GetCompent<Result> {
         TypeToken typeToken = new TypeToken<List<WiningBean>>() {
         };
 
+
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("action=QryWinningLis");
+        buffer.append("&");
+
+        buffer.append("appID=EINV9201412111086");
+        buffer.append("&");
+
+        buffer.append("invTerm=");
+        buffer.append(yyymm);
+        buffer.append("&");
+
+
+        buffer.append("UUID=");
+        buffer.append("&");
+
+        buffer.append("version=0.2");
+
+
         return (List<WiningBean>) this.getJsonString(GetCompent.API, params, typeToken);
 
 
