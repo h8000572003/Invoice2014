@@ -8,7 +8,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import tw.com.wa.invoice.teach.TeachingKeyFragment;
+import tw.com.wa.invoice.teach.TeachingCameraFragment;
+import tw.com.wa.invoice.teach.TeachingGetAwardFragment;
+import tw.com.wa.invoice.teach.TeachingKeepCalendarFragment;
+import tw.com.wa.invoice.teach.TeachingKey1Fragment;
+import tw.com.wa.invoice.teach.TeachingKey2Fragment;
 import tw.com.wa.invoice.teach.TeachingRecordFragment;
 
 /**
@@ -21,7 +25,7 @@ import tw.com.wa.invoice.teach.TeachingRecordFragment;
  */
 public class TeachungActivity extends FragmentActivity {
 
-    private static final int NUM_PAGES = 2;
+    private static final int NUM_PAGES = 4;
 
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -61,9 +65,15 @@ public class TeachungActivity extends FragmentActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new TeachingKeyFragment();
+                    return new TeachingCameraFragment();
                 case 1:
-                    return new TeachingRecordFragment();
+                    return new TeachingKey1Fragment();
+//                case 2:
+//                    return new TeachingKey2Fragment();
+                case 2:
+                    return new TeachingGetAwardFragment();
+                case 3:
+                    return new TeachingKeepCalendarFragment();
             }
             return null;
         }

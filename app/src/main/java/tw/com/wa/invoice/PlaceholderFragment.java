@@ -1,15 +1,11 @@
 package tw.com.wa.invoice;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -211,30 +207,30 @@ public class PlaceholderFragment extends Fragment {
         this.recyclerView.setAdapter(adapter);
 
 
-        this.adapter.setOnItemClickListener(new NumberAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, final int location) {
-
-                AlertDialog.Builder diaglogOfTech = new AlertDialog.Builder(getActivity());
-                diaglogOfTech.setTitle(R.string.teachTitle);
-                diaglogOfTech.setMessage(R.string.cleanInvoice);
-                diaglogOfTech.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        BeanUtil.allInvoices.remove(location);
-                        refreshNumAdapter();
-                        checkIsBlankInvoices();
-                        ;
-                    }
-                });
-                diaglogOfTech.setNegativeButton(R.string.cancer, null);
-                diaglogOfTech.show();
-
-                ;
-
-            }
-        });
+//        this.adapter.setOnItemClickListener(new NumberAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, final int location) {
+//
+//                AlertDialog.Builder diaglogOfTech = new AlertDialog.Builder(getActivity());
+//                diaglogOfTech.setTitle(R.string.teachTitle);
+//                diaglogOfTech.setMessage(R.string.cleanInvoice);
+//                diaglogOfTech.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        BeanUtil.allInvoices.remove(location);
+//                        refreshNumAdapter();
+//                        checkIsBlankInvoices();
+//                        ;
+//                    }
+//                });
+//                diaglogOfTech.setNegativeButton(R.string.cancer, null);
+//                diaglogOfTech.show();
+//
+//                ;
+//
+//            }
+//        });
 
 
         this.refreshNumAdapter();

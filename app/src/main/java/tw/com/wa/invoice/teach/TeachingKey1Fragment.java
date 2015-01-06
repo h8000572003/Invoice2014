@@ -13,7 +13,7 @@ import tw.com.wa.invoice.ui.TeachingLayout;
 /**
  * Created by Andy on 2014/12/30.
  */
-public class TeachingRecordFragment extends Fragment {
+public class TeachingKey1Fragment extends Fragment {
 
     private TeachingLayout tachingLayout;
 
@@ -24,8 +24,9 @@ public class TeachingRecordFragment extends Fragment {
 
         this.tachingLayout = (TeachingLayout) rootView.findViewById(R.id.teachView);
 
-        tachingLayout.setPicUrl(R.drawable.ic_launcher);
-        tachingLayout.setTxt("");
+        tachingLayout.setPicUrl(R.drawable.key_1);
+        tachingLayout.setTxt(R.string.teachContent);
         return rootView;
     }
+
 }
