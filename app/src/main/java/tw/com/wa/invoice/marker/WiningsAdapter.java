@@ -1,5 +1,8 @@
 package tw.com.wa.invoice.marker;
 
+import com.google.gson.reflect.TypeToken;
+
+import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.util.Api;
 import tw.com.wa.invoice.util.GetCompent;
 
@@ -32,6 +35,13 @@ public class WiningsAdapter extends SqlAdapter {
         buffer.append("invTerm=" + invTerm);
 
 
-        return getApi().getBaseSqlAppendCommonValue() +"&"+ buffer.toString();
+        return getApi().getBaseSqlAppendCommonValue() + "&" + buffer.toString();
+    }
+
+    @Override
+    protected TypeToken getToken() {
+        TypeToken<WiningBean> typeToken = new TypeToken<WiningBean>() {
+        };
+        return typeToken;
     }
 }

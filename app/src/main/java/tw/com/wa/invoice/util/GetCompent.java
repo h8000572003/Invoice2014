@@ -82,7 +82,7 @@ public class GetCompent {
 //
 //    }
 
-    public <Result> Result getJsonString(String url, List<NameValuePair> pairs, TypeToken<Result> type) throws Exception {
+    public <Result> Result getJsonString(String url, List<NameValuePair> pairs, TypeToken type) throws Exception {
 
         HttpClient demo = MySSLSocketFactory.createMyHttpClient();
         demo.getParams().setParameter("http.protocol.content-charset", "UTF-8");

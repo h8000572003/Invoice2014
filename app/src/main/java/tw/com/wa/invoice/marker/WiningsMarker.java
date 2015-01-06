@@ -8,8 +8,5 @@ import tw.com.wa.invoice.util.InvoiceBusinessException;
  */
 public class WiningsMarker<WiningBean> extends ApiMarker {
 
-    @Override
-    public WiningBean getQuery() throws InvoiceBusinessException {
-        return (WiningBean) super.getQuery();
-    }
+
 }

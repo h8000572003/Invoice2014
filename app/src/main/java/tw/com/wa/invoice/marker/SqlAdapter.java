@@ -1,5 +1,7 @@
 package tw.com.wa.invoice.marker;
 
+import com.google.gson.reflect.TypeToken;
+
 import tw.com.wa.invoice.util.Api;
 
 /**
@@ -15,7 +17,7 @@ public abstract class SqlAdapter {
 
     protected abstract String getSqlString();
 
-
+    protected abstract TypeToken getToken();
 
 
     public Api getApi() {

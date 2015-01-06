@@ -26,16 +26,12 @@ public class ApiMarker<T> {
     public T getQuery() throws InvoiceBusinessException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-        GetCompent getCompent = new GetCompent();
-
-
-        TypeToken<T> typeToken = new TypeToken<T>() {
-        };
 
         T result = null;
 
         try {
-            result = getCompent.getJsonString(adapter.getSqlString(), params, typeToken);
+            GetCompent getCompent = new GetCompent();
+            result = getCompent.getJsonString(adapter.getSqlString(), params, adapter.getToken());
         } catch (Exception e) {
             Log.e(TAG, "error", e);
         }
