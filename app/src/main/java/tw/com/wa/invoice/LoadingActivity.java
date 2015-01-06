@@ -142,9 +142,9 @@ public class LoadingActivity extends Activity {
                 return "尚未連接網路，請連接網路在測試一次";
             }
 
-            GetCompent<List<WiningBean>> getCompent = new GetCompent();
+            GetCompent getCompent = new GetCompent();
             try {
-                List<WiningBean> winingBeans = getCompent.getWinings("10310");
+                WiningBean winingBeans = getCompent.getWinings("10310");
             } catch (Exception e) {
                 e.printStackTrace();
             }

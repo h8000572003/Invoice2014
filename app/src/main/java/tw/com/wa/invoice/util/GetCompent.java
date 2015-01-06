@@ -29,7 +29,7 @@ import tw.com.wa.invoice.domain.WiningBean;
 /**
  * Created by Andy on 2015/1/6.
  */
-public class GetCompent<Result> {
+public class GetCompent {
 
     public static final String API = "https://www.einvoice.nat.gov.tw/PB2CAPIVAN/invapp/InvApp?";
 
@@ -44,7 +44,7 @@ public class GetCompent<Result> {
      * @return
      * @throws Exception
      */
-    public Result getWinings(String yyymm) throws Exception {
+    public WiningBean getWinings(String yyymm) throws Exception {
 
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -54,7 +54,7 @@ public class GetCompent<Result> {
         params.add(new BasicNameValuePair("UUID", UUID.randomUUID().toString()));
         params.add(new BasicNameValuePair("appID", API_ID));
 
-        TypeToken typeToken = new TypeToken<WiningBean>() {
+        TypeToken<WiningBean> typeToken = new TypeToken<WiningBean>() {
         };
 
 
@@ -76,14 +76,14 @@ public class GetCompent<Result> {
         buffer.append("version=0.2");
 
 
-        return this.getJsonString(GetCompent.API+buffer.toString(), params, typeToken);
+        return this.getJsonString(GetCompent.API + buffer.toString(), params, typeToken);
 
 
     }
 
-    public Result getJsonString(String url, List<NameValuePair> pairs, TypeToken<Result> type) throws Exception {
+    public <Result> Result getJsonString(String url, List<NameValuePair> pairs, TypeToken<Result> type) throws Exception {
 
-        HttpClient demo =  MySSLSocketFactory. createMyHttpClient();
+        HttpClient demo = MySSLSocketFactory.createMyHttpClient();
         demo.getParams().setParameter("http.protocol.content-charset", "UTF-8");
 
 
@@ -95,7 +95,7 @@ public class GetCompent<Result> {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             // 如果回傳是 200 OK 的話才輸出
             Log.i(TAG, responseString);
-            return this.getListofGson(responseString, type.getType());
+            return (Result) this.getListofGson(responseString, type.getType());
 
         } else {
 
@@ -103,7 +103,7 @@ public class GetCompent<Result> {
         return null;
     }
 
-    public Result getListofGson(String jsonString, Type listType) {
+    public <Result> Result getListofGson(String jsonString, Type listType) {
         Result arrayObject = null;
 
         try {
