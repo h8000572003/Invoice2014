@@ -6,6 +6,7 @@ import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
@@ -30,7 +31,7 @@ import tw.com.wa.invoice.domain.WiningBean;
  */
 public class GetCompent<Result> {
 
-    public static final String API = "https://www.einvoice.nat.gov.tw/PB2CAPIVAN/invapp/InvApp";
+    public static final String API = "https://www.einvoice.nat.gov.tw/PB2CAPIVAN/invapp/InvApp?";
 
 
     public static final String API_ID = "EINV9201412111086";
@@ -43,7 +44,7 @@ public class GetCompent<Result> {
      * @return
      * @throws Exception
      */
-    public List<WiningBean> getWinings(String yyymm) throws Exception {
+    public Result getWinings(String yyymm) throws Exception {
 
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -53,12 +54,12 @@ public class GetCompent<Result> {
         params.add(new BasicNameValuePair("UUID", UUID.randomUUID().toString()));
         params.add(new BasicNameValuePair("appID", API_ID));
 
-        TypeToken typeToken = new TypeToken<List<WiningBean>>() {
+        TypeToken typeToken = new TypeToken<WiningBean>() {
         };
 
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append("action=QryWinningLis");
+        buffer.append("action=QryWinningList");
         buffer.append("&");
 
         buffer.append("appID=EINV9201412111086");
@@ -75,14 +76,14 @@ public class GetCompent<Result> {
         buffer.append("version=0.2");
 
 
-        return (List<WiningBean>) this.getJsonString(GetCompent.API, params, typeToken);
+        return this.getJsonString(GetCompent.API+buffer.toString(), params, typeToken);
 
 
     }
 
     public Result getJsonString(String url, List<NameValuePair> pairs, TypeToken<Result> type) throws Exception {
 
-        DefaultHttpClient demo = new DefaultHttpClient();
+        HttpClient demo =  MySSLSocketFactory. createMyHttpClient();
         demo.getParams().setParameter("http.protocol.content-charset", "UTF-8");
 
 
@@ -103,7 +104,7 @@ public class GetCompent<Result> {
     }
 
     public Result getListofGson(String jsonString, Type listType) {
-        Objects arrayObject = null;
+        Result arrayObject = null;
 
         try {
             arrayObject = new Gson().fromJson(jsonString, listType);
