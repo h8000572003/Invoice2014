@@ -22,6 +22,9 @@ import java.util.List;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
+import tw.com.wa.invoice.domain.WiningBean;
+import tw.com.wa.invoice.util.GetCompent;
+import tw.com.wa.invoice.util.GetUtils;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -137,6 +140,13 @@ public class LoadingActivity extends Activity {
 
             if (networInfo == null || !networInfo.isAvailable()) { //判斷是否有網路
                 return "尚未連接網路，請連接網路在測試一次";
+            }
+
+            GetCompent getCompent = new GetCompent();
+            try {
+                List<WiningBean> winingBeans = getCompent.getWinings("10310");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
 
