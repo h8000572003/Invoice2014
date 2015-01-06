@@ -6,7 +6,9 @@ import tw.com.wa.invoice.util.InvoiceBusinessException;
 /**
  * Created by Andy on 2015/1/6.
  */
-public class WiningsMarker<WiningBean> extends ApiMarker {
+public class WiningsMarker<WiningBean> extends ApiMarker<WiningBean> {
+
+
 
 
 }

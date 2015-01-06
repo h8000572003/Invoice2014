@@ -1,9 +1,11 @@
 package tw.com.wa.invoice.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Andy on 2015/1/6.
  */
-public class WiningBean {
+public class WiningBean implements Serializable {
     private String v = "";
     private String code = "";
     private String msg = "";

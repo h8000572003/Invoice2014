@@ -36,6 +36,7 @@ public class ApiMarker<T> {
             Log.e(TAG, "error", e);
         }
 
+        Log.i(TAG,result.toString());
         return result;
     }
 }

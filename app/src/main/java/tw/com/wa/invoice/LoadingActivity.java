@@ -23,11 +23,9 @@ import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.WiningBean;
-import tw.com.wa.invoice.marker.ApiMarker;
 import tw.com.wa.invoice.marker.WiningsAdapter;
 import tw.com.wa.invoice.marker.WiningsMarker;
-import tw.com.wa.invoice.util.GetCompent;
-import tw.com.wa.invoice.util.GetUtils;
+import tw.com.wa.invoice.util.CommomUtil;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -146,13 +144,15 @@ public class LoadingActivity extends Activity {
             }
 
 
-            WiningsAdapter adapter = new WiningsAdapter("10310");
+            WiningsAdapter adapter = new WiningsAdapter(CommomUtil.getLastYm());
             WiningsMarker<WiningBean> marker = new WiningsMarker();
             marker.setAdapter(adapter);
 
 
             WiningBean bean =
                     marker.getQuery();
+
+
             try {
 
                 this.deletOldData();

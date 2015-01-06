@@ -53,6 +53,8 @@ public class TeachingLayout extends LinearLayout {
                 0, 0);
 
 
+
+
         this.setPicUrl(a.getInt(R.styleable.TeachingLayout_src, R.drawable.logo));
         this.setTxt(a.getInt(R.styleable.TeachingLayout_txt, R.string.teachContent));
 
