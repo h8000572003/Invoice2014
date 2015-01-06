@@ -1,11 +1,15 @@
 package tw.com.wa.invoice.marker;
 
 import tw.com.wa.invoice.domain.WiningBean;
+import tw.com.wa.invoice.util.InvoiceBusinessException;
 
 /**
  * Created by Andy on 2015/1/6.
  */
-public class WiningsMarker extends ApiMarker<WiningBean> {
+public class WiningsMarker<WiningBean> extends ApiMarker {
 
-
+    @Override
+    public WiningBean getQuery() throws InvoiceBusinessException {
+        return (WiningBean) super.getQuery();
+    }
 }

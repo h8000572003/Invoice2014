@@ -147,7 +147,7 @@ public class LoadingActivity extends Activity {
 
 
             WiningsAdapter adapter = new WiningsAdapter("10310");
-            WiningsMarker marker = new WiningsMarker();
+            WiningsMarker<WiningBean> marker = new WiningsMarker();
             marker.setAdapter(adapter);
 
 

@@ -32,6 +32,6 @@ public class WiningsAdapter extends SqlAdapter {
         buffer.append("invTerm=" + invTerm);
 
 
-        return getApi().getBaseSqlAppendCommonValue() + buffer.toString();
+        return getApi().getBaseSqlAppendCommonValue() +"&"+ buffer.toString();
     }
 }
