@@ -23,6 +23,9 @@ import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.WiningBean;
+import tw.com.wa.invoice.marker.ApiMarker;
+import tw.com.wa.invoice.marker.WiningsAdapter;
+import tw.com.wa.invoice.marker.WiningsMarker;
 import tw.com.wa.invoice.util.GetCompent;
 import tw.com.wa.invoice.util.GetUtils;
 
@@ -142,14 +145,14 @@ public class LoadingActivity extends Activity {
                 return "尚未連接網路，請連接網路在測試一次";
             }
 
-            GetCompent getCompent = new GetCompent();
-            try {
-                WiningBean winingBeans = getCompent.getWinings("10310");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+            WiningsAdapter adapter = new WiningsAdapter("10310");
+            WiningsMarker marker = new WiningsMarker();
+            marker.setAdapter(adapter);
 
 
+            WiningBean bean =
+                    marker.getQuery();
             try {
 
                 this.deletOldData();

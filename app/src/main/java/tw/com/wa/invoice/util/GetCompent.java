@@ -31,55 +31,56 @@ import tw.com.wa.invoice.domain.WiningBean;
  */
 public class GetCompent {
 
-    public static final String API = "https://www.einvoice.nat.gov.tw/PB2CAPIVAN/invapp/InvApp?";
+    public static final String ROOT_API = "https://www.einvoice.nat.gov.tw";
 
 
     public static final String API_ID = "EINV9201412111086";
     private static final String TAG = "GetCompent";
 
-    /**
-     * getCompent
-     *
-     * @param yyymm
-     * @return
-     * @throws Exception
-     */
-    public WiningBean getWinings(String yyymm) throws Exception {
-
-
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("version", "0.2"));
-        params.add(new BasicNameValuePair("action", "QryWinningList"));
-        params.add(new BasicNameValuePair("invTerm", yyymm));
-        params.add(new BasicNameValuePair("UUID", UUID.randomUUID().toString()));
-        params.add(new BasicNameValuePair("appID", API_ID));
-
-        TypeToken<WiningBean> typeToken = new TypeToken<WiningBean>() {
-        };
 //
-
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("action=QryWinningList");
-        buffer.append("&");
-
-        buffer.append("appID=EINV9201412111086");
-        buffer.append("&");
-
-        buffer.append("invTerm=");
-        buffer.append(yyymm);
-        buffer.append("&");
-
-
-        buffer.append("UUID=");
-        buffer.append("&");
-
-        buffer.append("version=0.2");
-
-
-        return this.getJsonString(GetCompent.API + buffer.toString(), params, typeToken);
-
-
-    }
+//    /**
+//     * getCompent
+//     *
+//     * @param yyymm
+//     * @return
+//     * @throws Exception
+//     */
+//    public WiningBean getWinings(String yyymm) throws Exception {
+//
+//
+//        List<NameValuePair> params = new ArrayList<NameValuePair>();
+//        params.add(new BasicNameValuePair("version", "0.2"));
+//        params.add(new BasicNameValuePair("action", "QryWinningList"));
+//        params.add(new BasicNameValuePair("invTerm", yyymm));
+//        params.add(new BasicNameValuePair("UUID", UUID.randomUUID().toString()));
+//        params.add(new BasicNameValuePair("appID", API_ID));
+//
+//        TypeToken<WiningBean> typeToken = new TypeToken<WiningBean>() {
+//        };
+////
+//
+//        StringBuffer buffer = new StringBuffer();
+//        buffer.append("action=QryWinningList");
+//        buffer.append("&");
+//
+//        buffer.append("appID=EINV9201412111086");
+//        buffer.append("&");
+//
+//        buffer.append("invTerm=");
+//        buffer.append(yyymm);
+//        buffer.append("&");
+//
+//
+//        buffer.append("UUID=");
+//        buffer.append("&");
+//
+//        buffer.append("version=0.2");
+//
+//
+//        return this.getJsonString(GetCompent.API + buffer.toString(), params, typeToken);
+//
+//
+//    }
 
     public <Result> Result getJsonString(String url, List<NameValuePair> pairs, TypeToken<Result> type) throws Exception {
 
