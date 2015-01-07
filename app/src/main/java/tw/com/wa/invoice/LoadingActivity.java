@@ -19,13 +19,17 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 
+import tw.com.wa.invoice.api.LoadService;
+import tw.com.wa.invoice.core.LoadServiceImpl;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
+import tw.com.wa.invoice.domain.LoadDTO;
 import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.marker.WiningsAdapter;
 import tw.com.wa.invoice.marker.WiningsMarker;
 import tw.com.wa.invoice.util.CommomUtil;
+import tw.com.wa.invoice.util.InvoiceBusinessException;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -36,9 +40,11 @@ public class LoadingActivity extends Activity {
 
     private Activity activity = this;
 
-    private TextView statuLabel;
-
+    private LoadService service;
+    private LoadDTO dto = null;
     private LoadAsyncTask task = null;
+
+
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -48,15 +54,19 @@ public class LoadingActivity extends Activity {
     };
     private ProgressBar progressBar = null;
     private SwipeRefreshLayout laySwipe;
+    private TextView statuLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loading_layout);
+        this.setContentView(R.layout.loading_layout);
+
+
+        this.dto = new LoadDTO();
+        this.service = new LoadServiceImpl();
 
 
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
-
         this.progressBar = (ProgressBar) this.findViewById(R.id.progressBar2);
         this.laySwipe = (SwipeRefreshLayout) this.findViewById(R.id.laySwipe);
         this.laySwipe.setColorSchemeResources(
@@ -92,7 +102,7 @@ public class LoadingActivity extends Activity {
             return invoices;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-            throw new RuntimeException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
+            throw new InvoiceBusinessException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
         }
 
 
@@ -114,10 +124,15 @@ public class LoadingActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-            throw new RuntimeException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
+            throw new InvoiceBusinessException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
         }
 
 
+    }
+
+    private void load() throws InvoiceBusinessException {
+
+        this.service.loadData(this.dto, this.activity);
     }
 
     private class LoadAsyncTask extends AsyncTask<String, String, String> {
@@ -149,12 +164,8 @@ public class LoadingActivity extends Activity {
             marker.setAdapter(adapter);
 
 
-            WiningBean bean =
-                    marker.getQuery();
-
-
             try {
-
+                load();
                 this.deletOldData();
                 this.downloadDataAndInsert2Local();
 

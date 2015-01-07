@@ -29,7 +29,6 @@ public class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder
     public NumberAdapter(List<InvoiceKeyIn> mainNumbers, Context context) {
         this.mainNumbers = mainNumbers;
         this.context = context;
-        this.listener = listener;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

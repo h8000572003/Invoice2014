@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
     private TextView invoviceLabel = null;
     private TextView invoiceContent = null;
     private TextView messageLabel = null;
-    private ViewGroup content = null;
+
     private Button addCalendarBtn;
     private KeyBoardLayout keyBoard = null;
     private ImageButton cameraBtn = null;
@@ -134,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
         this.invoiceContent = (TextView) this.findViewById(R.id.invoiceContent);
         this.messageLabel = (TextView) this.findViewById(R.id.messageLabel);
-        this.content = (ViewGroup) this.findViewById(R.id.content);
+
         this.addCalendarBtn = (Button) this.findViewById(R.id.addCalendarBtn);
         this.keyBoard = (KeyBoardLayout) this.findViewById(R.id.keyboardLayout);
         this.cameraBtn = (ImageButton) this.findViewById(R.id.cameraBtn);
