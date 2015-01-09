@@ -9,12 +9,14 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import tw.com.wa.invoice.domain.MainDTO;
+import tw.com.wa.invoice.ui.StagingView;
 
 /**
  * Created by Andy on 2015/1/9.
  */
 public class MainActivityV2 extends ActionBarActivity {
     private KeyboardView keyboardView = null;
+    private StagingView stagingView = null;
     private MainDTO dto;
     private Vibrator myVibrator = null;
 

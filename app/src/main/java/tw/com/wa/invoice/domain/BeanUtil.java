@@ -20,9 +20,10 @@ public class BeanUtil {
     private static final String TAG = "BeanUtil";
     private static Map<String, InvoiceInfoV2> map = null;
 
-    public static IWining wining = null;
+
     public static InvoiceInfoV2 infoV2 = null;
     public static List<InvoiceKeyIn> allInvoices = new ArrayList<InvoiceKeyIn>();
+
 
     public synchronized static Map<String, InvoiceInfoV2> getMap() {
 
