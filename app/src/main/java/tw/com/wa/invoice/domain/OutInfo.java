@@ -20,12 +20,15 @@ public class OutInfo extends WiningBean implements WiningInfo {
     private final static String TITLE_TEMPLATE = "%04d/%02d-%04d/%02d";
     private InvoYm invoYm;
     private String stagingYm;
+    private String title;
 
     public OutInfo() {
 
         this.invoYm = DateUtil.getYm(super.getInvoYm());
         this.infoV2 = this.makeInvoiceInfo();
         this.stagingYm = DateUtil.yyymm(this.invoYm.getEnd());
+        this.makeTitle();
+
 
     }
 
@@ -46,6 +49,11 @@ public class OutInfo extends WiningBean implements WiningInfo {
         this.invoices.addAll(this.makeSixPrize());
         return info;
 
+    }
+
+    private void makeTitle() {
+        int year = Integer.parseInt(getInvoYm().substring(0, 3)) + 1911;
+        this.title = String.format(TITLE_TEMPLATE, year, Integer.parseInt(getInvoYm().substring(3)) - 1, year, Integer.parseInt(getInvoYm().substring(3)));
     }
 
     private List<Invoice> makeSixPrize() {
@@ -197,8 +205,8 @@ public class OutInfo extends WiningBean implements WiningInfo {
 
     private String getTitle(String invoYm) {
 
-        int year = Integer.parseInt(invoYm.substring(0, 3)) + 1911;
-        return String.format(TITLE_TEMPLATE, year, Integer.parseInt(invoYm.substring(3)) - 1, year, Integer.parseInt(invoYm.substring(3)));
+        return title;
+
 
     }
 
