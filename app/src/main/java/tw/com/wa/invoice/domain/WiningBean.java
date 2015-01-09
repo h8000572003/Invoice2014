@@ -5,38 +5,39 @@ import java.io.Serializable;
 /**
  * Created by Andy on 2015/1/6.
  */
-public class WiningBean implements Serializable {
-    private String v = "";
-    private String code = "";
-    private String msg = "";
-    private String invoYm = "";
-    private String superPrizeNo = "";
-    private String spcPrizeNo = "";
-    private String spcPrizeNo2 = "";
-    private String spcPrizeNo3 = "";
+public class WiningBean  implements WiningOutInfo {
+    private String v = "";//版本號碼
+    private String code = "";//訊息回應碼
+    private String msg = "";//系統回應訊息
+    private String invoYm = "";//查詢開獎期別
+    private String superPrizeNo = "";//千萬特獎號碼
 
-    private String firstPrizeNo1 = "";
-    private String firstPrizeNo2 = "";
-    private String firstPrizeNo3 = "";
-    private String firstPrizeNo4 = "";
-    private String firstPrizeNo5 = "";
-    private String firstPrizeNo6 = "";
-    private String firstPrizeNo7 = "";
-    private String firstPrizeNo8 = "";
-    private String firstPrizeNo9 = "";
-    private String firstPrizeNo10 = "";
-    private String sixthPrizeNo1 = "";
-    private String sixthPrizeNo2 = "";
-    private String sixthPrizeNo3 = "";
+    private String spcPrizeNo = "";//特獎號碼
+    private String spcPrizeNo2 = "";//特獎號碼 2
+    private String spcPrizeNo3 = "";//特獎號碼3
 
-    private String superPrizeAmt = "";
-    private String spcPrizeAmt = "";
-    private String firstPrizeAmt = "";
-    private String secondPrizeAmt = "";
-    private String thirdPrizeAmt = "";
-    private String fourthPrizeAmt = "";
-    private String fifthPrizeAmt = "";
-    private String sixthPrizeAmt = "";
+    private String firstPrizeNo1 = "";//頭獎號碼 1
+    private String firstPrizeNo2 = "";//頭獎號碼2
+    private String firstPrizeNo3 = "";//頭獎號碼3
+    private String firstPrizeNo4 = "";//頭獎號碼4
+    private String firstPrizeNo5 = "";//頭獎號碼5>
+    private String firstPrizeNo6 = "";//頭獎號碼6
+    private String firstPrizeNo7 = "";//頭獎號碼7
+    private String firstPrizeNo8 = "";//頭獎號碼8
+    private String firstPrizeNo9 = "";//頭獎號碼9
+    private String firstPrizeNo10 = "";//頭獎號碼10
+    private String sixthPrizeNo1 = "";//六獎號碼 1
+    private String sixthPrizeNo2 = "";//六獎號碼 2
+    private String sixthPrizeNo3 = "";//六獎號碼 3
+
+    private String superPrizeAmt = "";//千萬特獎金額
+    private String spcPrizeAmt = "";//特獎金額
+    private String firstPrizeAmt = "";//頭獎金額
+    private String secondPrizeAmt = "";//二獎金額
+    private String thirdPrizeAmt = "";//三獎金額
+    private String fourthPrizeAmt = "";//四獎金額
+    private String fifthPrizeAmt = "";//五獎金額
+    private String sixthPrizeAmt = "";//六獎金額
 
     public String getV() {
         return v;

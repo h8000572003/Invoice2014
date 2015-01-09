@@ -15,13 +15,15 @@ import java.util.List;
 public class InvoiceInfoV2 extends ParseObject {
     private List<Invoice> invoice = new ArrayList<>();
 
+    private String title = "";
+    private String stagingYm = "";
+    private String info = "";
 
-//    private String info = "";
-//    private String title = "";
-//    private boolean isCheck;
 
-//    private Date dateOfBegin;
-//    private Date dateOfEnd;
+
+    public String getStagingYm() {
+        return stagingYm;
+    }
 
     public List<Invoice> getInvoice() {
         return invoice;

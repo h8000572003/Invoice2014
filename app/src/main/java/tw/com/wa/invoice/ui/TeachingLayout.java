@@ -21,6 +21,7 @@ public class TeachingLayout extends LinearLayout {
     private Context context;
 
 
+
     public TeachingLayout(Context context) {
         super(context);
         this.bindView(context);
@@ -51,8 +52,6 @@ public class TeachingLayout extends LinearLayout {
                 attrs,
                 R.styleable.TeachingLayout,
                 0, 0);
-
-
 
 
         this.setPicUrl(a.getInt(R.styleable.TeachingLayout_src, R.drawable.logo));

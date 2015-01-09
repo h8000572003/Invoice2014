@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tw.com.wa.invoice.util.IWining;
+
 /**
  * Created by Andy on 2014/12/12.
  */
@@ -17,6 +19,8 @@ public class BeanUtil {
 
     private static final String TAG = "BeanUtil";
     private static Map<String, InvoiceInfoV2> map = null;
+
+    public static IWining wining = null;
     public static InvoiceInfoV2 infoV2 = null;
     public static List<InvoiceKeyIn> allInvoices = new ArrayList<InvoiceKeyIn>();
 
@@ -42,8 +46,6 @@ public class BeanUtil {
 
 
     }
-
-
 
 
     public static List<Invoice> getInvoicesByLocal(String title) throws Exception {

@@ -33,6 +33,7 @@ public class CommomUtil {
         }
     }
 
+
     /*
     取得合理時間時間
      */

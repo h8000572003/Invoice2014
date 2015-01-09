@@ -115,6 +115,7 @@
 
             android:text="0" />
 
+
         <Button
             android:id="@+id/cleanBtn"
             android:layout_width="wrap_content"
@@ -124,10 +125,6 @@
             android:text="清除" />
     </TableRow>
 
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
 
-    </TableRow>
 </TableLayout>
 

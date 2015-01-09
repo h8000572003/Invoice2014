@@ -5,15 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/monthSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/material_red_500"
-        android:spinnerMode="dropdown" />
+    <include layout="@layout/range_staging_layout"></include>
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
@@ -75,46 +70,12 @@
                     android:visibility="visible" />
 
 
-                <ImageButton
-                    android:id="@+id/cameraBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@android:drawable/ic_menu_camera" />
-
                 <Button
                     android:id="@+id/addCalendarBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/addCalendarBtn"
                     android:visibility="gone" />
-
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/invoiceContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#20000000"
-                        android:hint="發票資訊:"
-
-                        android:padding="15dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                </ScrollView>
-
-
-                <!--<android.support.v7.widget.RecyclerView-->
-                <!--android:id="@+id/my_recycler_view"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:scrollbars="vertical" />-->
 
 
             </LinearLayout>
