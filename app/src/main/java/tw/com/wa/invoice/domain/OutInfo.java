@@ -171,7 +171,7 @@ public class OutInfo implements WiningInfo {
         if (!TextUtils.isEmpty(bean.getSuperPrizeNo())) {
             Invoice invoice01 = new Invoice();
             invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Special.unCode);
+            invoice01.setAwards(Award.Veryspecial.unCode);
             invoice01.setNumber(bean.getSuperPrizeNo());
             invoice01.setSpecialize(true);
             invoiceList.add(invoice01);

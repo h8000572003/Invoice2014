@@ -1,5 +1,6 @@
 package tw.com.wa.invoice.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
@@ -10,9 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.List;
 
 import tw.com.wa.invoice.R;
+import tw.com.wa.invoice.domain.Award;
+import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.marker.ApiGetter;
@@ -106,6 +110,30 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
         this.beforeBtn.setOnClickListener(this);
         this.nextBtn.setOnClickListener(this);
+        this.stagingText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder MyAlertDialog = new AlertDialog.Builder(context);
+
+                MyAlertDialog.setTitle(context.getString(R.string.status_label));
+
+
+                List<Invoice> invoiceList= outInfo.getInvoice();
+
+                StringBuffer message=new StringBuffer();
+                for(Invoice invoice:invoiceList){
+                    message.append( Award.lookup(invoice.getAwards()).message);
+                    message.append(":");
+                    message.append(invoice.getNumber());
+                    message.append("\n");
+                }
+
+                MyAlertDialog.setMessage(message.toString());
+                MyAlertDialog.setNeutralButton(context.getString(R.string.ok),null);
+
+                MyAlertDialog.show();
+            }
+        });
     }
 
 
@@ -171,13 +199,13 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
             try {
                 marker.setAdapter(new WiningsAdapter(invoiceYm));
                 WiningBean bean = marker.getQuery();
-                StagingView.this.invoYm =
-                        DateUtil.getYm(invoiceYm);
+
 
                 if (TextUtils.equals(bean.getCode(), "901")) {
                     throw new InvoiceBusinessException(bean.getMsg());
                 }
 
+                StagingView.this.invoYm =DateUtil.getYm(invoiceYm);
 
                 OutInfo info = new OutInfo(bean);
                 StagingView.this.outInfo = info;
