@@ -29,7 +29,14 @@ public class OutInfo implements WiningInfo {
         this.stagingYm = DateUtil.yyymm(this.invoYm.getEnd());
 
 
+  }
+    public InvoiceInfoV2 getInfoV2(){
+       return this.infoV2;
     }
+
+
+
+
 
     private InvoiceInfoV2 makeInvoiceInfo() {
 

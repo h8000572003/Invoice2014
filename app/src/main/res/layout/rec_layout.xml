@@ -30,6 +30,8 @@
                 android:gravity="left|center"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
+
+                android:visibility="gone"
                 android:text="11" />
 
 
@@ -65,6 +67,7 @@
         </LinearLayout>
 
         <include
+            android:visibility="gone"
             android:id="@+id/bottombar"
             layout="@layout/bottom_view"
             android:layout_width="match_parent"

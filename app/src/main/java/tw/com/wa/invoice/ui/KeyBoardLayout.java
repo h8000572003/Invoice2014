@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import tw.com.wa.invoice.R;
-import tw.com.wa.invoice.domain.InvoiceKeyIn;
 
 /**
  * 鍵盤
@@ -20,11 +19,8 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
     private String value = "";
     private OnValueChangeListener onValueChangeListener;
     private TextView monitorView;
+    private boolean isReadyClean = false;
 
-
-    public interface OnValueChangeListener {
-        public void onChange(String value);
-    }
 
     public KeyBoardLayout(Context context) {
         super(context);
@@ -37,7 +33,6 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
         this.bindView(context);
         this.setActionListener();
     }
-
 
     public KeyBoardLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -67,6 +62,11 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+
+        if (this.isReadyClean) {
+            this.value = "";
+            this.isReadyClean = false;
+        }
 
         switch (v.getId()) {
 
@@ -103,7 +103,8 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
     }
 
     public void cleanValueWithoutUI() {
-        this.value = "";
+
+        this.isReadyClean = true;
 
     }
 
@@ -117,11 +118,9 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
     }
 
-
     public void setOnValueChangeListener(OnValueChangeListener onValueChangeListener) {
         this.onValueChangeListener = onValueChangeListener;
     }
-
 
     public TextView getMonitorView() {
         return monitorView;
@@ -129,5 +128,9 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
     public void setMonitorView(TextView monitorView) {
         this.monitorView = monitorView;
+    }
+
+    public interface OnValueChangeListener {
+        public void onChange(String value);
     }
 }

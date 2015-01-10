@@ -94,7 +94,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 invoceYm = invoYm.toString();
                 break;
         }
-        Toast.makeText(context, "invoiceYM=" + invoceYm, Toast.LENGTH_SHORT).show();
+
         run(invoceYm);
 
     }
@@ -124,6 +124,8 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
         void onFinish();
 
+        void onSucessful(OutInfo outInfo);
+
     }
 
     private class OnValueChangeListenerAdapter implements OnValueChangeListener {
@@ -140,6 +142,11 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
         @Override
         public void onFinish() {
+
+        }
+
+        @Override
+        public void onSucessful(OutInfo outInfo) {
 
         }
 
@@ -175,6 +182,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 OutInfo info = new OutInfo(bean);
                 StagingView.this.outInfo = info;
 
+                StagingView.this.onValueChangeListener.onSucessful(info);
 
 
             } catch (InvoiceBusinessException e) {

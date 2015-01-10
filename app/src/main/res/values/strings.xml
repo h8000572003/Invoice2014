@@ -64,4 +64,5 @@
 
     <string name="next_label">下一期</string>
     <string name="before_label">上一期</string>
+    <string name="status_label"></string>
 </resources>

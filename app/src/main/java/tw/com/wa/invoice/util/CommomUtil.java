@@ -84,15 +84,14 @@ public class CommomUtil {
             //二十五
             final int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
             if (nowDay >= 25) {
-                calendar.set(Calendar.DAY_OF_MONTH, 25);
+                calendar.add(Calendar.MONTH, -1);
             } else {
-                calendar.add(Calendar.MONTH, -2);
+                calendar.add(Calendar.MONTH, -3);
             }
             return getTwYearMon(calendar);
 
         } else {
-            calendar.add(Calendar.MONTH, -1);
-            calendar.set(Calendar.DAY_OF_MONTH, 25);
+            calendar.add(Calendar.MONTH, -2);
 
             return getTwYearMon(calendar);
         }
