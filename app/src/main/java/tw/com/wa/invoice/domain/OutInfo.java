@@ -13,7 +13,7 @@ import tw.com.wa.invoice.util.InvoYm;
  */
 public class OutInfo implements WiningInfo {
 
-    private final static String TITLE_TEMPLATE = "%04d/%02d-%04d/%02d";
+    private final static String TITLE_TEMPLATE = "%04d/%02d-%02d";
     private InvoiceInfoV2 infoV2 = null;
     private List<Invoice> invoices = null;
     private InvoYm invoYm;
@@ -61,7 +61,7 @@ public class OutInfo implements WiningInfo {
 
     private void makeTitle() {
         int year = Integer.parseInt(bean.getInvoYm().substring(0, 3)) + 1911;
-        this.title = String.format(TITLE_TEMPLATE, year, Integer.parseInt(bean.getInvoYm().substring(3)) - 1, year, Integer.parseInt(bean.getInvoYm().substring(3)));
+        this.title = String.format(TITLE_TEMPLATE, year, Integer.parseInt(bean.getInvoYm().substring(3)) - 1,  Integer.parseInt(bean.getInvoYm().substring(3)));
     }
 
     private List<Invoice> makeSixPrize() {

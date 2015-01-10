@@ -94,7 +94,11 @@ public class MainActivityV2 extends ActionBarActivity {
             public void onFinish() {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        dialog.dismiss();
+                        if(dialog!=null&&dialog.isShowing()){
+                            dialog.dismiss();
+                            dialog=null;
+                        }
+
 
                     }
                 });

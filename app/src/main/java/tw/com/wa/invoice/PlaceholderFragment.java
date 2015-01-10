@@ -146,13 +146,13 @@ public class PlaceholderFragment extends Fragment {
         });
         this.setInvoiceNumAdapter();
 
-
-        try {
-            CommomUtil.checkIsOverDateOfAward(BeanUtil.infoV2);
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            this.ccalendarBtn.setEnabled(false);
-        }
+//
+//        try {
+//            CommomUtil.checkIsOverDateOfAward(BeanUtil.infoV2);
+//        } catch (Exception e) {
+//            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+//            this.ccalendarBtn.setEnabled(false);
+//        }
 
 
         return rootView;

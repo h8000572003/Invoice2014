@@ -85,55 +85,8 @@ public class LoadingActivity extends Activity {
 
     }
 
-    /**
-     * @param title
-     * @return
-     * @throws Exception
-     */
-    private List<Invoice> getInvoices(String title) throws Exception {
 
 
-        final ParseQuery<Invoice> query =
-                ParseQuery.getQuery(Invoice.class);
-        query.whereEqualTo("title", title);
-
-        try {
-            List<Invoice> invoices = query.find();
-            return invoices;
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            throw new InvoiceBusinessException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
-        }
-
-
-    }
-
-    private List<InvoiceInfoV2> getInvoiceInf() throws Exception {
-
-
-        final ParseQuery<InvoiceInfoV2> inVoiceInfoParseQuery =
-                ParseQuery.getQuery(InvoiceInfoV2.class);
-        inVoiceInfoParseQuery.addAscendingOrder("createdAt");
-
-        //  inVoiceInfoParseQuery.whereEqualTo("isCheck", true);
-
-        try {
-            List<InvoiceInfoV2> inVoiceInfons = inVoiceInfoParseQuery.find();
-            return inVoiceInfons;
-
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            throw new InvoiceBusinessException("取得得獎發票錯誤，請確定網路正常再嘗試看看");
-        }
-
-
-    }
-
-    private void load() throws InvoiceBusinessException {
-
-        this.service.loadData(this.dto, this.activity);
-    }
 
     private class LoadAsyncTask extends AsyncTask<String, String, String> {
 
@@ -150,6 +103,7 @@ public class LoadingActivity extends Activity {
         protected String doInBackground(String... params) {
 
 
+
             ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
 
             NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
@@ -159,65 +113,12 @@ public class LoadingActivity extends Activity {
             }
 
 
-            WiningsAdapter adapter = new WiningsAdapter(CommomUtil.getLastYm());
-            WiningsMarker<WiningBean> marker = new WiningsMarker();
-            marker.setAdapter(adapter);
-
-
-            try {
-                load();
-                this.deletOldData();
-                this.downloadDataAndInsert2Local();
-
-
-            } catch (Exception e) {
-                return "取得得獎發票錯誤，請確定網路正常再嘗試看看";
-            } finally {
-
-            }
-
-
             return null;
         }
 
-        private void deletOldData() throws RuntimeException {
-            try {
-                List<InvoiceInfoV2> releaseInfos = BeanUtil.getInvoiceInfByLocal();
-                List<Invoice> releaseInvoice = BeanUtil.getInvoicesByLocal();
-
-                for (InvoiceInfoV2 info : releaseInfos) {
-                    info.unpin();
-                }
-                for (Invoice info : releaseInvoice) {
-                    info.unpin();
-                }
-
-            } catch (Exception e) {
-                Log.e(TAG, "e:" + e);
-            }
-        }
-
-        private void downloadDataAndInsert2Local() throws RuntimeException {
-
-            try {
 
 
-                for (InvoiceInfoV2 info : getInvoiceInf()) {
-                    info.pinInBackground();
-                    List<Invoice> invoices = getInvoices(info.getTitle());
-                    for (Invoice invoice : invoices) {
-                        invoice.pinInBackground();
-                    }
-                    info.getInvoice().addAll(invoices);
 
-
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "e:" + e);
-                throw new RuntimeException(e.getMessage());
-            }
-
-        }
 
 
         @Override
@@ -246,7 +147,7 @@ public class LoadingActivity extends Activity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         statuLabel.setVisibility(View.INVISIBLE);
-                        Intent it = new Intent(LoadingActivity.this, MainActivity.class);
+                        Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
                         startActivity(it);
                         finish();
 
