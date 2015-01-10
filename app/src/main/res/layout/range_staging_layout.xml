@@ -8,26 +8,29 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:id="@+id/beforeBtn"
         android:layout_weight="1"
-        android:text="<" />
+        android:text="@string/before_label" />
+
 
     <TextView
-        android:id="@+id/monthSpinner"
+        android:id="@+id/stagingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="5"
         android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:hint="期數"
+        android:textColor="@color/white"
         android:spinnerMode="dropdown" />
 
 
     <Button
-
+        android:id="@+id/nextBtn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text=">" />
+        android:text="@string/next_label" />
 
 </LinearLayout>

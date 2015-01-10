@@ -5,7 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/range_staging_layout"></include>
+    <tw.com.wa.invoice.ui.StagingView
+        android:id="@+id/stagingView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"></tw.com.wa.invoice.ui.StagingView>
 
 
     <RelativeLayout
@@ -17,20 +20,19 @@
         android:layout_marginTop="5dp"
         android:orientation="vertical">
 
-        <tw.com.wa.invoice.ui.KeyBoardView
+        <tw.com.wa.invoice.ui.KeyBoardLayout
             android:id="@+id/keyboardLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
-        </tw.com.wa.invoice.ui.KeyBoardView>
+        </tw.com.wa.invoice.ui.KeyBoardLayout>
 
 
         <LinearLayout
             android:id="@+id/content"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@+id/keyboardLayout"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"

@@ -61,4 +61,7 @@
     <string name="downloadFromGooglePlay">請先安裝QR CODE 掃描APP，將可以用QR CODE 掃描方式對發票。</string>
 
     <string name="teachingCamera">點擊此按鈕可以使用QR CODE對發票</string>
+
+    <string name="next_label">下一期</string>
+    <string name="before_label">上一期</string>
 </resources>
