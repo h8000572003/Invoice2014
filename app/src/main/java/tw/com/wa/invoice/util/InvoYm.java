@@ -37,6 +37,23 @@ public class InvoYm {
         return newYm;
     }
 
+    /**
+     * 取得領獎區間
+     * @return
+     */
+    public InvoYm getAwardRangDate(){
+
+        final InvoYm newYm = new InvoYm(this.beging, this.end);
+        newYm.beging.add(Calendar.MONTH,+3);
+        newYm.beging.set(Calendar.DAY_OF_MONTH,6);
+
+
+        newYm.end.setTime(newYm.beging.getTime());
+        newYm.end.add(Calendar.MONTH,+3);
+        return newYm;
+
+    }
+
     public Calendar getEnd() {
         return end;
     }

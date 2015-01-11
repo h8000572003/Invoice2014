@@ -66,9 +66,8 @@ public class MainActivityV2 extends ActionBarActivity {
 
 
 
-        this.stagingView.run( CommomUtil.getLastYm());
-        this.setKeyBoardListener();
 
+        this.setKeyBoardListener();
 
         this.stagingView.setOnValueChangeListener(new StagingView.OnValueChangeListener() {
             @Override
@@ -83,9 +82,10 @@ public class MainActivityV2 extends ActionBarActivity {
 
             @Override
             public void onLoad() {
+                dialog=ProgressDialog.show(MainActivityV2.this,"","取得發票資訊",true,false);
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        dialog=ProgressDialog.show(MainActivityV2.this,"","取得發票資訊",true,false);
+
                     }
                 });
             }
@@ -113,6 +113,8 @@ public class MainActivityV2 extends ActionBarActivity {
                 dto.setInvoices(info.getInvoice());
             }
         });
+
+        this.stagingView.run( CommomUtil.getLastYm());
 
     }
     /**
@@ -167,7 +169,6 @@ public class MainActivityV2 extends ActionBarActivity {
         });
     }
     private void work2Continue(String value) {
-
         showNumberDiaglog();
     }
     private void showNumberDiaglog() {

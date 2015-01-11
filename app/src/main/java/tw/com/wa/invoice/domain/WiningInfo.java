@@ -12,11 +12,13 @@ public interface WiningInfo {
 
     public String getTitle();
 
-    public String getStagingYm();
 
-    public String getInfo();
+
+
 
     public InvoYm getStages();
+
+
 
 
 }

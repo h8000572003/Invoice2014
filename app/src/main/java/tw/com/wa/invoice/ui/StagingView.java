@@ -30,6 +30,7 @@ import tw.com.wa.invoice.util.InvoiceBusinessException;
  */
 public class StagingView extends LinearLayout implements View.OnClickListener {
 
+    private static final String TAG = "StagingView";
     private Button beforeBtn = null;
     private Button nextBtn = null;
     private TextView stagingText = null;
@@ -122,6 +123,10 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
                 StringBuffer message=new StringBuffer();
                 for(Invoice invoice:invoiceList){
+
+                    Log.i(TAG,"invoice="+invoice.getAwards()+"/"+invoice.getAwards());
+                    Log.i(TAG,"number="+invoice.getNumber());
+
                     message.append( Award.lookup(invoice.getAwards()).message);
                     message.append(":");
                     message.append(invoice.getNumber());
@@ -192,8 +197,13 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected void onPreExecute() {
             StagingView.this.onValueChangeListener.onLoad();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
 
 
             try {

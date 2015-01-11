@@ -29,13 +29,11 @@ public class OutInfo implements WiningInfo {
         this.stagingYm = DateUtil.yyymm(this.invoYm.getEnd());
 
 
-  }
-    public InvoiceInfoV2 getInfoV2(){
-       return this.infoV2;
     }
 
-
-
+    public InvoiceInfoV2 getInfoV2() {
+        return this.infoV2;
+    }
 
 
     private InvoiceInfoV2 makeInvoiceInfo() {
@@ -61,152 +59,65 @@ public class OutInfo implements WiningInfo {
 
     private void makeTitle() {
         int year = Integer.parseInt(bean.getInvoYm().substring(0, 3)) + 1911;
-        this.title = String.format(TITLE_TEMPLATE, year, Integer.parseInt(bean.getInvoYm().substring(3)) - 1,  Integer.parseInt(bean.getInvoYm().substring(3)));
+        this.title = String.format(TITLE_TEMPLATE, year, Integer.parseInt(bean.getInvoYm().substring(3)) - 1, Integer.parseInt(bean.getInvoYm().substring(3)));
+    }
+
+    private void addInvoice(Award award, List<Invoice> invoices, String number) {
+        if (!TextUtils.isEmpty(number)) {
+
+            Invoice invoice01 = new Invoice();
+            invoice01.setTitle(getTitle());
+            invoice01.setAwards(award.unCode);
+            invoice01.setNumber(number);
+            invoice01.setSpecialize(true);
+            invoices.add(invoice01);
+
+        }
     }
 
     private List<Invoice> makeSixPrize() {
         List<Invoice> invoiceList = new ArrayList<>();
 
-        if (!TextUtils.isEmpty(bean.getSixthPrizeNo1())) {
 
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Exactsix.unCode);
-            invoice01.setNumber(bean.getFirstPrizeNo1());
-            invoice01.setSpecialize(true);
-            invoiceList.add(invoice01);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo1());
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo2());
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo3());
 
-        }
-        if (!TextUtils.isEmpty(bean.getSixthPrizeNo2())) {
 
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Exactsix.unCode);
-            invoice01.setNumber(bean.getSixthPrizeNo2());
-            invoice01.setSpecialize(true);
-            invoiceList.add(invoice01);
-
-        }
-        if (!TextUtils.isEmpty(bean.getSixthPrizeNo3())) {
-
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Exactsix.unCode);
-            invoice01.setNumber(bean.getSixthPrizeNo3());
-            invoice01.setSpecialize(true);
-            invoiceList.add(invoice01);
-
-        }
         return invoiceList;
     }
 
 
     private List<Invoice> makeFirstPrize() {
-        List<Invoice> invoiceList = new ArrayList<>();
-        if (!TextUtils.isEmpty(bean.getFirstPrizeNo1())) {
 
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Top.unCode);
-            invoice01.setNumber(bean.getFirstPrizeNo1());
-            invoice01.setSpecialize(false);
-            invoiceList.add(invoice01);
+        final List<Invoice> invoiceList = new ArrayList<>();
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo1());
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo2());
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo3());
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo4());
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo5());
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo6());
 
-        }
-        if (!TextUtils.isEmpty(bean.getFirstPrizeNo2())) {
-
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Top.unCode);
-            invoice01.setNumber(bean.getFirstPrizeNo2());
-            invoice01.setSpecialize(false);
-            invoiceList.add(invoice01);
-
-        }
-        if (!TextUtils.isEmpty(bean.getFirstPrizeNo3())) {
-
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Top.unCode);
-            invoice01.setNumber(bean.getFirstPrizeNo3());
-            invoice01.setSpecialize(false);
-            invoiceList.add(invoice01);
-
-        }
-        if (!TextUtils.isEmpty(bean.getFirstPrizeNo4())) {
-
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Top.unCode);
-            invoice01.setNumber(bean.getFirstPrizeNo4());
-            invoice01.setSpecialize(false);
-            invoiceList.add(invoice01);
-
-        }
-        if (!TextUtils.isEmpty(bean.getFirstPrizeNo5())) {
-
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Top.unCode);
-            invoice01.setNumber(bean.getFirstPrizeNo5());
-            invoice01.setSpecialize(false);
-            invoiceList.add(invoice01);
-
-        }
-        if (!TextUtils.isEmpty(bean.getFirstPrizeNo6())) {
-
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Top.unCode);
-            invoice01.setNumber(bean.getFirstPrizeNo6());
-            invoice01.setSpecialize(false);
-            invoiceList.add(invoice01);
-        }
         return invoiceList;
     }
 
 
     private List<Invoice> makeSuperPrize() {
-        List<Invoice> invoiceList = new ArrayList<>();
-        if (!TextUtils.isEmpty(bean.getSuperPrizeNo())) {
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Veryspecial.unCode);
-            invoice01.setNumber(bean.getSuperPrizeNo());
-            invoice01.setSpecialize(true);
-            invoiceList.add(invoice01);
-        }
+
+        final List<Invoice> invoiceList = new ArrayList<>();
+        this.addInvoice(Award.Veryspecial, invoiceList, bean.getSuperPrizeNo());
+
         return invoiceList;
     }
 
     private List<Invoice> makeSpcPrize() {
 
-        List<Invoice> invoiceList = new ArrayList<>();
-        if (!TextUtils.isEmpty(bean.getSpcPrizeNo())) {
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Special.unCode);
-            invoice01.setNumber(bean.getSpcPrizeNo());
-            invoice01.setSpecialize(true);
-            invoiceList.add(invoice01);
-        }
-        if (!TextUtils.isEmpty(bean.getSpcPrizeNo2())) {
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Special.unCode);
-            invoice01.setNumber(bean.getSpcPrizeNo2());
-            invoice01.setSpecialize(true);
-            invoiceList.add(invoice01);
+        final List<Invoice> invoiceList = new ArrayList<>();
 
-        }
-        if (!TextUtils.isEmpty(bean.getSpcPrizeNo3())) {
-            Invoice invoice01 = new Invoice();
-            invoice01.setTitle(getTitle());
-            invoice01.setAwards(Award.Special.unCode);
-            invoice01.setNumber(bean.getSpcPrizeNo3());
-            invoice01.setSpecialize(true);
-            invoiceList.add(invoice01);
-        }
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo());
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo2());
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo3());
+
 
         return invoiceList;
     }
@@ -225,26 +136,15 @@ public class OutInfo implements WiningInfo {
 
     @Override
     public String getTitle() {
-        return this.infoV2.getTitle();
+        return this.title;
     }
 
-    @Override
-    public String getStagingYm() {
-        return null;
-    }
 
-    @Override
-    public String getInfo() {
-        return null;
-    }
 
     @Override
     public InvoYm getStages() {
         return this.invoYm;
     }
-
-
-
 
 
 }
