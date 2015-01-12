@@ -106,7 +106,7 @@ public class MainActivityV2 extends ActionBarActivity {
             }
 
             @Override
-            public void onSucessful(WiningInfo outInfo) {
+            public void onSuccessfully(WiningInfo outInfo) {
                 OutInfo info = stagingView.getOutInfo();
 
                 dto.setInfo(outInfo);
@@ -163,11 +163,9 @@ public class MainActivityV2 extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MainActivityV2.this, AwardActivity.class);
-                //   Serializable serializable=dto.getInfo();
 
                 Bundle bundle = new Bundle();
                 bundle.putString("Ym", dto.getInfo().getStages().getAwardRangDate().toString());
-
                 it.putExtras(bundle);
 
                 BeanUtil.info = dto.getInfo();

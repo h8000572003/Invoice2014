@@ -160,7 +160,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
         void onFinish();
 
-        void onSucessful(WiningInfo winingInfo);
+        void onSuccessfully(WiningInfo winingInfo);
 
     }
 
@@ -182,7 +182,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         }
 
         @Override
-        public void onSucessful(WiningInfo winingInfo) {
+        public void onSuccessfully(WiningInfo winingInfo) {
 
         }
 
@@ -223,7 +223,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 OutInfo info = new OutInfo(bean);
                 StagingView.this.outInfo = info;
 
-                StagingView.this.onValueChangeListener.onSucessful(info);
+                StagingView.this.onValueChangeListener.onSuccessfully(info);
 
 
             } catch (InvoiceBusinessException e) {
