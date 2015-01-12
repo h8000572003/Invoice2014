@@ -42,17 +42,18 @@ public class InvoYm {
 
     /**
      * 取得領獎區間
+     *
      * @return
      */
-    public InvoYm getAwardRangDate(){
+    public InvoYm getAwardRangDate() {
 
         final InvoYm newYm = new InvoYm(this.beging, this.end);
-        newYm.beging.add(Calendar.MONTH,+3);
-        newYm.beging.set(Calendar.DAY_OF_MONTH,6);
+        newYm.beging.add(Calendar.MONTH, +3);
+        newYm.beging.set(Calendar.DAY_OF_MONTH, 6);
 
 
         newYm.end.setTime(newYm.beging.getTime());
-        newYm.end.add(Calendar.MONTH,+3);
+        newYm.end.add(Calendar.MONTH, +3);
         return newYm;
 
     }
@@ -77,14 +78,20 @@ public class InvoYm {
     public String toString() {
 
         int beginYear = beging.get(Calendar.YEAR);
-        int beginMon = beging.get(Calendar.MONTH) +1;
+        int beginMon = beging.get(Calendar.MONTH) + 1;
 
 
         int lastYear = end.get(Calendar.YEAR);
         int lastMon = end.get(Calendar.MONTH) + 1;
 
-        return String.format("%03d/%02d/6-%03d/%02d/5", beginYear, beginMon,lastYear,lastMon);
+        return String.format("%03d/%02d/6-%03d/%02d/5", beginYear, beginMon, lastYear, lastMon);
     }
 
+    public String getStatge() {
+        int lastYear = end.get(Calendar.YEAR) - 1911;
+        int lastMon = end.get(Calendar.MONTH) + 1;
+
+        return String.format("%03d%02d", lastYear, lastMon);
+    }
 
 }

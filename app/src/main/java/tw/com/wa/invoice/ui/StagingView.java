@@ -89,15 +89,15 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.nextBtn:
-                invoceYm = InvoYm.after(invoYm).toString();
+                invoceYm = InvoYm.after(invoYm).getStatge();
                 break;
 
             case R.id.beforeBtn:
-                invoceYm = InvoYm.before(invoYm).toString();
+                invoceYm = InvoYm.before(invoYm).getStatge();
                 break;
 
             default:
-                invoceYm = invoYm.toString();
+                invoceYm = invoYm.getStatge();
                 break;
         }
 
