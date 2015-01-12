@@ -28,6 +28,7 @@ import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
+import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.NumberAdapter;
 
@@ -52,6 +53,8 @@ public class PlaceholderFragment extends Fragment {
     private TextView blankView = null;
     private TextView dateOfAwardView = null;
 
+    private String awardYm = null;
+
 
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -72,7 +75,14 @@ public class PlaceholderFragment extends Fragment {
 
 
     public PlaceholderFragment() {
+
+
         keyIns = BeanUtil.allInvoices;
+
+
+
+
+
     }
 
     /**
@@ -82,6 +92,7 @@ public class PlaceholderFragment extends Fragment {
     public static PlaceholderFragment newInstance(int sectionNumber, List<InvoiceKeyIn> keyIns) {
 
         final PlaceholderFragment fragment = new PlaceholderFragment();
+
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -94,6 +105,16 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        Intent it =
+                getActivity().getIntent();
+
+        Bundle bundle =
+                it.getExtras();
+
+
+        awardYm =  bundle.getString("Ym");
 
 
     }
@@ -119,7 +140,7 @@ public class PlaceholderFragment extends Fragment {
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
 
-        this.dateOfAwardView.setText(CommomUtil.getTitleDate(BeanUtil.infoV2, getActivity()));
+        this.dateOfAwardView.setText(awardYm);
 
 
         this.laySwipe.setOnRefreshListener(onSwipeToRefresh);

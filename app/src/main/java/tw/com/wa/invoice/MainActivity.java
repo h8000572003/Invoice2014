@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -261,6 +263,38 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private class KeyBoardListener implements KeyBoardLayout.OnValueChangeListener {
+
+
+        @Override
+        public void onChange(String value) {
+            messageLabel.setText(getString(R.string.plsEnter));
+
+            if (value.length() == 3) {
+                keyBoard.cleanValueWithoutUI();
+
+                final CheckStatus checkStatus =
+                        commomUtil.checkAward3Number(value, dto.getInvoices());
+
+                switch (checkStatus) {
+                    case None:
+                        messageLabel.setText(R.string.no_award_change);
+                        break;
+
+                    case Continue:
+                        messageLabel.setText(R.string.haveOpportunity);
+                        work2Continue(value);
+                        break;
+
+                    case Get:
+                        messageLabel.setText(getString(R.string.get6Award));
+                        workForSixAward(value);
+                        break;
+                }
+
+            }
+        }
+    }
     /**
      * 設定鍵盤監控事件
      */
@@ -268,38 +302,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         this.keyBoard.setMonitorView(this.invoviceLabel);
-        this.keyBoard.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
-            @Override
-            public void onChange(String value) {
-
-                messageLabel.setText(getString(R.string.plsEnter));
-
-                if (value.length() == 3) {
-                    keyBoard.cleanValueWithoutUI();
-
-                    final CheckStatus checkStatus =
-                            commomUtil.checkAward3Number(value, dto.getInvoices());
-
-                    switch (checkStatus) {
-                        case None:
-                            messageLabel.setText(R.string.no_award_change);
-                            break;
-
-                        case Continue:
-                            messageLabel.setText(R.string.haveOpportunity);
-                            work2Continue(value);
-                            break;
-
-                        case Get:
-                            messageLabel.setText(getString(R.string.get6Award));
-                            workForSixAward(value);
-                            break;
-                    }
-
-                }
-            }
-        });
-
+        this.keyBoard.setOnValueChangeListener(new KeyBoardListener());
         this.cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -323,6 +326,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, AwardActivity.class);
+                Serializable serializable=dto.getInfo();
+                it.putExtra("Ym",serializable);
 
                 BeanUtil.infoV2 = dto.getInvoiceInfoV2();
                 startActivityForResult(it, GO_SEE_INVOICE_CODE);

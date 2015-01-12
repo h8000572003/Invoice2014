@@ -18,12 +18,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
 import tw.com.wa.invoice.domain.MainDTO;
 import tw.com.wa.invoice.domain.OutInfo;
+import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.ui.KeyBoardLayout;
 import tw.com.wa.invoice.ui.StagingView;
 import tw.com.wa.invoice.util.CommomUtil;
@@ -106,9 +109,10 @@ public class MainActivityV2 extends ActionBarActivity {
             }
 
             @Override
-            public void onSucessful(OutInfo outInfo) {
+            public void onSucessful(WiningInfo outInfo) {
                 OutInfo info=stagingView.getOutInfo();
 
+                dto.setInfo(outInfo);
                 dto.setInvoiceInfoV2(info.getInfoV2());
                 dto.setInvoices(info.getInvoice());
             }
@@ -161,6 +165,12 @@ public class MainActivityV2 extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MainActivityV2.this, AwardActivity.class);
+                Serializable serializable=dto.getInfo();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("Ym",dto.getInfo().getStages().getAwardRangDate().toString());
+
+                it.putExtras(bundle);
 
                 BeanUtil.infoV2 = dto.getInvoiceInfoV2();
                 startActivityForResult(it, GO_SEE_INVOICE_CODE);

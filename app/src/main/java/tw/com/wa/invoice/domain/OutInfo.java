@@ -1,5 +1,6 @@
 package tw.com.wa.invoice.domain;
 
+import android.os.Parcel;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -145,6 +146,7 @@ public class OutInfo implements WiningInfo {
     public InvoYm getStages() {
         return this.invoYm;
     }
+
 
 
 }

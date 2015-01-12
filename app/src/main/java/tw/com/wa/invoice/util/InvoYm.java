@@ -1,11 +1,14 @@
 package tw.com.wa.invoice.util;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Calendar;
 
 /**
  * Created by Andy on 2015/1/9.
  */
-public class InvoYm {
+public class InvoYm implements Parcelable {
     private Calendar beging;
     private Calendar end;
 
@@ -72,9 +75,24 @@ public class InvoYm {
 
     @Override
     public String toString() {
-        int year = end.get(Calendar.YEAR)-1911;
-        int mon = end.get(Calendar.MONTH) + 1;
 
-        return String.format("%03d%02d", year, mon);
+        int beginYear = beging.get(Calendar.YEAR);
+        int beginMon = beging.get(Calendar.MONTH) ;
+
+
+        int lastYear = end.get(Calendar.YEAR);
+        int lastMon = end.get(Calendar.MONTH) + 1;
+
+        return String.format("%03d%02d-%03d%02d", beginYear, beginMon,lastYear,lastMon);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString("content",this.toString());
     }
 }

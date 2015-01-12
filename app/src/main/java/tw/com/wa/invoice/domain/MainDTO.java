@@ -9,10 +9,11 @@ import java.util.List;
 public class MainDTO {
 
 
-
     private List<Invoice> invoices = null;
-    //private List<InvoiceKeyIn> keyIns = new ArrayList<>();
+
     private InvoiceInfoV2 invoiceInfoV2;
+
+    private WiningInfo info;
 
 
     public InvoiceInfoV2 getInvoiceInfoV2() {
@@ -24,7 +25,6 @@ public class MainDTO {
     }
 
 
-
     public List<Invoice> getInvoices() {
         return invoices;
     }
@@ -34,11 +34,11 @@ public class MainDTO {
     }
 
 
-//    public List<InvoiceKeyIn> getKeyIns() {
-//        return keyIns;
-//    }
-//
-//    public void setKeyIns(List<InvoiceKeyIn> keyIns) {
-//        this.keyIns = keyIns;
-//    }
+    public WiningInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(WiningInfo info) {
+        this.info = info;
+    }
 }

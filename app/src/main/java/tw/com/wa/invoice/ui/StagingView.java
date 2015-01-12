@@ -19,6 +19,7 @@ import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningBean;
+import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.marker.ApiGetter;
 import tw.com.wa.invoice.marker.WiningsAdapter;
 import tw.com.wa.invoice.util.DateUtil;
@@ -157,7 +158,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
         void onFinish();
 
-        void onSucessful(OutInfo outInfo);
+        void onSucessful(WiningInfo winingInfo);
 
     }
 
@@ -179,7 +180,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         }
 
         @Override
-        public void onSucessful(OutInfo outInfo) {
+        public void onSucessful(WiningInfo winingInfo) {
 
         }
 
