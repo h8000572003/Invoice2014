@@ -326,8 +326,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, AwardActivity.class);
-                Serializable serializable=dto.getInfo();
-                it.putExtra("Ym",serializable);
+              //  Serializable serializable=dto.getInfo();
+            //    it.putExtra("Ym",dto.getInfo().getStages().getAwardRangDate().toString());
 
                 BeanUtil.infoV2 = dto.getInvoiceInfoV2();
                 startActivityForResult(it, GO_SEE_INVOICE_CODE);

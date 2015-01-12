@@ -8,7 +8,7 @@ import java.util.Calendar;
 /**
  * Created by Andy on 2015/1/9.
  */
-public class InvoYm implements Parcelable {
+public class InvoYm {
     private Calendar beging;
     private Calendar end;
 
@@ -77,22 +77,14 @@ public class InvoYm implements Parcelable {
     public String toString() {
 
         int beginYear = beging.get(Calendar.YEAR);
-        int beginMon = beging.get(Calendar.MONTH) ;
+        int beginMon = beging.get(Calendar.MONTH) +1;
 
 
         int lastYear = end.get(Calendar.YEAR);
         int lastMon = end.get(Calendar.MONTH) + 1;
 
-        return String.format("%03d%02d-%03d%02d", beginYear, beginMon,lastYear,lastMon);
+        return String.format("%03d/%02d/6-%03d/%02d/5", beginYear, beginMon,lastYear,lastMon);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString("content",this.toString());
-    }
 }

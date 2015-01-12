@@ -123,6 +123,8 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 List<Invoice> invoiceList= outInfo.getInvoice();
 
                 StringBuffer message=new StringBuffer();
+                message.append(context.getString(R.string.dateOfAward)+":");
+                message.append(outInfo.getStages().getAwardRangDate().toString()+"\n");
                 for(Invoice invoice:invoiceList){
 
                     Log.i(TAG,"invoice="+invoice.getAwards()+"/"+invoice.getAwards());
