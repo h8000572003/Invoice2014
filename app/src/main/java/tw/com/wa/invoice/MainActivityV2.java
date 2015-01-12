@@ -56,6 +56,7 @@ public class MainActivityV2 extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+
         this.dto = new MainDTO();
         this.myVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -209,6 +210,7 @@ public class MainActivityV2 extends ActionBarActivity {
     private void workForSixAward(String value) {
         InvoiceKeyIn keyIn = new InvoiceKeyIn(value);
         keyIn.setAward(Award.Exactsix);
+
         BeanUtil.allInvoices.add(keyIn);
 
         myVibrator.vibrate(200);

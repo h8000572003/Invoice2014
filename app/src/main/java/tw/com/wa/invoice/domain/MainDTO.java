@@ -9,12 +9,22 @@ import java.util.List;
 public class MainDTO {
 
 
+    private Winning winning = new Winning();
     private List<Invoice> invoices = null;
 
     private InvoiceInfoV2 invoiceInfoV2;
 
     private WiningInfo info;
 
+
+    public Winning getWinning() {
+
+        return winning;
+    }
+
+    public void setWinning(Winning winning) {
+        this.winning = winning;
+    }
 
     public InvoiceInfoV2 getInvoiceInfoV2() {
         return invoiceInfoV2;
