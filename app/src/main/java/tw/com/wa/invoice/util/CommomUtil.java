@@ -14,6 +14,7 @@ import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceInfoV2;
+import tw.com.wa.invoice.domain.WiningInfo;
 
 /**
  * Created by Andy on 14/12/9.
@@ -26,9 +27,9 @@ public class CommomUtil {
 
     static final int LAST_CHAR = 8;
 
-    public static void checkIsOverDateOfAward(InvoiceInfoV2 invoiceInfo) throws RuntimeException {
+    public static void checkIsOverDateOfAward(WiningInfo info) throws RuntimeException {
         Date nowDate = new Date();
-        if (nowDate.after(invoiceInfo.getDateOfEnd())) {
+        if (nowDate.after(info.getStages().getAwardRangDate().getEnd().getTime())) {
             throw new RuntimeException("此期發票已經超過領獎時間");
         }
     }
@@ -37,14 +38,17 @@ public class CommomUtil {
     /*
     取得合理時間時間
      */
-    public static Date getDateOfSanity(InvoiceInfoV2 invoiceInfo) throws RuntimeException {
-        checkIsOverDateOfAward(invoiceInfo);
+    public static Date getDateOfSanity(WiningInfo info) throws RuntimeException {
+        checkIsOverDateOfAward(info);
 
         Date nowDate = new Date();
-        if (nowDate.before(invoiceInfo.getDateOfBegin())) {//還不到領獎時間
-            return invoiceInfo.getDateOfBegin();
 
-        } else if (nowDate.before(invoiceInfo.getDateOfEnd())) {//再領獎日期截止之前
+        InvoYm awrard = info.getStages().getAwardRangDate();
+
+        if (nowDate.before(awrard.getBeging().getTime())) {//還不到領獎時間
+            return awrard.getBeging().getTime();
+
+        } else if (nowDate.before(awrard.getEnd().getTime())) {//再領獎日期截止之前
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(nowDate);
             calendar.add(Calendar.DAY_OF_MONTH, 1);//+一天

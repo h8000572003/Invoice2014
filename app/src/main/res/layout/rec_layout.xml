@@ -67,7 +67,7 @@
         </LinearLayout>
 
         <include
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/bottombar"
             layout="@layout/bottom_view"
             android:layout_width="match_parent"

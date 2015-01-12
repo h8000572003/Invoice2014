@@ -51,7 +51,6 @@ public class MainActivityV2 extends ActionBarActivity {
     private ProgressDialog dialog;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +66,6 @@ public class MainActivityV2 extends ActionBarActivity {
         this.addCalendarBtn = (Button) this.findViewById(R.id.addCalendarBtn);
 
 
-
-
-
         this.setKeyBoardListener();
 
         this.stagingView.setOnValueChangeListener(new StagingView.OnValueChangeListener() {
@@ -77,7 +73,7 @@ public class MainActivityV2 extends ActionBarActivity {
             public void onFail(final Throwable e, final String messsage) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(MainActivityV2.this,messsage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivityV2.this, messsage, Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -85,7 +81,7 @@ public class MainActivityV2 extends ActionBarActivity {
 
             @Override
             public void onLoad() {
-                dialog=ProgressDialog.show(MainActivityV2.this,"","取得發票資訊",true,false);
+                dialog = ProgressDialog.show(MainActivityV2.this, "", "取得發票資訊", true, false);
                 runOnUiThread(new Runnable() {
                     public void run() {
 
@@ -97,9 +93,9 @@ public class MainActivityV2 extends ActionBarActivity {
             public void onFinish() {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        if(dialog!=null&&dialog.isShowing()){
+                        if (dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
-                            dialog=null;
+                            dialog = null;
                         }
 
 
@@ -110,7 +106,7 @@ public class MainActivityV2 extends ActionBarActivity {
 
             @Override
             public void onSucessful(WiningInfo outInfo) {
-                OutInfo info=stagingView.getOutInfo();
+                OutInfo info = stagingView.getOutInfo();
 
                 dto.setInfo(outInfo);
                 dto.setInvoiceInfoV2(info.getInfoV2());
@@ -118,9 +114,10 @@ public class MainActivityV2 extends ActionBarActivity {
             }
         });
 
-        this.stagingView.run( CommomUtil.getLastYm());
+        this.stagingView.run(CommomUtil.getLastYm());
 
     }
+
     /**
      * 設定鍵盤監控事件
      */
@@ -165,22 +162,24 @@ public class MainActivityV2 extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MainActivityV2.this, AwardActivity.class);
-             //   Serializable serializable=dto.getInfo();
+                //   Serializable serializable=dto.getInfo();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("Ym",dto.getInfo().getStages().getAwardRangDate().toString());
+                bundle.putString("Ym", dto.getInfo().getStages().getAwardRangDate().toString());
 
                 it.putExtras(bundle);
 
-                BeanUtil.infoV2 = dto.getInvoiceInfoV2();
+                BeanUtil.info = dto.getInfo();
                 startActivityForResult(it, GO_SEE_INVOICE_CODE);
 
             }
         });
     }
+
     private void work2Continue(String value) {
         showNumberDiaglog();
     }
+
     private void showNumberDiaglog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_layout, null);
@@ -206,6 +205,7 @@ public class MainActivityV2 extends ActionBarActivity {
         });
 
     }
+
     private void workForSixAward(String value) {
         InvoiceKeyIn keyIn = new InvoiceKeyIn(value);
         keyIn.setAward(Award.Exactsix);
@@ -240,6 +240,7 @@ public class MainActivityV2 extends ActionBarActivity {
 
 
     }
+
     private void check8NumberAction(String value) {
         Award award = commomUtil.checkAward(value, dto.getInvoices());
 

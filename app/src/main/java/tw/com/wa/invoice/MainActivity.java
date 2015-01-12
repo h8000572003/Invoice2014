@@ -113,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
         this.dto = new MainDTO();
         this.myVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        this.map = BeanUtil.getMap();
+   //     this.map = BeanUtil.getMap();
         new SettingJob(map).execute();
 
 
@@ -329,7 +329,7 @@ public class MainActivity extends ActionBarActivity {
               //  Serializable serializable=dto.getInfo();
             //    it.putExtra("Ym",dto.getInfo().getStages().getAwardRangDate().toString());
 
-                BeanUtil.infoV2 = dto.getInvoiceInfoV2();
+            //    BeanUtil.infoV2 = dto.getInvoiceInfoV2();
                 startActivityForResult(it, GO_SEE_INVOICE_CODE);
 
             }
@@ -468,7 +468,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            this.map = BeanUtil.getMap();
+       //     this.map = BeanUtil.getMap();
             setViewById();
             setKeyBoardListener();
             setInvoiceDataAdapter();
