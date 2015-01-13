@@ -25,6 +25,8 @@ public class BeanUtil {
     public static WiningInfo info = null;
     public static WiningBean WiningBean = null;
 
+    public static  OutInfo outInfo;
+
     public static List<Invoice> getInvoicesByLocal(String title) throws Exception {
 
 

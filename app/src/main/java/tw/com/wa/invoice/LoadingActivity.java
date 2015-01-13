@@ -8,29 +8,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.parse.ParseQuery;
-
-import java.util.List;
 
 import tw.com.wa.invoice.api.LoadService;
 import tw.com.wa.invoice.core.LoadServiceImpl;
 import tw.com.wa.invoice.domain.BeanUtil;
-import tw.com.wa.invoice.domain.Invoice;
-import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.LoadDTO;
-import tw.com.wa.invoice.domain.WiningBean;
-import tw.com.wa.invoice.marker.WiningsAdapter;
-import tw.com.wa.invoice.marker.WiningsMarker;
 import tw.com.wa.invoice.ui.ToolBar;
-import tw.com.wa.invoice.util.CommomUtil;
-import tw.com.wa.invoice.util.InvoiceBusinessException;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -44,10 +29,6 @@ public class LoadingActivity extends Activity {
     private LoadService service;
     private LoadDTO dto = null;
     private LoadAsyncTask task = null;
-
-    private ToolBar toolBar;
-
-
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -55,9 +36,10 @@ public class LoadingActivity extends Activity {
             task.execute("");
         }
     };
-
+    private ToolBar toolBar;
     private SwipeRefreshLayout laySwipe;
     private TextView statuLabel;
+    private TextView newYmView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +52,7 @@ public class LoadingActivity extends Activity {
 
         this.toolBar = (ToolBar) this.findViewById(R.id.toorBar);
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
+        this.newYmView = (TextView) this.findViewById(R.id.newYmView);
 
         this.laySwipe = (SwipeRefreshLayout) this.findViewById(R.id.laySwipe);
         this.laySwipe.setColorSchemeResources(
@@ -83,6 +66,7 @@ public class LoadingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
+                BeanUtil.outInfo = dto.getOutInfo();
                 startActivity(it);
 
             }
@@ -112,7 +96,7 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPreExecute() {
 
-
+            statuLabel.setText(R.string.loading);
             laySwipe.setRefreshing(true);
 
 
@@ -130,6 +114,7 @@ public class LoadingActivity extends Activity {
                 return "尚未連接網路，請連接網路在測試一次";
             }
 
+            service.loadData(dto, activity);
 
             return null;
         }
@@ -148,29 +133,9 @@ public class LoadingActivity extends Activity {
 
             } else {
 
-                Animation animation = AnimationUtils.loadAnimation(activity, R.anim.scale);
-
-                statuLabel.startAnimation(animation);
-
-
-                animation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-                        statuLabel.setText(R.string.app_name);
-                        toolBar.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
+                newYmView.setText("最新期數：" + dto.getOutInfo().getTitle());
+                statuLabel.setText(R.string.app_name);
+                toolBar.setVisibility(View.VISIBLE);
 
 
             }

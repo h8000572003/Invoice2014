@@ -7,14 +7,22 @@ import java.util.List;
  * Created by Andy on 2015/1/7.
  */
 public class LoadDTO implements Serializable {
-    private WiningBean winingBean;
+    private String ym="";
+    private OutInfo outInfo;
 
-
-    public WiningBean getWiningBean() {
-        return winingBean;
+    public OutInfo getOutInfo() {
+        return outInfo;
     }
 
-    public void setWiningBean(WiningBean winingBean) {
-        this.winingBean = winingBean;
+    public void setOutInfo(OutInfo outInfo) {
+        this.outInfo = outInfo;
+    }
+
+    public String getYm() {
+        return ym;
+    }
+
+    public void setYm(String ym) {
+        this.ym = ym;
     }
 }

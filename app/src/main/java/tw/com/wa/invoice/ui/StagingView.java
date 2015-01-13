@@ -62,6 +62,13 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         this.bindView(context);
     }
 
+    public void init(OutInfo info) {
+        this.outInfo = info;
+        this.invoYm = info.getStages();
+
+        this.stagingText.setText(outInfo.getTitle());
+    }
+
     public void setOnValueChangeListener(OnValueChangeListener onValueChangeListener) {
         this.onValueChangeListener = onValueChangeListener;
     }

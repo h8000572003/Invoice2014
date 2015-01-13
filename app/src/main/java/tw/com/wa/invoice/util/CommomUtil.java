@@ -74,6 +74,22 @@ public class CommomUtil {
         return bur.toString();
     }
 
+    public static String getPreYm(String ym) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.YEAR, Integer.parseInt(ym.substring(0, 3)) + 1911);
+        calendar.set(Calendar.MONTH, Integer.parseInt(ym.substring(3)) - 1);
+        calendar
+                .add(Calendar.MONTH, -2);
+
+
+        int year = calendar.get(Calendar.YEAR) -1911;
+        int month = calendar.get(Calendar.MONTH) +1;
+
+        return String.format("%03d%02d",year,month);
+
+    }
+
     /**
      * @return
      */

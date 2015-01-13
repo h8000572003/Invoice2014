@@ -18,8 +18,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
-
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
@@ -115,7 +113,8 @@ public class MainActivityV2 extends ActionBarActivity {
             }
         });
 
-        this.stagingView.run(CommomUtil.getLastYm());
+
+        this.stagingView.init(BeanUtil.outInfo);
 
     }
 

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import tw.com.wa.invoice.api.LoadService;
 import tw.com.wa.invoice.domain.LoadDTO;
+import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.marker.ApiGetter;
 import tw.com.wa.invoice.marker.WiningsAdapter;
@@ -23,18 +24,35 @@ public class LoadServiceImpl implements LoadService {
     public void loadData(LoadDTO dto, Activity activity) throws InvoiceBusinessException {
         try {
 
-            WiningBean bean=marker.getQuery();
+            final String ym = CommomUtil.getLastYm();
 
-
-            dto.setWiningBean(bean);
+            dto.setYm(this.getTheNewYm(dto, ym));
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             throw new InvoiceBusinessException(e.getMessage());
         }
     }
 
-    private WiningBean getTheNewWinings() throws InvoiceBusinessException {
-        WiningsAdapter adapter = new WiningsAdapter(CommomUtil.getLastYm());
+    private String getTheNewYm(LoadDTO dto, String ym) {
+
+        final WiningBean bean =
+                this.getTheNewWinings(dto, ym);
+
+
+
+        if (bean.getCode().equals("901")) {
+            final String preYm = CommomUtil.getPreYm(ym);
+            return this.getTheNewYm(dto, preYm);
+
+        } else {
+            final OutInfo info = new OutInfo(bean);
+            dto.setOutInfo(info);
+            return ym;
+        }
+    }
+
+    private WiningBean getTheNewWinings(LoadDTO dto, String ym) throws InvoiceBusinessException {
+        WiningsAdapter adapter = new WiningsAdapter(ym);
         marker.setAdapter(adapter);
         return marker.getQuery();
     }

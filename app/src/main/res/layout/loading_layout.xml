@@ -17,34 +17,54 @@
             android:layout_height="match_parent"></ListView>
 
 
-
-
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_above="@+id/statusLabel"
-            android:scaleType="fitCenter"
-            android:src="@drawable/log2" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/statusLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_vertical"
-            android:text="取得兌獎發票資訊"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_above="@+id/statusLabel"
+                android:scaleType="fitCenter"
+                android:src="@drawable/log2" />
+
+            <TextView
+                android:id="@+id/statusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:text="取得兌獎發票資訊"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/newYmView"
+                android:textColor="@color/material_red_500"
+                android:hint="@string/loading_content"
+                android:text="@string/loading_content"
+                android:layout_gravity="center_horizontal" />
+
+
+
+        </LinearLayout>
         <tw.com.wa.invoice.ui.ToolBar
             android:id="@+id/toorBar"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:visibility="gone"></tw.com.wa.invoice.ui.ToolBar>
+            android:visibility="visible"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"></tw.com.wa.invoice.ui.ToolBar>
 
 
     </RelativeLayout>
