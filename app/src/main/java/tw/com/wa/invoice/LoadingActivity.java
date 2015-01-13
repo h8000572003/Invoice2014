@@ -28,6 +28,7 @@ import tw.com.wa.invoice.domain.LoadDTO;
 import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.marker.WiningsAdapter;
 import tw.com.wa.invoice.marker.WiningsMarker;
+import tw.com.wa.invoice.ui.ToolBar;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
 
@@ -44,6 +45,8 @@ public class LoadingActivity extends Activity {
     private LoadDTO dto = null;
     private LoadAsyncTask task = null;
 
+    private ToolBar toolBar;
+
 
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -52,7 +55,7 @@ public class LoadingActivity extends Activity {
             task.execute("");
         }
     };
-    private ProgressBar progressBar = null;
+
     private SwipeRefreshLayout laySwipe;
     private TextView statuLabel;
 
@@ -65,9 +68,9 @@ public class LoadingActivity extends Activity {
         this.dto = new LoadDTO();
         this.service = new LoadServiceImpl();
 
-
+        this.toolBar = (ToolBar) this.findViewById(R.id.toorBar);
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
-        this.progressBar = (ProgressBar) this.findViewById(R.id.progressBar2);
+
         this.laySwipe = (SwipeRefreshLayout) this.findViewById(R.id.laySwipe);
         this.laySwipe.setColorSchemeResources(
                 android.R.color.holo_red_light,
@@ -75,6 +78,24 @@ public class LoadingActivity extends Activity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light);
         this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
+
+        this.toolBar.setBtn1OnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
+                startActivity(it);
+
+            }
+        });
+        this.toolBar.setBtn2OnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(LoadingActivity.this, AboutActivity.class);
+                startActivity(it);
+
+            }
+        });
+        this.toolBar.build();
 
 
         if (task == null) {
@@ -86,14 +107,12 @@ public class LoadingActivity extends Activity {
     }
 
 
-
-
     private class LoadAsyncTask extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
 
-            progressBar.setVisibility(View.VISIBLE);
+
             laySwipe.setRefreshing(true);
 
 
@@ -101,7 +120,6 @@ public class LoadingActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-
 
 
             ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
@@ -117,14 +135,10 @@ public class LoadingActivity extends Activity {
         }
 
 
-
-
-
-
         @Override
         protected void onPostExecute(String s) {
             statuLabel.clearAnimation();
-            progressBar.setVisibility(View.GONE);
+
             laySwipe.setRefreshing(false);
             task = null;
 
@@ -135,6 +149,7 @@ public class LoadingActivity extends Activity {
             } else {
 
                 Animation animation = AnimationUtils.loadAnimation(activity, R.anim.scale);
+
                 statuLabel.startAnimation(animation);
 
 
@@ -146,11 +161,9 @@ public class LoadingActivity extends Activity {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        statuLabel.setVisibility(View.INVISIBLE);
-                        Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
-                        startActivity(it);
-                        finish();
 
+                        statuLabel.setText(R.string.app_name);
+                        toolBar.setVisibility(View.VISIBLE);
                     }
 
                     @Override

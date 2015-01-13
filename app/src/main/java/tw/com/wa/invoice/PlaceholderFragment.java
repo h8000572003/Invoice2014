@@ -207,6 +207,7 @@ public class PlaceholderFragment extends Fragment {
             message.append("-");
             message.append(pMap.getValue() + "張\n");
 
+
             totalMoney += pMap.getKey().dollar * pMap.getValue();
         }
         message.append("總金額-" + totalMoney + "元");

@@ -7,13 +7,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 
 import tw.com.wa.invoice.teach.TeachingCameraFragment;
 import tw.com.wa.invoice.teach.TeachingGetAwardFragment;
 import tw.com.wa.invoice.teach.TeachingKeepCalendarFragment;
 import tw.com.wa.invoice.teach.TeachingKey1Fragment;
-import tw.com.wa.invoice.teach.TeachingKey2Fragment;
-import tw.com.wa.invoice.teach.TeachingRecordFragment;
 
 /**
  * Created by Andy on 2014/12/30.
@@ -83,5 +82,6 @@ public class TeachungActivity extends FragmentActivity {
             return NUM_PAGES;
         }
     }
+
 
 }

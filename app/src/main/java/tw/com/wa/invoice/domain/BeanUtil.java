@@ -23,7 +23,7 @@ public class BeanUtil {
     public static List<InvoiceKeyIn> allInvoices = new ArrayList<InvoiceKeyIn>();
 
     public static WiningInfo info = null;
-
+    public static WiningBean WiningBean = null;
 
     public static List<Invoice> getInvoicesByLocal(String title) throws Exception {
 

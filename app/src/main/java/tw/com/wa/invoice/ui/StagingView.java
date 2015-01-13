@@ -120,24 +120,24 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 MyAlertDialog.setTitle(context.getString(R.string.status_label));
 
 
-                List<Invoice> invoiceList= outInfo.getInvoice();
+                List<Invoice> invoiceList = outInfo.getInvoice();
 
-                StringBuffer message=new StringBuffer();
-                message.append(context.getString(R.string.dateOfAward)+":");
-                message.append(outInfo.getStages().getAwardRangDate().toString()+"\n");
-                for(Invoice invoice:invoiceList){
+                StringBuffer message = new StringBuffer();
+                message.append(context.getString(R.string.dateOfAward) + ":");
+                message.append(outInfo.getStages().getAwardRangDate().toString() + "\n");
+                for (Invoice invoice : invoiceList) {
 
-                    Log.i(TAG,"invoice="+invoice.getAwards()+"/"+invoice.getAwards());
-                    Log.i(TAG,"number="+invoice.getNumber());
+                    Log.i(TAG, "invoice=" + invoice.getAwards() + "/" + invoice.getAwards());
+                    Log.i(TAG, "number=" + invoice.getNumber());
 
-                    message.append( Award.lookup(invoice.getAwards()).message);
+                    message.append(Award.lookup(invoice.getAwards()).message);
                     message.append(":");
                     message.append(invoice.getNumber());
                     message.append("\n");
                 }
 
                 MyAlertDialog.setMessage(message.toString());
-                MyAlertDialog.setNeutralButton(context.getString(R.string.ok),null);
+                MyAlertDialog.setNeutralButton(context.getString(R.string.ok), null);
 
                 MyAlertDialog.show();
             }
@@ -208,7 +208,6 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         protected Void doInBackground(Void... params) {
 
 
-
             try {
                 marker.setAdapter(new WiningsAdapter(invoiceYm));
                 WiningBean bean = marker.getQuery();
@@ -218,14 +217,15 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                     throw new InvoiceBusinessException(bean.getMsg());
                 }
 
-                StagingView.this.invoYm =DateUtil.getYm(invoiceYm);
+                StagingView.this.invoYm = DateUtil.getYm(invoiceYm);
 
                 OutInfo info = new OutInfo(bean);
                 StagingView.this.outInfo = info;
 
+
                 StagingView.this.onValueChangeListener.onSuccessfully(info);
 
-
+                this.changeAwrd(bean);
             } catch (InvoiceBusinessException e) {
                 Log.e(TAG, "e:" + e.getMessage());
                 StagingView.this.onValueChangeListener.onFail(e, e.getMessage());
@@ -238,6 +238,38 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
             return null;
+        }
+
+        private void changeAwrd(WiningBean bean) {
+
+            for (Award award : Award.values()) {
+                award.dollar = this.getMoney(award, bean);
+            }
+        }
+
+        private int getMoney(Award award, WiningBean bean) {
+            switch (award) {
+                case Veryspecial:
+                    return Integer.parseInt(bean.getSuperPrizeAmt());
+                case Special:
+                    return Integer.parseInt(bean.getSpcPrizeAmt());
+                case Exactsix:
+                    return Integer.parseInt(bean.getSixthPrizeAmt());
+                case Top:
+                    return Integer.parseInt(bean.getFirstPrizeAmt());
+                case Second:
+                    return Integer.parseInt(bean.getSecondPrizeAmt());
+                case Thrid:
+                    return Integer.parseInt(bean.getThirdPrizeAmt());
+                case Fouth:
+                    return Integer.parseInt(bean.getFourthPrizeAmt());
+                case Fifth:
+                    return Integer.parseInt(bean.getFifthPrizeAmt());
+                case Sixth:
+                    return Integer.parseInt(bean.getSixthPrizeAmt());
+                default:
+                    return 0;
+            }
         }
 
         @Override

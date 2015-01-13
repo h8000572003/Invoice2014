@@ -12,7 +12,7 @@ import tw.com.wa.invoice.util.InvoYm;
 /**
  * Created by Andy on 2015/1/9.
  */
-public class OutInfo implements WiningInfo {
+public class OutInfo extends WiningBean implements WiningInfo {
 
     private final static String TITLE_TEMPLATE = "%04d/%02d-%02d";
     private InvoiceInfoV2 infoV2 = null;
@@ -21,6 +21,7 @@ public class OutInfo implements WiningInfo {
     private String stagingYm;
     private String title;
     private WiningBean bean;
+
 
     public OutInfo(WiningBean bean) {
         this.bean = bean;
@@ -56,6 +57,9 @@ public class OutInfo implements WiningInfo {
         this.invoices.addAll(this.makeSixPrize());
         return info;
 
+    }
+    private void changeMoney(){
+        Award.values();
     }
 
     private void makeTitle() {
@@ -146,6 +150,8 @@ public class OutInfo implements WiningInfo {
     public InvoYm getStages() {
         return this.invoYm;
     }
+
+
 
 
 
