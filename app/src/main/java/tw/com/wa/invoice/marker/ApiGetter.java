@@ -17,7 +17,8 @@ import tw.com.wa.invoice.util.InvoiceBusinessException;
  * Created by Andy on 2015/1/6.
  */
 public class ApiGetter<T> {
-    private static final String TAG = "ApiMarker";
+
+    private static final String TAG = "ApiGetter";
 
     private SqlAdapter adapter;
 

@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import tw.com.wa.invoice.api.LoadService;
@@ -95,7 +97,10 @@ public class LoadingActivity extends Activity {
 
         @Override
         protected void onPreExecute() {
-
+            if (toolBar.getVisibility() == View.VISIBLE) {
+                toolBar.setVisibility(View.GONE);
+            }
+            newYmView.setVisibility(View.GONE);
             statuLabel.setText(R.string.loading);
             laySwipe.setRefreshing(true);
 
@@ -122,7 +127,7 @@ public class LoadingActivity extends Activity {
 
         @Override
         protected void onPostExecute(String s) {
-            statuLabel.clearAnimation();
+
 
             laySwipe.setRefreshing(false);
             task = null;
@@ -132,9 +137,13 @@ public class LoadingActivity extends Activity {
                 statuLabel.setTextColor(Color.RED);
 
             } else {
+                statuLabel.setTextColor(getResources().getColor(R.color.material_blue_grey_800));
 
+                newYmView.setVisibility(View.VISIBLE);
                 newYmView.setText("最新期數：" + dto.getOutInfo().getTitle());
-                statuLabel.setText(R.string.app_name);
+
+
+                statuLabel.setVisibility(View.GONE);
                 toolBar.setVisibility(View.VISIBLE);
 
 

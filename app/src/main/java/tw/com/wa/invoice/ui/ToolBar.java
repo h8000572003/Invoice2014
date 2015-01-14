@@ -95,6 +95,8 @@ public class ToolBar extends FrameLayout {
 
         } else {
 
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_slide_out_bottom);
+            this.startAnimation(animation);
         }
 
 
