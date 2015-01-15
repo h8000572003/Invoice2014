@@ -22,6 +22,13 @@ public class OutInfo extends WiningBean implements WiningInfo {
     private String title;
     private WiningBean bean;
 
+    public WiningBean getBean() {
+        return bean;
+    }
+
+    public void setBean(WiningBean bean) {
+        this.bean = bean;
+    }
 
     public OutInfo(WiningBean bean) {
         this.bean = bean;
@@ -58,9 +65,7 @@ public class OutInfo extends WiningBean implements WiningInfo {
         return info;
 
     }
-    private void changeMoney(){
-        Award.values();
-    }
+
 
     private void makeTitle() {
         int year = Integer.parseInt(bean.getInvoYm().substring(0, 3)) + 1911;

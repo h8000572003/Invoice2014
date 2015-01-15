@@ -9,8 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import tw.com.wa.invoice.api.LoadService;
@@ -34,7 +32,7 @@ public class LoadingActivity extends Activity {
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            task = new LoadAsyncTask();
+            task = new LoadAsyncTask(service);
             task.execute("");
         }
     };
@@ -50,7 +48,7 @@ public class LoadingActivity extends Activity {
 
 
         this.dto = new LoadDTO();
-        this.service = new LoadServiceImpl();
+        this.service=new LoadServiceImpl();
 
         this.toolBar = (ToolBar) this.findViewById(R.id.toorBar);
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
@@ -85,7 +83,7 @@ public class LoadingActivity extends Activity {
 
 
         if (task == null) {
-            task = new LoadAsyncTask();
+            task = new LoadAsyncTask(service);
             task.execute("");
         }
 
@@ -95,13 +93,23 @@ public class LoadingActivity extends Activity {
 
     private class LoadAsyncTask extends AsyncTask<String, String, String> {
 
+        private LoadService service;
+
+        private LoadAsyncTask(LoadService service) {
+            this.service = service;
+        }
+
+
         @Override
         protected void onPreExecute() {
             if (toolBar.getVisibility() == View.VISIBLE) {
                 toolBar.setVisibility(View.GONE);
             }
             newYmView.setVisibility(View.GONE);
+
+            statuLabel.setVisibility(View.VISIBLE);
             statuLabel.setText(R.string.loading);
+
             laySwipe.setRefreshing(true);
 
 
@@ -119,7 +127,7 @@ public class LoadingActivity extends Activity {
                 return "尚未連接網路，請連接網路在測試一次";
             }
 
-            service.loadData(dto, activity);
+            this.service.loadData(dto, activity);
 
             return null;
         }
@@ -133,6 +141,7 @@ public class LoadingActivity extends Activity {
             task = null;
 
             if (s != null) {
+                statuLabel.setVisibility(View.VISIBLE);
                 statuLabel.setText(s);
                 statuLabel.setTextColor(Color.RED);
 

@@ -116,6 +116,12 @@ public class MainActivityV2 extends ActionBarActivity {
 
         this.stagingView.init(BeanUtil.outInfo);
 
+        OutInfo info = stagingView.getOutInfo();
+        dto.setInfo(BeanUtil.outInfo);
+        dto.setInvoiceInfoV2(info.getInfoV2());
+        dto.setInvoices(info.getInvoice());
+
+
     }
 
     /**

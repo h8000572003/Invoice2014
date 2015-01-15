@@ -73,6 +73,6 @@
         ，兌獎資料來自於財政部。</string>
     <string name="about_app_name">關於</string>
     <string name="loading_content">最新期</string>
-    <string name="loading">更新中</string>
+    <string name="loading">更新中...</string>
 
 </resources>

@@ -65,7 +65,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     public void init(OutInfo info) {
         this.outInfo = info;
         this.invoYm = info.getStages();
-
+        changeAwrd(info.getBean());
         this.stagingText.setText(outInfo.getTitle());
     }
 
@@ -195,6 +195,37 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
     }
+    private void changeAwrd(WiningBean bean) {
+
+        for (Award award : Award.values()) {
+            award.dollar = this.getMoney(award, bean);
+        }
+    }
+
+    private int getMoney(Award award, WiningBean bean) {
+        switch (award) {
+            case Veryspecial:
+                return Integer.parseInt(bean.getSuperPrizeAmt());
+            case Special:
+                return Integer.parseInt(bean.getSpcPrizeAmt());
+            case Exactsix:
+                return Integer.parseInt(bean.getSixthPrizeAmt());
+            case Top:
+                return Integer.parseInt(bean.getFirstPrizeAmt());
+            case Second:
+                return Integer.parseInt(bean.getSecondPrizeAmt());
+            case Thrid:
+                return Integer.parseInt(bean.getThirdPrizeAmt());
+            case Fouth:
+                return Integer.parseInt(bean.getFourthPrizeAmt());
+            case Fifth:
+                return Integer.parseInt(bean.getFifthPrizeAmt());
+            case Sixth:
+                return Integer.parseInt(bean.getSixthPrizeAmt());
+            default:
+                return 0;
+        }
+    }
 
     private class LoadJob extends AsyncTask<Void, Void, Void> {
 
@@ -232,7 +263,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
                 StagingView.this.onValueChangeListener.onSuccessfully(info);
 
-                this.changeAwrd(bean);
+                changeAwrd(bean);
             } catch (InvoiceBusinessException e) {
                 Log.e(TAG, "e:" + e.getMessage());
                 StagingView.this.onValueChangeListener.onFail(e, e.getMessage());
@@ -247,37 +278,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
             return null;
         }
 
-        private void changeAwrd(WiningBean bean) {
 
-            for (Award award : Award.values()) {
-                award.dollar = this.getMoney(award, bean);
-            }
-        }
-
-        private int getMoney(Award award, WiningBean bean) {
-            switch (award) {
-                case Veryspecial:
-                    return Integer.parseInt(bean.getSuperPrizeAmt());
-                case Special:
-                    return Integer.parseInt(bean.getSpcPrizeAmt());
-                case Exactsix:
-                    return Integer.parseInt(bean.getSixthPrizeAmt());
-                case Top:
-                    return Integer.parseInt(bean.getFirstPrizeAmt());
-                case Second:
-                    return Integer.parseInt(bean.getSecondPrizeAmt());
-                case Thrid:
-                    return Integer.parseInt(bean.getThirdPrizeAmt());
-                case Fouth:
-                    return Integer.parseInt(bean.getFourthPrizeAmt());
-                case Fifth:
-                    return Integer.parseInt(bean.getFifthPrizeAmt());
-                case Sixth:
-                    return Integer.parseInt(bean.getSixthPrizeAmt());
-                default:
-                    return 0;
-            }
-        }
 
         @Override
         protected void onCancelled() {
