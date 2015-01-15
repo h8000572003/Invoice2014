@@ -38,51 +38,6 @@ public class GetCompent {
     public static final String API_ID = "EINV9201412111086";
 
 
-//
-//    /**
-//     * getCompent
-//     *
-//     * @param yyymm
-//     * @return
-//     * @throws Exception
-//     */
-//    public WiningBean getWinings(String yyymm) throws Exception {
-//
-//
-//        List<NameValuePair> params = new ArrayList<NameValuePair>();
-//        params.add(new BasicNameValuePair("version", "0.2"));
-//        params.add(new BasicNameValuePair("action", "QryWinningList"));
-//        params.add(new BasicNameValuePair("invTerm", yyymm));
-//        params.add(new BasicNameValuePair("UUID", UUID.randomUUID().toString()));
-//        params.add(new BasicNameValuePair("appID", API_ID));
-//
-//        TypeToken<WiningBean> typeToken = new TypeToken<WiningBean>() {
-//        };
-////
-//
-//        StringBuffer buffer = new StringBuffer();
-//        buffer.append("action=QryWinningList");
-//        buffer.append("&");
-//
-//        buffer.append("appID=EINV9201412111086");
-//        buffer.append("&");
-//
-//        buffer.append("invTerm=");
-//        buffer.append(yyymm);
-//        buffer.append("&");
-//
-//
-//        buffer.append("UUID=");
-//        buffer.append("&");
-//
-//        buffer.append("version=0.2");
-//
-//
-//        return this.getJsonString(GetCompent.API + buffer.toString(), params, typeToken);
-//
-//
-//    }
-
     public <Result> Result getJsonString(String url, List<NameValuePair> pairs, TypeToken type) throws Exception {
 
         HttpClient demo = MySSLSocketFactory.createMyHttpClient();
