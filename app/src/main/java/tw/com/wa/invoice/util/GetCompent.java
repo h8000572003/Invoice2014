@@ -30,12 +30,13 @@ import tw.com.wa.invoice.domain.WiningBean;
  * Created by Andy on 2015/1/6.
  */
 public class GetCompent {
+    private static final String TAG = "GetCompent";
 
     public static final String ROOT_API = "https://www.einvoice.nat.gov.tw";
 
 
     public static final String API_ID = "EINV9201412111086";
-    private static final String TAG = "GetCompent";
+
 
 //
 //    /**
