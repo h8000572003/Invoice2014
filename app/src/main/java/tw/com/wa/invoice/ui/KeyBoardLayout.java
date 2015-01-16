@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import tw.com.wa.invoice.R;
+import tw.com.wa.invoice.compent.ExecutionCheckInvoiceAward;
+import tw.com.wa.invoice.compent.ExecutionCheckManger;
 
 /**
  * 鍵盤
@@ -18,6 +20,8 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
     private String value = "";
     private OnValueChangeListener onValueChangeListener;
+
+
     private TextView monitorView;
     private boolean isReadyClean = false;
 
@@ -91,6 +95,7 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
         if (getMonitorView() != null) {
             getMonitorView().setText(value);
         }
+
 
     }
 

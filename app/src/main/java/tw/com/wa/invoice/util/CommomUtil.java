@@ -21,11 +21,9 @@ import tw.com.wa.invoice.domain.WiningInfo;
  */
 public class CommomUtil {
 
-
-    static final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
-    static final String TAG = "CommomUtil";
-
-    static final int LAST_CHAR = 8;
+    private static final String TAG = "CommomUtil";
+    private static final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
+    private static final int LAST_CHAR = 8;
 
     public static void checkIsOverDateOfAward(WiningInfo info) throws RuntimeException {
         Date nowDate = new Date();
@@ -64,16 +62,13 @@ public class CommomUtil {
 
     }
 
-    public static String getTitleDate(InvoiceInfoV2 info, Context context) {
-        StringBuffer bur = new StringBuffer();
-        bur.append(context.getString(R.string.dateOfAward));
-        bur.append(":");
-        bur.append(sdFormat.format(info.getDateOfBegin()));
-        bur.append("-");
-        bur.append(sdFormat.format(info.getDateOfEnd()));
-        return bur.toString();
-    }
 
+    /**
+     * 取得前一期的對獎日
+     *
+     * @param ym
+     * @return
+     */
     public static String getPreYm(String ym) {
         Calendar calendar = Calendar.getInstance();
 
@@ -83,14 +78,16 @@ public class CommomUtil {
                 .add(Calendar.MONTH, -2);
 
 
-        int year = calendar.get(Calendar.YEAR) -1911;
-        int month = calendar.get(Calendar.MONTH) +1;
+        int year = calendar.get(Calendar.YEAR) - 1911;
+        int month = calendar.get(Calendar.MONTH) + 1;
 
-        return String.format("%03d%02d",year,month);
+        return String.format("%03d%02d", year, month);
 
     }
 
     /**
+     * 取得最新一期對獎日，根據現在時間判斷
+     *
      * @return
      */
     public static String getLastYm() {
@@ -195,8 +192,6 @@ public class CommomUtil {
             String matchNumber = invoice.getNumber();
             if (invoice.isSpecialize()) {//
                 if (invoice.getNumber().length() == 3) {
-
-
                     if (matchNumber.equals(number) && number.length() == 3) {
                         return CheckStatus.Get;
                     }
@@ -233,6 +228,7 @@ public class CommomUtil {
         }
         return CheckStatus.None;
     }
+
 
     public Award checkAward(String number, List<Invoice> invoices) throws RuntimeException {
 

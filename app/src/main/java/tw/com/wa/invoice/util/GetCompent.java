@@ -32,10 +32,7 @@ import tw.com.wa.invoice.domain.WiningBean;
 public class GetCompent {
     private static final String TAG = "GetCompent";
 
-    public static final String ROOT_API = "https://www.einvoice.nat.gov.tw";
 
-
-    public static final String API_ID = "EINV9201412111086";
 
 
     public <Result> Result getJsonString(String url, List<NameValuePair> pairs, TypeToken type) throws Exception {

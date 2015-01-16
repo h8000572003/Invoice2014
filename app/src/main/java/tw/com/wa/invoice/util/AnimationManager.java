@@ -5,4 +5,5 @@ package tw.com.wa.invoice.util;
  */
 public class AnimationManager {
     private static AnimationManager manager = null;
+
 }

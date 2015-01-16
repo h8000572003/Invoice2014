@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import tw.com.wa.invoice.compent.BaseCheckInvoiceAward;
+import tw.com.wa.invoice.compent.ExecutionCheckInvoiceAward;
+import tw.com.wa.invoice.compent.ExecutionCheckManger;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
@@ -27,6 +30,7 @@ import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.ui.KeyBoardLayout;
 import tw.com.wa.invoice.ui.StagingView;
+import tw.com.wa.invoice.ui.ToolBar;
 import tw.com.wa.invoice.util.CommomUtil;
 
 /**
@@ -56,6 +60,8 @@ public class MainActivityV2 extends ActionBarActivity {
 
 
         this.dto = new MainDTO();
+
+
         this.myVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         this.invoviceLabel = (TextView) this.findViewById(R.id.invoviceLabel);
@@ -105,7 +111,7 @@ public class MainActivityV2 extends ActionBarActivity {
 
             @Override
             public void onSuccessfully(WiningInfo outInfo) {
-                OutInfo info = stagingView.getOutInfo();
+                WiningInfo info = stagingView.getOutInfo();
 
                 dto.setInfo(outInfo);
                 dto.setInvoiceInfoV2(info.getInfoV2());
@@ -137,7 +143,9 @@ public class MainActivityV2 extends ActionBarActivity {
 
                 messageLabel.setText(getString(R.string.plsEnter));
 
+
                 if (value.length() == 3) {
+
 
                     keyboardView.cleanValueWithoutUI();
 

@@ -40,6 +40,7 @@ public class OutInfo extends WiningBean implements WiningInfo {
 
     }
 
+    @Override
     public InvoiceInfoV2 getInfoV2() {
         return this.infoV2;
     }

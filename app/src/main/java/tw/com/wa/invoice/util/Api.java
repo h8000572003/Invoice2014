@@ -27,14 +27,14 @@ public enum Api {
 
     protected String getBaseSql() {
         return
-                GetCompent.ROOT_API + url;
+                Contract.ROOT_API + url;
     }
 
     public String getBaseSqlAppendCommonValue() {
 
         StringBuffer buffer = new StringBuffer();
         buffer.append("appID=");
-        buffer.append(GetCompent.API_ID);
+        buffer.append(Contract.API_ID);
         buffer.append("&");
         buffer.append("UUID=");
         buffer.append("&");

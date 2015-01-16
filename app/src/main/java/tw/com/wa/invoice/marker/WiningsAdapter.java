@@ -7,7 +7,7 @@ import java.util.List;
 
 import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.util.Api;
-import tw.com.wa.invoice.util.GetCompent;
+import tw.com.wa.invoice.util.Contract;
 
 /**
  * Created by Andy on 2015/1/6.
@@ -37,7 +37,7 @@ public class WiningsAdapter extends SqlAdapter {
     protected List<AdpterParmer> getParmers() {
         final List<AdpterParmer> parmers = new ArrayList<AdpterParmer>();
         parmers.add(AdpterParmer.get("action", "QryWinningList"));
-        parmers.add(AdpterParmer.get("appID", GetCompent.API_ID));
+        parmers.add(AdpterParmer.get("appID", Contract.API_ID));
         parmers.add(AdpterParmer.get("invTerm", invTerm));
         return parmers;
     }

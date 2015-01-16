@@ -27,6 +27,7 @@ import tw.com.wa.invoice.util.InvoYm;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
 
 /**
+ * 發票期之畫面
  * Created by Andy on 2015/1/9.
  */
 public class StagingView extends LinearLayout implements View.OnClickListener {
@@ -41,7 +42,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     private ApiGetter<WiningBean> marker = new ApiGetter();
     private LoadJob job;
 
-    private OutInfo outInfo;
+    private WiningInfo outInfo;
     private InvoYm invoYm;
 
     private OnValueChangeListener onValueChangeListener = new OnValueChangeListenerAdapter();
@@ -152,11 +153,11 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     }
 
 
-    public OutInfo getOutInfo() {
+    public WiningInfo getOutInfo() {
         return outInfo;
     }
 
-    public void setOutInfo(OutInfo outInfo) {
+    public void setOutInfo(WiningInfo outInfo) {
         this.outInfo = outInfo;
     }
 
