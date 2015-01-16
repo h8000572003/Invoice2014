@@ -72,14 +72,14 @@ public class OutInfo extends WiningBean implements WiningInfo {
         this.title = String.format(TITLE_TEMPLATE, year, Integer.parseInt(bean.getInvoYm().substring(3)) - 1, Integer.parseInt(bean.getInvoYm().substring(3)));
     }
 
-    private void addInvoice(Award award, List<Invoice> invoices, String number) {
+    private void addInvoice(Award award, List<Invoice> invoices, String number,boolean isSpecail) {
         if (!TextUtils.isEmpty(number)) {
 
             Invoice invoice01 = new Invoice();
             invoice01.setTitle(getTitle());
             invoice01.setAwards(award.unCode);
             invoice01.setNumber(number);
-            invoice01.setSpecialize(true);
+            invoice01.setSpecialize(isSpecail);
             invoices.add(invoice01);
 
         }
@@ -89,9 +89,9 @@ public class OutInfo extends WiningBean implements WiningInfo {
         List<Invoice> invoiceList = new ArrayList<>();
 
 
-        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo1());
-        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo2());
-        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo3());
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo1(),true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo2(),true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo3(),true);
 
 
         return invoiceList;
@@ -101,12 +101,12 @@ public class OutInfo extends WiningBean implements WiningInfo {
     private List<Invoice> makeFirstPrize() {
 
         final List<Invoice> invoiceList = new ArrayList<>();
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo1());
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo2());
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo3());
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo4());
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo5());
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo6());
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo1(),false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo2(),false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo3(),false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo4(),false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo5(),false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo6(),true);
 
         return invoiceList;
     }
@@ -115,7 +115,7 @@ public class OutInfo extends WiningBean implements WiningInfo {
     private List<Invoice> makeSuperPrize() {
 
         final List<Invoice> invoiceList = new ArrayList<>();
-        this.addInvoice(Award.Veryspecial, invoiceList, bean.getSuperPrizeNo());
+        this.addInvoice(Award.Veryspecial, invoiceList, bean.getSuperPrizeNo(),true);
 
         return invoiceList;
     }
@@ -124,9 +124,9 @@ public class OutInfo extends WiningBean implements WiningInfo {
 
         final List<Invoice> invoiceList = new ArrayList<>();
 
-        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo());
-        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo2());
-        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo3());
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo(),true);
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo2(),true);
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo3(),true);
 
 
         return invoiceList;
