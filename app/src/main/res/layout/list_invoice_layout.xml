@@ -7,15 +7,28 @@
     >
 
 
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
 
-        android:layout_gravity="center"
-        android:scrollbars="vertical" />
+        <include
+            android:id="@+id/blankView"
+            layout="@layout/blank_layout"
+
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:scrollbars="vertical" />
+    </RelativeLayout>
 
 
 </android.support.v4.widget.SwipeRefreshLayout>

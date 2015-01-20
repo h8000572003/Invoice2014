@@ -36,6 +36,8 @@ public class ListInvoiceFragment extends Fragment {
     private RecyclerView recyclerView = null;
     private SwipeRefreshLayout laySwipe;
     private RecyclerView.LayoutManager mLayoutManager;
+    private View blankView = null;
+
 
     private String inYm = "";
 
@@ -57,6 +59,9 @@ public class ListInvoiceFragment extends Fragment {
 
         this.recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         this.laySwipe = (SwipeRefreshLayout) rootView.findViewById(R.id.laySwipe);
+        this.blankView = rootView.findViewById(R.id.blankView);
+
+        this.blankView.setVisibility(View.VISIBLE);
 
 
         this.mLayoutManager = new LinearLayoutManager(getActivity());
@@ -117,6 +122,14 @@ public class ListInvoiceFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<InvoiceEnter> invoiceEnters) {
+            if (invoiceEnters == null || invoiceEnters.isEmpty()) {
+                blankView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.INVISIBLE);
+            } else {
+                recyclerView
+                        .setVisibility(View.VISIBLE);
+                blankView.setVisibility(View.INVISIBLE);
+            }
             //   super.onPostExecute(invoiceEnters);
             recyclerView.setAdapter(new InvAdapter(invoiceEnters, getActivity()));
         }
