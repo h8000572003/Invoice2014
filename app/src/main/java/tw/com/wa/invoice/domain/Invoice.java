@@ -12,28 +12,6 @@ import java.io.Serializable;
 @ParseClassName("Invoice")
 public class Invoice extends ParseObject implements Serializable {
 
-    //    /**
-//     * 獎項等級
-//     */
-//    private String awards;
-//
-//    /**
-//     * 發票號碼
-//     */
-//    private String number;
-//
-//    /**
-//     *
-//     */
-//    private boolean specialize = false;
-    // private String title;
-
-
-//    public Invoice(String awards, String number, boolean specialize) {
-//        this.awards = awards;
-//        this.number = number;
-//        this.specialize = specialize;
-//    }
 
     public boolean isSpecialize() {
 

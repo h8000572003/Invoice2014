@@ -41,6 +41,7 @@ public class LoadingActivity extends Activity {
     private TextView statuLabel;
     private TextView newYmView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class LoadingActivity extends Activity {
 
 
         this.dto = new LoadDTO();
-        this.service=new LoadServiceImpl();
+        this.service = new LoadServiceImpl();
 
         this.toolBar = (ToolBar) this.findViewById(R.id.toorBar);
         this.statuLabel = (TextView) this.findViewById(R.id.statusLabel);
@@ -69,6 +70,8 @@ public class LoadingActivity extends Activity {
                 BeanUtil.outInfo = dto.getOutInfo();
                 startActivity(it);
 
+
+
             }
         });
         this.toolBar.setBtn2OnClickListener(new View.OnClickListener() {
@@ -79,6 +82,15 @@ public class LoadingActivity extends Activity {
 
             }
         });
+
+        this.toolBar.setBtn3OnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(LoadingActivity.this, ListInvoiceActivity.class);
+                startActivity(it);
+            }
+        });
+
         this.toolBar.build();
 
 

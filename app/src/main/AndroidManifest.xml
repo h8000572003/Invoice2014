@@ -79,6 +79,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 
+        <activity android:name=".ListInvoiceActivity"></activity>
+        <activity
+            android:name=".AddInvoiceActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/add_invoice_activity_title"
+            android:parentActivityName=".ListInvoiceActivity"></activity>
+
     </application>
 
 </manifest>

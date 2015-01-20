@@ -3,39 +3,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
 
-    <Button
-        android:id="@+id/button1"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="5dp"
-        android:text="@string/tool_first_label"
-        android:textColor="@color/material_grey_700" />
+        android:id="@+id/horizontalScrollView">
 
-    <TextView
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_invoice_btn_lab"
+                android:id="@+id/addInvoiceTn"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@color/material_grey_700"
+                android:layout_gravity="center_vertical" />
 
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
-
-        android:background="@color/material_grey_500" />
-
-    <Button
-        android:id="@+id/button2"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="5dp"
-        android:text="@string/tool_second_label"
-        android:textColor="@color/material_grey_700" />
+            <TextView
 
 
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+
+                android:background="@color/material_grey_500" />
+
+
+            <Button
+                android:id="@+id/button1"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:text="@string/tool_first_label"
+                android:textColor="@color/material_grey_700" />
+
+            <TextView
+
+
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+
+                android:background="@color/material_grey_500" />
+
+            <Button
+                android:id="@+id/button2"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:text="@string/tool_second_label"
+                android:textColor="@color/material_grey_700" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
 </LinearLayout>

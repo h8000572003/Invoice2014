@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="tw.com.wa.invoice.fragment.MessageFragment"
+        android:id="@+id/messageFragnent"
+        android:layout_gravity="left|top"
+        tools:layout="@layout/blank_layout" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listInvoiceFragment"
+        android:name="tw.com.wa.invoice.fragment.ListInvoiceFragment"
+        tools:layout="@layout/list_invoice_layout">
+
+
+    </fragment>
+</FrameLayout>
