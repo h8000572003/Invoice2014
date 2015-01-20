@@ -1,7 +1,7 @@
-CREATE TABLE `Invoice` (
-	`awards`	TEXT,
+CREATE TABLE `invoice_enter` (
 	`number`	TEXT,
-	`specialize`	TEXT
+	`inYm`	TEXT,
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT
 );
 CREATE TABLE `InvoiceInfo` (
 	`title`	TEXT
