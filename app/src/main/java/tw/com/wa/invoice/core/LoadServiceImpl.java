@@ -10,9 +10,7 @@ import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.marker.ApiGetter;
 import tw.com.wa.invoice.marker.WiningsAdapter;
 import tw.com.wa.invoice.util.CommomUtil;
-import tw.com.wa.invoice.util.DbHelper;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
-import tw.com.wa.invoice.util.InvoiceEnterDAO;
 
 /**
  * Created by Andy on 2015/1/7.
@@ -31,10 +29,6 @@ public class LoadServiceImpl implements LoadService {
             final String ym = CommomUtil.getLastYm();
 
             dto.setYm(this.getTheNewYm(dto, ym));
-
-
-            DbHelper dbHelper = new DbHelper(activity);
-            InvoiceEnterDAO dao = new InvoiceEnterDAO(dbHelper.getReadableDatabase(), activity);
 
 
         } catch (Exception e) {

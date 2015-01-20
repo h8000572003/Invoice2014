@@ -80,4 +80,9 @@
     <string name="blank_text">無資料</string>
 
     <string name="add_invoice_activity_title">新增發票</string>
+
+    <string name="add_invoice_activtyi_lab">完整發票號</string>
+    <string name="add_invoice_activtyi_btn_lab">新增發票</string>
+
+
 </resources>

@@ -83,8 +83,7 @@
         <activity
             android:name=".AddInvoiceActivity"
             android:screenOrientation="portrait"
-            android:label="@string/add_invoice_activity_title"
-            android:parentActivityName=".ListInvoiceActivity"></activity>
+            android:label="@string/add_invoice_activity_title"></activity>
 
     </application>
 

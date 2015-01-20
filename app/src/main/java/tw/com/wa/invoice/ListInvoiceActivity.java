@@ -17,6 +17,7 @@ public class ListInvoiceActivity extends ActionBarActivity {
 
     private static final int ADD_CODE = 1;
 
+
     private MessageFragment messageFragment;
     private ListInvoiceFragment listInvoiceFragment;
 
@@ -35,8 +36,10 @@ public class ListInvoiceActivity extends ActionBarActivity {
     private void onAddActionResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             //TODO add item
+            this.listInvoiceFragment.reFresh();
 
         }
+
     }
 
     @Override
@@ -46,15 +49,17 @@ public class ListInvoiceActivity extends ActionBarActivity {
         this.setContentView(R.layout.invoice_layout);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.container, new PlaceholderFragment())
+//                    .commit();
         }
-
-
-        this.messageFragment = (MessageFragment) getSupportFragmentManager().findFragmentById(R.id.messageFragnent);
+//
+//
+//        //    this.messageFragment = (MessageFragment) getSupportFragmentManager().findFragmentById(R.id.messageFragnent);
         this.listInvoiceFragment = (ListInvoiceFragment) getSupportFragmentManager().findFragmentById(R.id.listInvoiceFragment);
-
+//
+//
+//        this.listInvoiceFragment.setArguments(args);
 
 
     }
@@ -73,6 +78,11 @@ public class ListInvoiceActivity extends ActionBarActivity {
             case R.id.action_add:
 
                 Intent it = new Intent(ListInvoiceActivity.this, AddInvoiceActivity.class);
+
+
+                Bundle bundle = getIntent().getExtras();
+
+                it.putExtras(bundle);
                 startActivityForResult(it, ADD_CODE);
                 //     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 

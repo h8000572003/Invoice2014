@@ -71,7 +71,6 @@ public class LoadingActivity extends Activity {
                 startActivity(it);
 
 
-
             }
         });
         this.toolBar.setBtn2OnClickListener(new View.OnClickListener() {
@@ -87,6 +86,12 @@ public class LoadingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(LoadingActivity.this, ListInvoiceActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("inYm", dto.getYm());
+
+                it.putExtras(bundle);
+
                 startActivity(it);
             }
         });

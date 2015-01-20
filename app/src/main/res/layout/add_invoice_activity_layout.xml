@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:layout_above="@id/keyboardLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <EditText
+
+            android:layout_width="match_parent"
+            android:id="@+id/invoviceLabel"
+            android:hint="@string/add_invoice_activity_title"
+            android:editable="false"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_invoice_btn_lab"
+            android:id="@+id/addInvoiceBtn" />
+
+
+    </LinearLayout>
+
+
+    <tw.com.wa.invoice.ui.KeyBoardLayout
+
+        android:id="@+id/keyboardLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+    </tw.com.wa.invoice.ui.KeyBoardLayout>
+
+
+</RelativeLayout>
