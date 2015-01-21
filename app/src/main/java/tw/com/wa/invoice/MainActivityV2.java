@@ -18,19 +18,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import tw.com.wa.invoice.compent.BaseCheckInvoiceAward;
-import tw.com.wa.invoice.compent.ExecutionCheckInvoiceAward;
-import tw.com.wa.invoice.compent.ExecutionCheckManger;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
 import tw.com.wa.invoice.domain.MainDTO;
-import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.ui.KeyBoardLayout;
 import tw.com.wa.invoice.ui.StagingView;
-import tw.com.wa.invoice.ui.ToolBar;
 import tw.com.wa.invoice.util.CommomUtil;
 
 /**
@@ -255,7 +250,7 @@ public class MainActivityV2 extends ActionBarActivity {
     }
 
     private void check8NumberAction(String value) {
-        Award award = commomUtil.checkAward(value, dto.getInvoices());
+        Award award = commomUtil.checkBestAward(value, dto.getInvoices());
 
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
 

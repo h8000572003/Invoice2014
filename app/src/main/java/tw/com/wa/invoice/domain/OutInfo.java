@@ -1,6 +1,5 @@
 package tw.com.wa.invoice.domain;
 
-import android.os.Parcel;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -22,6 +21,17 @@ public class OutInfo extends WiningBean implements WiningInfo {
     private String title;
     private WiningBean bean;
 
+    public OutInfo(WiningBean bean) {
+        this.bean = bean;
+        this.makeTitle();
+        this.invoYm = DateUtil.getYm(bean.getInvoYm());
+        this.infoV2 = this.makeInvoiceInfo();
+        this.stagingYm = DateUtil.yyymm(this.invoYm.getEnd());
+
+        this.changeAwrd(bean);
+
+    }
+
     public WiningBean getBean() {
         return bean;
     }
@@ -30,14 +40,36 @@ public class OutInfo extends WiningBean implements WiningInfo {
         this.bean = bean;
     }
 
-    public OutInfo(WiningBean bean) {
-        this.bean = bean;
-        this.makeTitle();
-        this.invoYm = DateUtil.getYm(bean.getInvoYm());
-        this.infoV2 = this.makeInvoiceInfo();
-        this.stagingYm = DateUtil.yyymm(this.invoYm.getEnd());
+    private void changeAwrd(WiningBean bean) {
 
+        for (Award award : Award.values()) {
+            award.dollar = this.getMoney(award, bean);
+        }
+    }
 
+    private int getMoney(Award award, WiningBean bean) {
+        switch (award) {
+            case Veryspecial:
+                return Integer.parseInt(bean.getSuperPrizeAmt());
+            case Special:
+                return Integer.parseInt(bean.getSpcPrizeAmt());
+            case Exactsix:
+                return Integer.parseInt(bean.getSixthPrizeAmt());
+            case Top:
+                return Integer.parseInt(bean.getFirstPrizeAmt());
+            case Second:
+                return Integer.parseInt(bean.getSecondPrizeAmt());
+            case Thrid:
+                return Integer.parseInt(bean.getThirdPrizeAmt());
+            case Fouth:
+                return Integer.parseInt(bean.getFourthPrizeAmt());
+            case Fifth:
+                return Integer.parseInt(bean.getFifthPrizeAmt());
+            case Sixth:
+                return Integer.parseInt(bean.getSixthPrizeAmt());
+            default:
+                return 0;
+        }
     }
 
     @Override
@@ -73,7 +105,7 @@ public class OutInfo extends WiningBean implements WiningInfo {
         this.title = String.format(TITLE_TEMPLATE, year, Integer.parseInt(bean.getInvoYm().substring(3)) - 1, Integer.parseInt(bean.getInvoYm().substring(3)));
     }
 
-    private void addInvoice(Award award, List<Invoice> invoices, String number,boolean isSpecail) {
+    private void addInvoice(Award award, List<Invoice> invoices, String number, boolean isSpecail) {
         if (!TextUtils.isEmpty(number)) {
 
             Invoice invoice01 = new Invoice();
@@ -90,9 +122,9 @@ public class OutInfo extends WiningBean implements WiningInfo {
         List<Invoice> invoiceList = new ArrayList<>();
 
 
-        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo1(),true);
-        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo2(),true);
-        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo3(),true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo1(), true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo2(), true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo3(), true);
 
 
         return invoiceList;
@@ -102,12 +134,12 @@ public class OutInfo extends WiningBean implements WiningInfo {
     private List<Invoice> makeFirstPrize() {
 
         final List<Invoice> invoiceList = new ArrayList<>();
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo1(),false);
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo2(),false);
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo3(),false);
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo4(),false);
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo5(),false);
-        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo6(),true);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo1(), false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo2(), false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo3(), false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo4(), false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo5(), false);
+        this.addInvoice(Award.Top, invoiceList, bean.getFirstPrizeNo6(), true);
 
         return invoiceList;
     }
@@ -116,7 +148,7 @@ public class OutInfo extends WiningBean implements WiningInfo {
     private List<Invoice> makeSuperPrize() {
 
         final List<Invoice> invoiceList = new ArrayList<>();
-        this.addInvoice(Award.Veryspecial, invoiceList, bean.getSuperPrizeNo(),true);
+        this.addInvoice(Award.Veryspecial, invoiceList, bean.getSuperPrizeNo(), true);
 
         return invoiceList;
     }
@@ -125,9 +157,9 @@ public class OutInfo extends WiningBean implements WiningInfo {
 
         final List<Invoice> invoiceList = new ArrayList<>();
 
-        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo(),true);
-        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo2(),true);
-        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo3(),true);
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo(), true);
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo2(), true);
+        this.addInvoice(Award.Special, invoiceList, bean.getSpcPrizeNo3(), true);
 
 
         return invoiceList;
@@ -151,14 +183,10 @@ public class OutInfo extends WiningBean implements WiningInfo {
     }
 
 
-
     @Override
     public InvoYm getStages() {
         return this.invoYm;
     }
-
-
-
 
 
 }

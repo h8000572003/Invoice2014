@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.util.Log;
 
 import tw.com.wa.invoice.api.LoadService;
-import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.LoadDTO;
 import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningBean;
@@ -51,44 +50,12 @@ public class LoadServiceImpl implements LoadService {
         } else {
             final OutInfo info = new OutInfo(bean);
 
-            this.changeAwrd(bean);
 
             dto.setOutInfo(info);
             return ym;
         }
     }
 
-    private void changeAwrd(WiningBean bean) {
-
-        for (Award award : Award.values()) {
-            award.dollar = this.getMoney(award, bean);
-        }
-    }
-
-    private int getMoney(Award award, WiningBean bean) {
-        switch (award) {
-            case Veryspecial:
-                return Integer.parseInt(bean.getSuperPrizeAmt());
-            case Special:
-                return Integer.parseInt(bean.getSpcPrizeAmt());
-            case Exactsix:
-                return Integer.parseInt(bean.getSixthPrizeAmt());
-            case Top:
-                return Integer.parseInt(bean.getFirstPrizeAmt());
-            case Second:
-                return Integer.parseInt(bean.getSecondPrizeAmt());
-            case Thrid:
-                return Integer.parseInt(bean.getThirdPrizeAmt());
-            case Fouth:
-                return Integer.parseInt(bean.getFourthPrizeAmt());
-            case Fifth:
-                return Integer.parseInt(bean.getFifthPrizeAmt());
-            case Sixth:
-                return Integer.parseInt(bean.getSixthPrizeAmt());
-            default:
-                return 0;
-        }
-    }
 
     private WiningBean getTheNewWinings(LoadDTO dto, String ym) throws InvoiceBusinessException {
         WiningsAdapter adapter = new WiningsAdapter(ym);

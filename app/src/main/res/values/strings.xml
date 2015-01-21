@@ -75,7 +75,7 @@
     <string name="loading_content">最新期</string>
     <string name="loading">更新中...</string>
     <string name="menu_add_lab">新增發票</string>
-    <string name="add_invoice_btn_lab">發票清單</string>
+    <string name="add_invoice_btn_lab">新增</string>
 
     <string name="blank_text">無資料</string>
 
@@ -83,7 +83,10 @@
 
     <string name="add_invoice_activtyi_lab">完整發票號</string>
     <string name="add_invoice_activtyi_btn_lab">新增發票</string>
-    <string name="invoice_list_hin">下拉將可以一次兌獎全部發票</string>
+    <string name="invoice_list_hin">下拉清單，將兌獎</string>
+    <string name="invoice_list_tool_lab">批次發票兌獎</string>
+
+
     <string-array name="list_items">
 
 

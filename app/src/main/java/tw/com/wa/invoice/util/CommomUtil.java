@@ -1,19 +1,19 @@
 package tw.com.wa.invoice.util;
 
 
-import android.content.Context;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.Invoice;
-import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.WiningInfo;
 
 /**
@@ -229,8 +229,13 @@ public class CommomUtil {
         return CheckStatus.None;
     }
 
-
-    public Award checkAward(String number, List<Invoice> invoices) throws RuntimeException {
+    /**
+     * @param number
+     * @param invoices
+     * @return
+     * @throws RuntimeException
+     */
+    public List<Award> checkAwardLists(List<Award> awards, String number, List<Invoice> invoices) throws RuntimeException {
 
 
         for (Invoice invoice : invoices) {
@@ -240,33 +245,59 @@ public class CommomUtil {
             if (invoice.isSpecialize()) {//
                 Log.d(TAG, "isSpecialize");
 
-                String specialNumber=number.substring(8-invoice.getNumber().length());
-                Log.d(TAG, "specialNumber="+specialNumber);
+                String specialNumber = "";
+                if (invoice.getNumber().length() > number.length()) {
+                    specialNumber = number.substring(8 - invoice.getNumber().length());
+                }else{
+                    specialNumber=number;
+                }
+
+
+                Log.d(TAG, "specialNumber=" + specialNumber);
 
                 if (invoice.getNumber().equals(specialNumber)) {
-                    return this.from(invoice, invoice.getNumber().length());
+                    awards.add(this.from(invoice, invoice.getNumber().length()));
+
                 }
 
             } else {//原本的
                 Log.d(TAG, "isNotSpecialize");
-                for (int i = 3; i <= invoice.getNumber().length(); i++) {
+                for (int i = 3; i <= number.length(); i++) {
                     if (this.matchLastChar(invoice, number, i)) {
                         Log.d(TAG, "match..." + i);
                         checkStatus = CheckStatus.Continue;
+                        awards.add(this.from(invoice, i));
                     } else {
-                        if (checkStatus == CheckStatus.Continue) {
-                            return this.from(invoice, i - 1);
-                        }
-                        break;
+
                     }
                 }
-                if (checkStatus == CheckStatus.Continue) {
-                    return this.from(invoice, invoice.getNumber().length());
-                }
-            }
-        }
 
-        return null;
+            }
+
+        }
+        return awards;
+    }
+
+
+    public Award checkBestAward(String number, List<Invoice> invoices) throws RuntimeException {
+
+        number = number.trim();
+        final List<Award> awards = new ArrayList<Award>();
+
+        checkAwardLists(awards, number, invoices);
+
+        Collections.sort(awards, new Comparator<Award>() {
+
+            @Override
+            public int compare(Award lhs, Award rhs) {
+                return lhs.dollar >= rhs.dollar ? -1 : 1;
+            }
+        });
+        if (awards.isEmpty()) {
+            return null;
+        } else {
+            return awards.get(0);
+        }
 
 
     }

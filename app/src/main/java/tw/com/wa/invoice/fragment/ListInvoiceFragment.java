@@ -178,7 +178,7 @@ public class ListInvoiceFragment extends Fragment {
                     BeanUtil.info.getInvoice();
             for (InvoiceEnter enter : dto.getEnters()) {
                 Award award =
-                        this.commonUtil.checkAward(enter.getNumber(), v2);
+                        this.commonUtil.checkBestAward(enter.getNumber(), v2);
                 enter.setStatus(award != null ? award.unCode : "");
 
 

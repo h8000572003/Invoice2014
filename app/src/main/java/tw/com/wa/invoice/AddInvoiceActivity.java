@@ -38,15 +38,21 @@ public class AddInvoiceActivity extends ActionBarActivity {
         this.inYm = bundle.getString("inYm");
 
 
-
         this.keyBoardLayout = (KeyBoardLayout) this.findViewById(R.id.keyboardLayout);
         this.editText = (EditText) this.findViewById(R.id.invoviceLabel);
         this.addInvoiceBtn = (Button) this.findViewById(R.id.addInvoiceBtn);
 
-        keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
+
+        this.addInvoiceBtn.setEnabled(false);
+        this.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override
             public void onChange(String value) {
                 editText.setText(value);
+                if (value.length() >= 3 && value.length() <= 8) {
+                    addInvoiceBtn.setEnabled(true);
+                } else {
+                    addInvoiceBtn.setEnabled(false);
+                }
 
             }
         });
@@ -69,6 +75,9 @@ public class AddInvoiceActivity extends ActionBarActivity {
                 this.insertInvoice();
 
                 editText.setText("");
+                keyBoardLayout.cleanValueWithoutUI();
+
+
                 setResult(Activity.RESULT_OK);
                 Toast.makeText(AddInvoiceActivity.this, "新增發票成功", Toast.LENGTH_LONG).show();
 
@@ -80,9 +89,9 @@ public class AddInvoiceActivity extends ActionBarActivity {
 
         private void check(String number) throws InvoiceBusinessException {
             if (TextUtils.isEmpty(number)) {
-                throw new InvoiceBusinessException("請輸入完整8發票號碼");
-            } else if (number.length() != 8) {
-                throw new InvoiceBusinessException("請輸入完整8發票號碼");
+                throw new InvoiceBusinessException("發票號碼需大於3碼");
+            } else if (number.length() < 3 && number.length() > 9) {
+                throw new InvoiceBusinessException("發票號碼需大於3碼");
             }
         }
 

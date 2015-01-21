@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <Spinner
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:visibility="gone"
             android:layout_gravity="center_horizontal"
             android:spinnerMode="dialog"
