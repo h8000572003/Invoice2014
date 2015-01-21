@@ -28,7 +28,6 @@ public enum Award {
     public final String unCode;
     public final int checKLegth;
     public final int order;
-    public int dollar;
     public final AwardInfo info;
 
     static {
@@ -42,6 +41,7 @@ public enum Award {
 
     }
 
+    public int dollar;
     public String message = "";
 
     Award(String unCode, AwardInfo info, int checKLegth, String message, int order, int dollar) {

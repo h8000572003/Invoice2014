@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import tw.com.wa.invoice.api.LoadService;
 import tw.com.wa.invoice.core.LoadServiceImpl;
+import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.LoadDTO;
+import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.ui.ToolBar;
 
 /**
@@ -107,6 +109,7 @@ public class LoadingActivity extends Activity {
 
 
     }
+
 
 
     private class LoadAsyncTask extends AsyncTask<String, String, String> {

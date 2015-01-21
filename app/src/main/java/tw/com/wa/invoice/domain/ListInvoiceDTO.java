@@ -9,7 +9,19 @@ import java.util.List;
 public class ListInvoiceDTO implements Serializable {
 
     private List<InvoiceEnter> enters = null;
-  //  private String inYm = "";
+
+
+    private List<InvoiceEnter> showLists = null;
+
+    public List<InvoiceEnter> getShowLists() {
+        return showLists;
+    }
+
+    public void setShowLists(List<InvoiceEnter> showLists) {
+        this.showLists = showLists;
+    }
+
+    //  private String inYm = "";
 
     public List<InvoiceEnter> getEnters() {
         return enters;

@@ -3,7 +3,6 @@ package tw.com.wa.invoice;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -51,16 +50,17 @@ public class ListInvoiceActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.invoice_layout);
 
+        getSupportActionBar().setSubtitle(getIntent().getExtras().getString("subTitle"));
 
-      //  Toolbar toolbar= getSupportActionBar();
+        //  Toolbar toolbar= getSupportActionBar();
 
 //        this.topToolBar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
 //        topToolBar.setTitle(R.string.app_name);
-//        topToolBar.setSubtitle(getIntent().getExtras().getString("subTitle"));
+//        topToolBar.setSubtitle();
 
-      //  setSupportActionBar(topToolBar);
+        //  setSupportActionBar(topToolBar);
 
-   //     this.bottomToolBar= (Toolbar) this.findViewById(R.id.my_bottom_tool_bar);
+        //     this.bottomToolBar= (Toolbar) this.findViewById(R.id.my_bottom_tool_bar);
 
 
         // setSupportActionBar(toolbar);
