@@ -140,7 +140,8 @@ public class ListInvoiceFragment extends Fragment {
         protected List<InvoiceEnter> doInBackground(String... params) {
 
 
-            List<Invoice>v2=BeanUtil.info.getInvoice();
+            List<Invoice>v2=
+                    BeanUtil.info.getInvoice();
             for (InvoiceEnter enter : dto.getEnters()) {
                 Award award =
                         this.commonUtil.checkAward(enter.getNumber(), v2);
@@ -315,7 +316,8 @@ public class ListInvoiceFragment extends Fragment {
             public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
                 View v = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.enter_layout, viewGroup, false);
+                        .inflate(R.layout.enter_layout
+                                , viewGroup, false);
                 // set the view's size, margins, paddings and layout parameters
 
                 ViewHolder vh = new ViewHolder(v);

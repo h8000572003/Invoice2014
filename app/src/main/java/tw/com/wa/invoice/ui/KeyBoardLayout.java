@@ -110,6 +110,7 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
     public void cleanValueWithoutUI() {
 
         this.isReadyClean = true;
+        this.value="";
 
     }
 

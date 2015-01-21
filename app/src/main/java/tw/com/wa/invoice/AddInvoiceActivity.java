@@ -47,6 +47,7 @@ public class AddInvoiceActivity extends ActionBarActivity {
             @Override
             public void onChange(String value) {
                 editText.setText(value);
+
             }
         });
 

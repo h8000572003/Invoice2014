@@ -83,6 +83,6 @@
 
     <string name="add_invoice_activtyi_lab">完整發票號</string>
     <string name="add_invoice_activtyi_btn_lab">新增發票</string>
-
+<string name="invoice_list_hin">下拉將可以一次兌獎全部發票</string>
 
 </resources>
