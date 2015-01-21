@@ -89,6 +89,7 @@ public class LoadingActivity extends Activity {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("inYm", dto.getYm());
+                bundle.putString("subTitle", dto.getOutInfo().getTitle());
 
                 it.putExtras(bundle);
 

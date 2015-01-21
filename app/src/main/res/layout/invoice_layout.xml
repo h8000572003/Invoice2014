@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_awesome_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:visibility="gone"
+        android:background="?attr/colorPrimary" />
 
 
     <fragment
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/my_awesome_toolbar"
+        android:layout_above="@+id/my_bottom_tool_bar"
         android:id="@+id/listInvoiceFragment"
         android:name="tw.com.wa.invoice.fragment.ListInvoiceFragment"
+
         tools:layout="@layout/list_invoice_layout">
 
-
     </fragment>
-</FrameLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/my_bottom_tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+
+</RelativeLayout>

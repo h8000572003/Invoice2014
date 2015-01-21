@@ -3,12 +3,13 @@ package tw.com.wa.invoice;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import tw.com.wa.invoice.fragment.ListInvoiceFragment;
-import tw.com.wa.invoice.fragment.MessageFragment;
 
 /**
  * Created by Andy on 15/1/17.
@@ -18,9 +19,10 @@ public class ListInvoiceActivity extends ActionBarActivity {
     private static final int ADD_CODE = 1;
 
 
-//    private MessageFragment messageFragment;
     private ListInvoiceFragment listInvoiceFragment;
 
+    private Toolbar topToolBar = null;
+    private Toolbar bottomToolBar = null;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -36,7 +38,7 @@ public class ListInvoiceActivity extends ActionBarActivity {
 
     private void onAddActionResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            //TODO add item
+
             this.listInvoiceFragment.reFresh();
 
         }
@@ -48,6 +50,22 @@ public class ListInvoiceActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.invoice_layout);
+
+
+      //  Toolbar toolbar= getSupportActionBar();
+
+//        this.topToolBar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+//        topToolBar.setTitle(R.string.app_name);
+//        topToolBar.setSubtitle(getIntent().getExtras().getString("subTitle"));
+
+      //  setSupportActionBar(topToolBar);
+
+   //     this.bottomToolBar= (Toolbar) this.findViewById(R.id.my_bottom_tool_bar);
+
+
+        // setSupportActionBar(toolbar);
+
+        // getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
         if (savedInstanceState == null) {
 

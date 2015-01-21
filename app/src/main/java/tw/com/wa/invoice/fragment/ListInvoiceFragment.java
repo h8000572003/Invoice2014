@@ -2,6 +2,7 @@ package tw.com.wa.invoice.fragment;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -187,6 +188,10 @@ public class ListInvoiceFragment extends Fragment {
                 this.container = (CardView) v.findViewById(R.id.container);
                 this.moneyView = (TextView) v.findViewById(R.id.moneyView);
                 this.keyTime = (TextView) v.findViewById(R.id.keyTime);
+
+                this.titileView.setTextColor(Color.GRAY);
+                this.contentView.setTextColor(Color.GRAY);
+
 
 
             }
