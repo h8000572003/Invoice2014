@@ -9,37 +9,6 @@ import java.util.Map;
  */
 public interface DBContract {
 
-    interface invoice_enter {
-        String TABLE = "invoice_enter";
-
-    }
-
-    public class TypeInfp {
-        private String name;
-        private Type type;
-
-        public TypeInfp(String name, Type type) {
-            this.name = name;
-            this.type = type;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Type getType() {
-            return type;
-        }
-
-        public void setType(Type type) {
-            this.type = type;
-        }
-    }
-
     enum Type {
         INT, STRING;
 
@@ -51,12 +20,13 @@ public interface DBContract {
                 , new TypeInfp("id", Type.INT)//
                 , new TypeInfp("number", Type.STRING)//
                 , new TypeInfp("inYm", Type.STRING)//
+                , new TypeInfp("status", Type.STRING)//
+
 
         );
+        final static Map<Table, TableInfo> MAP;
         final TypeInfp[] typeInfp;
         final Table table;
-
-        final static Map<Table, TableInfo> MAP;
 
         TableInfo(Table table, TypeInfp... typeInfp) {
             this.typeInfp = typeInfp;
@@ -90,6 +60,37 @@ public interface DBContract {
 
         Table(String name) {
             this.name = name;
+        }
+    }
+
+    interface invoice_enter {
+        String TABLE = "invoice_enter";
+
+    }
+
+    public class TypeInfp {
+        private String name;
+        private Type type;
+
+        public TypeInfp(String name, Type type) {
+            this.name = name;
+            this.type = type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Type getType() {
+            return type;
+        }
+
+        public void setType(Type type) {
+            this.type = type;
         }
     }
 
