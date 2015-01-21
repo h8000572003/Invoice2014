@@ -9,6 +9,15 @@ public class InvoiceEnter implements Serializable {
     private int id;
     private String number;
     private String inYm;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public int getId() {
 

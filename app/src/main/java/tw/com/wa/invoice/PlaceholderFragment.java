@@ -227,30 +227,6 @@ public class PlaceholderFragment extends Fragment {
         this.recyclerView.setAdapter(adapter);
 
 
-//        this.adapter.setOnItemClickListener(new NumberAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, final int location) {
-//
-//                AlertDialog.Builder diaglogOfTech = new AlertDialog.Builder(getActivity());
-//                diaglogOfTech.setTitle(R.string.teachTitle);
-//                diaglogOfTech.setMessage(R.string.cleanInvoice);
-//                diaglogOfTech.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        BeanUtil.allInvoices.remove(location);
-//                        refreshNumAdapter();
-//                        checkIsBlankInvoices();
-//                        ;
-//                    }
-//                });
-//                diaglogOfTech.setNegativeButton(R.string.cancer, null);
-//                diaglogOfTech.show();
-//
-//                ;
-//
-//            }
-//        });
 
 
         this.refreshNumAdapter();

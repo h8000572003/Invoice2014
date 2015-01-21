@@ -18,8 +18,9 @@ public class ListInvoiceActivity extends ActionBarActivity {
     private static final int ADD_CODE = 1;
 
 
-    private MessageFragment messageFragment;
+//    private MessageFragment messageFragment;
     private ListInvoiceFragment listInvoiceFragment;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -49,17 +50,9 @@ public class ListInvoiceActivity extends ActionBarActivity {
         this.setContentView(R.layout.invoice_layout);
 
         if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new PlaceholderFragment())
-//                    .commit();
+
         }
-//
-//
-//        //    this.messageFragment = (MessageFragment) getSupportFragmentManager().findFragmentById(R.id.messageFragnent);
         this.listInvoiceFragment = (ListInvoiceFragment) getSupportFragmentManager().findFragmentById(R.id.listInvoiceFragment);
-//
-//
-//        this.listInvoiceFragment.setArguments(args);
 
 
     }
@@ -81,6 +74,7 @@ public class ListInvoiceActivity extends ActionBarActivity {
 
 
                 Bundle bundle = getIntent().getExtras();
+
 
                 it.putExtras(bundle);
                 startActivityForResult(it, ADD_CODE);

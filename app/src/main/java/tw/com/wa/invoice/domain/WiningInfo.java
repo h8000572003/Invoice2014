@@ -1,8 +1,5 @@
 package tw.com.wa.invoice.domain;
 
-import android.os.Parcelable;
-
-import java.io.Serializable;
 import java.util.List;
 
 import tw.com.wa.invoice.util.InvoYm;
@@ -19,6 +16,8 @@ public interface WiningInfo {
     public InvoiceInfoV2 getInfoV2();
 
     public InvoYm getStages();
+
+    public WiningBean getBean();
 
 
 }

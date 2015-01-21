@@ -67,7 +67,7 @@ public class LoadingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
-                BeanUtil.outInfo = dto.getOutInfo();
+                BeanUtil.info = dto.getOutInfo();
                 startActivity(it);
 
 
@@ -171,7 +171,7 @@ public class LoadingActivity extends Activity {
 
                 statuLabel.setVisibility(View.GONE);
                 toolBar.setVisibility(View.VISIBLE);
-
+                BeanUtil.info = dto.getOutInfo();
 
             }
 

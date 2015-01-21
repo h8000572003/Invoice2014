@@ -100,6 +100,7 @@ public class AddInvoiceActivity extends ActionBarActivity {
                 InvoiceEnter enterDomain = new InvoiceEnter();
                 enterDomain.setInYm(inYm);
                 enterDomain.setNumber(editText.getText().toString());
+                enterDomain.setStatus("");
 
                 dao.insert(enterDomain);
                 con.setTransactionSuccessful();

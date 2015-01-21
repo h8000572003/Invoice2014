@@ -20,8 +20,10 @@ import tw.com.wa.invoice.domain.InvoiceInfoV2;
 public class DbHelper extends SQLiteOpenHelper {
 
     final static String DB_NAME = "INVOICE_DB";
-    final static int VERSION = 1;
+    final static int VERSION = 2;
     private static final String TAG = "DbHelper";
+
+
     final Context context;
 
     public DbHelper(Context context) {
@@ -29,7 +31,9 @@ public class DbHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
+
     @Override
+
     public void onCreate(SQLiteDatabase db) {
 
         try {
@@ -45,7 +49,7 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL(this.readRawFile(R.raw.del_db));
             db.execSQL(this.readRawFile(R.raw.db));
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "e:" + e.getMessage(), e);
         }
     }
 

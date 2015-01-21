@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -44,28 +45,42 @@ public abstract class GenericDAO<T> {
         final Cursor cursor =
                 db.query(this.getTable().name, null, selection, selectionArgs, "", "", "id");
         final List<ContentValues> valueses = new ArrayList<ContentValues>();
-        cursor.moveToFirst();
-        for (int i = 0; i < cursor.getCount(); i++) {
 
-            final ContentValues value = new ContentValues();
-            valueses.add(value);
-
-            for (DBContract.TypeInfp info : infps) {
-                final String fileNmae = info.getName();
-                switch (info.getType()) {
-
-                    case INT:
-                        value.put(fileNmae, cursor.getInt(cursor.getColumnIndex(fileNmae)));
-                        break;
-
-                    case STRING:
-                        value.put(fileNmae, cursor.getString(cursor.getColumnIndex(fileNmae)));
-                        break;
-                }
+        try {
+            if (cursor.getColumnCount() == 0) {
+                return Collections.emptyList();
             }
-            cursor.moveToNext();
+
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+
+                final ContentValues value = new ContentValues();
+                valueses.add(value);
+
+                for (DBContract.TypeInfp info : infps) {
+                    final String fileNmae = info.getName();
+                    switch (info.getType()) {
+
+                        case INT:
+                            value.put(fileNmae, cursor.getInt(cursor.getColumnIndex(fileNmae)));
+                            break;
+
+                        case STRING:
+                            value.put(fileNmae, cursor.getString(cursor.getColumnIndex(fileNmae)));
+                            break;
+                    }
+                }
+                cursor.moveToNext();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "e:" + e.getMessage(), e);
+            e.printStackTrace();
+            ;
+        } finally {
+            cursor.close();
         }
-        cursor.close();
+
+
         return valueses;
     }
 
@@ -82,7 +97,17 @@ public abstract class GenericDAO<T> {
 
     }
 
-    private ContentValues newInstanceContentValues(T domina) {
+    public void delete(String whereClause, String[] whereArgs) throws InvoiceDBException {
+        try {
+            this.db.delete(this.getTable().name, whereClause, whereArgs);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            throw new InvoiceDBException(e.getMessage());
+        }
+
+    }
+
+    private ContentValues newInstanceContentValues(T domina) throws InvoiceDBException {
         final Field[] fs = this.getAllFields(domina);
 
         ContentValues map = new ContentValues();

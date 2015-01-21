@@ -239,7 +239,11 @@ public class CommomUtil {
             Log.d(TAG, "number=" + invoice.getNumber());
             if (invoice.isSpecialize()) {//
                 Log.d(TAG, "isSpecialize");
-                if (invoice.getNumber().equals(number)) {
+
+                String specialNumber=number.substring(8-invoice.getNumber().length());
+                Log.d(TAG, "specialNumber="+specialNumber);
+
+                if (invoice.getNumber().equals(specialNumber)) {
                     return this.from(invoice, invoice.getNumber().length());
                 }
 
