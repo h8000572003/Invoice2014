@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.OutInfo;
+import tw.com.wa.invoice.fragment.AwardMessageFragment;
 import tw.com.wa.invoice.fragment.ListInvoiceFragment;
 import tw.com.wa.invoice.fragment.MainFragment;
 
@@ -21,7 +22,7 @@ public class NavigationdActivityV2 extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final int ADD_CODE = 1;
-    private static final int[] titile = new int[]{R.string.title_section1, R.string.title_section2};
+    private static final int[] titile = new int[]{R.string.title_section1, R.string.title_section2,R.string.title_section3};
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -111,7 +112,7 @@ public class NavigationdActivityV2 extends ActionBarActivity
                 return ListInvoiceFragment.newInstance();
 
             default:
-                return MainFragment.newInstance();
+                return new AwardMessageFragment();
         }
 
     }

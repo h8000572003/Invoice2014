@@ -9,9 +9,9 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="tw.com.wa.invoice.fragment.MessageFragment"
+        android:name="tw.com.wa.invoice.fragment.AwardMessageFragment"
         android:id="@+id/messageFragment"
 
         android:layout_gravity="center_horizontal"
-        tools:layout="@layout/blank_layout" />
+        tools:layout="@layout/award_message_layout" />
 </LinearLayout>
