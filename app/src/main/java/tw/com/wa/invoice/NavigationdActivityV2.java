@@ -22,7 +22,7 @@ public class NavigationdActivityV2 extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final int ADD_CODE = 1;
-    private static final int[] titile = new int[]{R.string.title_section1, R.string.title_section2,R.string.title_section3};
+    private static final int[] titile = new int[]{R.string.title_section1, R.string.title_section2, R.string.title_section3};
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -180,6 +180,12 @@ public class NavigationdActivityV2 extends ActionBarActivity
                 startActivityForResult(it, ADD_CODE);
                 //     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
+
+            case R.id.action_delete:
+
+                if (fragment instanceof ListInvoiceFragment) {
+                    ((ListInvoiceFragment) fragment).deletList();
+                }
 
                 break;
 

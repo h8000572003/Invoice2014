@@ -25,4 +25,10 @@ public class InvoiceEnterDAO extends GenericDAO<InvoiceEnter> {
     public List<InvoiceEnter> get(String inYm) {
         return super.doQuery("inYm=?", new String[]{inYm}, InvoiceEnter.class);
     }
+
+    public void delete(String inYM) {
+        super.delete("inYm=?", new String[]{inYM});
+    }
+
+
 }

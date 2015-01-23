@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.DbHelper;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
 import tw.com.wa.invoice.util.InvoiceEnterDAO;
+import tw.com.wa.invoice.util.OnItemClickListner;
 
 /**
  * Created by Andy on 15/1/17.
@@ -85,8 +87,6 @@ public class ListInvoiceFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         this.dto = new ListInvoiceDTO();
-
-
 
 
         inYm = BeanUtil.info.getStages().getStatge();
@@ -160,6 +160,32 @@ public class ListInvoiceFragment extends Fragment {
         return rootView;
     }
 
+    public void deletList() {
+
+
+        final DbHelper dbHelper = new DbHelper(getActivity());
+
+        SQLiteDatabase con = null;
+        try {
+            con = dbHelper.getWritableDatabase();
+
+            InvoiceEnterDAO enterDAO = new InvoiceEnterDAO(con, getActivity());
+            enterDAO.delete(inYm);
+
+        } catch (InvoiceBusinessException e) {
+            Log.e(TAG, "e" + e.getMessage());
+        } finally {
+            if (con != null) {
+                con.close();
+
+            }
+
+        }
+
+        this.reFresh();
+
+    }
+
     /**
      *
      */
@@ -169,6 +195,7 @@ public class ListInvoiceFragment extends Fragment {
     }
 
     private class CheckJob extends AsyncTask<String, List<InvoiceEnter>, List<InvoiceEnter>> {
+
 
         private CommomUtil commonUtil;
 
@@ -232,7 +259,20 @@ public class ListInvoiceFragment extends Fragment {
                 blankView.setVisibility(View.INVISIBLE);
             }
 
-            recyclerView.setAdapter(new InvAdapter(dto.getShowLists()));
+            InvAdapter adapte = new InvAdapter(dto.getShowLists());
+            adapte.setClickListner(new OnItemClickListner() {
+                @Override
+                public void onItemClick(final int pos) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), pos, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+
+            recyclerView.setAdapter(adapte);
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -259,10 +299,15 @@ public class ListInvoiceFragment extends Fragment {
                 this.contentView.setTextColor(Color.GRAY);
 
 
+
+
             }
         }
 
         public class InvAdapter extends RecyclerView.Adapter<CheckJob.ViewHolder> {
+
+
+            private OnItemClickListner clickListner = null;
 
             private List<InvoiceEnter> enters = null;
 
@@ -271,6 +316,10 @@ public class ListInvoiceFragment extends Fragment {
 
             public InvAdapter(List<InvoiceEnter> enters) {
                 this.enters = enters;
+            }
+
+            public void setClickListner(OnItemClickListner clickListner) {
+                this.clickListner = clickListner;
             }
 
             @Override
@@ -283,9 +332,10 @@ public class ListInvoiceFragment extends Fragment {
             }
 
             @Override
-            public void onBindViewHolder(CheckJob.ViewHolder holder, int position) {
+            public void onBindViewHolder(CheckJob.ViewHolder holder, final int position) {
 
                 final InvoiceEnter enter = this.enters.get(position);
+
 
 
                 if (TextUtils.isEmpty(enter.getStatus())) {
