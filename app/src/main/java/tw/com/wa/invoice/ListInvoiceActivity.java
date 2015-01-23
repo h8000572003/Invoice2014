@@ -86,20 +86,7 @@ public class ListInvoiceActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_add:
 
-                Intent it = new Intent(ListInvoiceActivity.this, AddInvoiceActivity.class);
-
-
-                Bundle bundle = getIntent().getExtras();
-
-
-                it.putExtras(bundle);
-                startActivityForResult(it, ADD_CODE);
-                //     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-
-
-                break;
 
         }
 

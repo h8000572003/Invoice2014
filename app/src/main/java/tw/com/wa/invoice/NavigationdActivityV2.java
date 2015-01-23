@@ -21,7 +21,6 @@ import tw.com.wa.invoice.fragment.MainFragment;
 public class NavigationdActivityV2 extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    private static final int ADD_CODE = 1;
     private static final int[] titile = new int[]{R.string.title_section1, R.string.title_section2, R.string.title_section3};
 
     /**
@@ -36,29 +35,7 @@ public class NavigationdActivityV2 extends ActionBarActivity
     private int pos = 0;
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case ADD_CODE:
-                this.onAddActionResult(resultCode, data);
 
-
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void onAddActionResult(int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-
-            if (fragment instanceof ListInvoiceFragment) {
-                ((ListInvoiceFragment) fragment).reFresh();
-            }
-
-
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,19 +143,7 @@ public class NavigationdActivityV2 extends ActionBarActivity
 
 
         switch (item.getItemId()) {
-            case R.id.action_add:
 
-                Intent it = new Intent(this, AddInvoiceActivity.class);
-
-
-                Bundle bundle = new Bundle();
-                OutInfo outInfo1 = (OutInfo) BeanUtil.info;
-                //FIXME
-                //  bundle.putString("inYm", outInfo1.getInvoYm());
-
-                it.putExtras(bundle);
-                startActivityForResult(it, ADD_CODE);
-                //     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
 
             case R.id.action_delete:

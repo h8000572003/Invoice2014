@@ -1,6 +1,8 @@
 package tw.com.wa.invoice.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -25,9 +27,12 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import tw.com.wa.invoice.AddInvoiceActivity;
 import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
@@ -45,9 +50,8 @@ import tw.com.wa.invoice.util.OnItemClickListner;
  */
 public class ListInvoiceFragment extends Fragment {
 
+    public static final int ADD_CODE = 1;
     private static final String TAG = "ListInvoiceFragment";
-
-
     private Spinner status_spinner = null;
     private RecyclerView recyclerView = null;
     private SwipeRefreshLayout laySwipe;
@@ -71,6 +75,7 @@ public class ListInvoiceFragment extends Fragment {
     private int status = 0;
     private QueryJob job = null;
     private boolean isCreateOn = true;
+    private FloatingActionButton fab = null;
 
 
     public static ListInvoiceFragment newInstance() {
@@ -81,6 +86,19 @@ public class ListInvoiceFragment extends Fragment {
         return fragment;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                reFresh();
+
+
+            }
+        }
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +123,7 @@ public class ListInvoiceFragment extends Fragment {
         this.blankView = rootView.findViewById(R.id.blankView);
         this.status_spinner = (Spinner) rootView.findViewById(R.id.status_spinner);
         this.bottombar = (TextView) rootView.findViewById(R.id.bottombar);
+        this.fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
 
         this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
@@ -121,7 +140,10 @@ public class ListInvoiceFragment extends Fragment {
         this.recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                laySwipe.setEnabled(((LinearLayoutManager) mLayoutManager).findFirstCompletelyVisibleItemPosition() == 0);
+
+                int firstItem = ((LinearLayoutManager) mLayoutManager).findFirstCompletelyVisibleItemPosition();
+                laySwipe.setEnabled(firstItem == 0);
+
             }
         });
         String[] items = getResources().getStringArray(R.array.list_items);
@@ -147,6 +169,19 @@ public class ListInvoiceFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        this.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(getActivity(), AddInvoiceActivity.class);
+
+
+                Bundle bundle = new Bundle();
+
+
+                it.putExtras(bundle);
+                startActivityForResult(it, ADD_CODE);
             }
         });
 
@@ -299,8 +334,6 @@ public class ListInvoiceFragment extends Fragment {
                 this.contentView.setTextColor(Color.GRAY);
 
 
-
-
             }
         }
 
@@ -335,7 +368,6 @@ public class ListInvoiceFragment extends Fragment {
             public void onBindViewHolder(CheckJob.ViewHolder holder, final int position) {
 
                 final InvoiceEnter enter = this.enters.get(position);
-
 
 
                 if (TextUtils.isEmpty(enter.getStatus())) {
