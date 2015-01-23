@@ -26,9 +26,7 @@ import java.util.Map;
 
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
-import tw.com.wa.invoice.domain.InvoiceInfoV2;
 import tw.com.wa.invoice.domain.InvoiceKeyIn;
-import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.NumberAdapter;
@@ -75,29 +73,13 @@ public class PlaceholderFragment extends Fragment {
     };
 
 
-    public PlaceholderFragment() {
-
-
-        keyIns = BeanUtil.allInvoices;
-
-
-    }
-
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PlaceholderFragment newInstance(int sectionNumber, List<InvoiceKeyIn> keyIns) {
-
-        final PlaceholderFragment fragment = new PlaceholderFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        fragment.keyIns = keyIns;
+    public PlaceholderFragment() {
 
 
-        return fragment;
     }
 
     @Override
@@ -111,8 +93,11 @@ public class PlaceholderFragment extends Fragment {
         Bundle bundle =
                 it.getExtras();
 
-
+        keyIns = (List<InvoiceKeyIn>) bundle.getSerializable("list");
         awardYm = bundle.getString("Ym");
+
+
+        awardYm = BeanUtil.info.getStages().getAwardRangDate().toString();
 
 
     }
@@ -227,14 +212,12 @@ public class PlaceholderFragment extends Fragment {
         this.recyclerView.setAdapter(adapter);
 
 
-
-
         this.refreshNumAdapter();
         ;
     }
 
     private void checkIsBlankInvoices() {
-        if (BeanUtil.allInvoices.isEmpty()) {
+        if (keyIns.isEmpty()) {
             AnimationSet animationset = new AnimationSet(true);
             animationset.addAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_down));
 

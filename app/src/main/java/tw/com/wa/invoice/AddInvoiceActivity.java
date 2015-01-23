@@ -43,6 +43,7 @@ public class AddInvoiceActivity extends ActionBarActivity {
         this.addInvoiceBtn = (Button) this.findViewById(R.id.addInvoiceBtn);
 
 
+
         this.addInvoiceBtn.setEnabled(false);
         this.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override

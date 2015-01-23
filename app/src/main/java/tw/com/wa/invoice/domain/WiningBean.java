@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Andy on 2015/1/6.
  */
-public class WiningBean  implements WiningOutInfo {
+public class WiningBean  implements WiningOutInfo,Serializable {
     private String v = "";//版本號碼
     private String code = "";//訊息回應碼
     private String msg = "";//系統回應訊息

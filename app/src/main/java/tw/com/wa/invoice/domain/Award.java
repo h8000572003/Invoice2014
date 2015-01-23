@@ -1,5 +1,6 @@
 package tw.com.wa.invoice.domain;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 /**
  * Created by Andy on 14/12/12.
  */
-public enum Award {
+public enum Award implements Serializable{
     Veryspecial("E7", AwardInfo.Veryspecial, 8, "特別獎", 1, 0),//特別獎
     Special("E8", AwardInfo.Special, 8, "特獎", 2, 0),//特獎
     Exactsix("E9", AwardInfo.Exactsix, 3, "增開六獎", 9, 0),//額外六

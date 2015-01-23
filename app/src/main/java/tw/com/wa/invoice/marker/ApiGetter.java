@@ -3,12 +3,8 @@ package tw.com.wa.invoice.marker;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.reflect.TypeToken;
-import com.parse.codec.binary.StringUtils;
-
 import org.apache.http.NameValuePair;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,12 +17,26 @@ import tw.com.wa.invoice.util.InvoiceBusinessException;
 public class ApiGetter<T> {
 
     private static final String TAG = "ApiGetter";
-
     private static final String AND_SIGNAL = "&";
+
+
+    private static ApiGetter apiGetter;
 
     private SqlAdapter adapter;
 
     private GetCompent getCompent = new GetCompent();
+
+    private ApiGetter() {
+
+    }
+
+    public synchronized static ApiGetter getApi() {
+        if (apiGetter == null) {
+            apiGetter = new ApiGetter();
+        }
+        return apiGetter;
+
+    }
 
     public void setAdapter(SqlAdapter adapter) {
         this.adapter = adapter;

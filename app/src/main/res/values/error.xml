@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="W001">取得發票資訊有誤，請稍候試。</string>
+
+    <string name="W002"> 尚未連接網路，請連接網路在測試一次。</string>
+
+</resources>

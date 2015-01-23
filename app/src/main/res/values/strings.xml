@@ -29,10 +29,10 @@
         <item>未中獎</item>
     </array>
 
-    <string name="title_activity_main_activity_v2">MainActivityV2</string>
-    <string name="title_section1">全部發票</string>
-    <string name="title_section2">中獎發票</string>
-    <string name="title_section3">未中獎發票</string>
+    <!--<string name="title_activity_main_activity_v2">MainActivityV2</string>-->
+    <string name="title_section1">後三碼對獎</string>
+    <string name="title_section2">對獎紀錄</string>
+    <string name="title_section3">多張兌獎</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -87,9 +87,10 @@
     <string name="invoice_list_tool_lab">批次發票兌獎</string>
 
 
+    <string name="main_topic_lab">領獎時間:%s</string>
+
+
     <string-array name="list_items">
-
-
         <item> 全部</item>
         <item>僅中獎發票</item>
         <item> 未中獎發票</item>

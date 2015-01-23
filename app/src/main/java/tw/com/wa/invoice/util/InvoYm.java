@@ -3,12 +3,13 @@ package tw.com.wa.invoice.util;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by Andy on 2015/1/9.
  */
-public class InvoYm {
+public class InvoYm implements Serializable{
     private Calendar beging;
     private Calendar end;
 

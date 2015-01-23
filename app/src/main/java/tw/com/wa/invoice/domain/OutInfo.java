@@ -2,6 +2,7 @@ package tw.com.wa.invoice.domain;
 
 import android.text.TextUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import tw.com.wa.invoice.util.InvoYm;
 /**
  * Created by Andy on 2015/1/9.
  */
-public class OutInfo extends WiningBean implements WiningInfo {
+public class OutInfo implements WiningInfo, Serializable {
 
     private final static String TITLE_TEMPLATE = "%04d/%02d-%02d";
     private InvoiceInfoV2 infoV2 = null;
@@ -29,7 +30,7 @@ public class OutInfo extends WiningBean implements WiningInfo {
         this.stagingYm = DateUtil.yyymm(this.invoYm.getEnd());
 
         this.changeAwrd(bean);
-
+        BeanUtil.info = this;
     }
 
     public WiningBean getBean() {

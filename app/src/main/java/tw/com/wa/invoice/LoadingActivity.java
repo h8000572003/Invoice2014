@@ -13,11 +13,10 @@ import android.widget.TextView;
 
 import tw.com.wa.invoice.api.LoadService;
 import tw.com.wa.invoice.core.LoadServiceImpl;
-import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.LoadDTO;
-import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.ui.ToolBar;
+import tw.com.wa.invoice.util.InvoiceBusinessException;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -25,6 +24,7 @@ import tw.com.wa.invoice.ui.ToolBar;
 public class LoadingActivity extends Activity {
 
     private static final String TAG = "LoadingActivity";
+
 
     private Activity activity = this;
 
@@ -68,8 +68,9 @@ public class LoadingActivity extends Activity {
         this.toolBar.setBtn1OnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(LoadingActivity.this, MainActivityV2.class);
-                BeanUtil.info = dto.getOutInfo();
+                Intent it = new Intent(LoadingActivity.this, NavigationdActivityV2.class);
+
+
                 startActivity(it);
 
 
@@ -84,20 +85,6 @@ public class LoadingActivity extends Activity {
             }
         });
 
-        this.toolBar.setBtn3OnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(LoadingActivity.this, ListInvoiceActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putString("inYm", dto.getYm());
-                bundle.putString("subTitle", dto.getOutInfo().getTitle());
-
-                it.putExtras(bundle);
-
-                startActivity(it);
-            }
-        });
 
         this.toolBar.build();
 
@@ -109,7 +96,6 @@ public class LoadingActivity extends Activity {
 
 
     }
-
 
 
     private class LoadAsyncTask extends AsyncTask<String, String, String> {
@@ -140,15 +126,16 @@ public class LoadingActivity extends Activity {
         protected String doInBackground(String... params) {
 
 
-            ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
+            try {
 
-            NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
+            } catch (InvoiceBusinessException e) {
 
-            if (networInfo == null || !networInfo.isAvailable()) { //判斷是否有網路
-                return "尚未連接網路，請連接網路在測試一次";
+                return e.getMessage();
             }
 
+
             this.service.loadData(dto, activity);
+
 
             return null;
         }
@@ -170,14 +157,15 @@ public class LoadingActivity extends Activity {
                 statuLabel.setTextColor(getResources().getColor(R.color.material_blue_grey_800));
 
                 newYmView.setVisibility(View.VISIBLE);
-                newYmView.setText("最新期數：" + dto.getOutInfo().getTitle());
+                newYmView.setText("最新期數：" + BeanUtil.info.getTitle());
 
 
                 statuLabel.setVisibility(View.GONE);
                 toolBar.setVisibility(View.VISIBLE);
-                BeanUtil.info = dto.getOutInfo();
+
 
             }
+
 
         }
     }

@@ -12,10 +12,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.parse.codec.binary.StringUtils;
+
 import java.util.List;
 
 import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
+import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.domain.WiningBean;
@@ -36,10 +39,12 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     private Button beforeBtn = null;
     private Button nextBtn = null;
     private TextView stagingText = null;
+    private TextView stageView = null;
+
 
     private Context context;
 
-    private ApiGetter<WiningBean> marker = new ApiGetter();
+    private ApiGetter<WiningBean> marker = ApiGetter.getApi();
     private LoadJob job;
 
     private WiningInfo outInfo;
@@ -69,6 +74,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
         this.stagingText.setText(outInfo.getTitle());
+        stageView.setText(context.getString(R.string.main_topic_lab, outInfo.getStages().getAwardRangDate().toString()));
     }
 
     public void setOnValueChangeListener(OnValueChangeListener onValueChangeListener) {
@@ -79,6 +85,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         this.context = context;
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.range_staging_layout, this, true);
+
 
         findUI();
 
@@ -118,6 +125,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         this.beforeBtn = (Button) this.findViewById(R.id.beforeBtn);
         this.nextBtn = (Button) this.findViewById(R.id.nextBtn);
         this.stagingText = (TextView) this.findViewById(R.id.stagingText);
+        this.stageView = (TextView) this.findViewById(R.id.stageView);
 
         this.beforeBtn.setOnClickListener(this);
         this.nextBtn.setOnClickListener(this);
@@ -131,19 +139,17 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
                 List<Invoice> invoiceList = outInfo.getInvoice();
 
-                StringBuffer message = new StringBuffer();
-                message.append(context.getString(R.string.dateOfAward) + ":");
-                message.append(outInfo.getStages().getAwardRangDate().toString() + "\n");
+                final StringBuffer message = new StringBuffer();
+
                 for (Invoice invoice : invoiceList) {
 
-                    Log.i(TAG, "invoice=" + invoice.getAwards() + "/" + invoice.getAwards());
-                    Log.i(TAG, "number=" + invoice.getNumber());
 
                     message.append(Award.lookup(invoice.getAwards()).message);
                     message.append(":");
                     message.append(invoice.getNumber());
                     message.append("\n");
                 }
+
 
                 MyAlertDialog.setMessage(message.toString());
                 MyAlertDialog.setNeutralButton(context.getString(R.string.ok), null);
@@ -160,6 +166,10 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
     public void setOutInfo(WiningInfo outInfo) {
         this.outInfo = outInfo;
+    }
+
+    public TextView getStagingText() {
+        return stagingText;
     }
 
     public interface OnValueChangeListener {
@@ -210,6 +220,9 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
         @Override
         protected void onPreExecute() {
+
+            stageView.setText(R.string.loading);
+            // stageView.setVisibility(View.INVISIBLE);
             StagingView.this.onValueChangeListener.onLoad();
         }
 
@@ -230,6 +243,11 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
                 OutInfo info = new OutInfo(bean);
                 StagingView.this.outInfo = info;
+                BeanUtil.info = info;
+
+
+                Log.i(TAG, "Get New INvoice.." + info.getTitle());
+                Log.i(TAG, "info=" + info.getTitle());
 
 
                 StagingView.this.onValueChangeListener.onSuccessfully(info);
@@ -257,7 +275,10 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         @Override
         protected void onPostExecute(Void aVoid) {
             try {
+                stageView.setText(context.getString(R.string.main_topic_lab, outInfo.getStages().getAwardRangDate().toString()));
                 stagingText.setText(outInfo.getTitle());
+                stageView.setVisibility(View.VISIBLE);
+
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

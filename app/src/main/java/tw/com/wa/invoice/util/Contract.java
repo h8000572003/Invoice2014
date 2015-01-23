@@ -9,5 +9,4 @@ public interface Contract {
 
 
     static final String API_ID = "EINV9201412111086";
-
 }

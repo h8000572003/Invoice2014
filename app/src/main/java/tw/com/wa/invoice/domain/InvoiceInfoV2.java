@@ -3,6 +3,7 @@ package tw.com.wa.invoice.domain;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 
 @ParseClassName("InvoiceInfo")
-public class InvoiceInfoV2 extends ParseObject {
+public class InvoiceInfoV2 extends ParseObject implements Serializable {
     private List<Invoice> invoice = new ArrayList<>();
 
     private String title = "";

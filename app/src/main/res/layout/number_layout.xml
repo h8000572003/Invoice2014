@@ -83,7 +83,8 @@
             android:layout_margin="5dp"
 
 
-            android:background="@color/material_grey_500" />
+            android:background="@color/material_grey_500"
+             />
 
         <TextView
 

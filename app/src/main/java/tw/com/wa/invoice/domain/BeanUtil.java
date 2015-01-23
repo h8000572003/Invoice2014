@@ -5,12 +5,7 @@ import android.util.Log;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import tw.com.wa.invoice.util.IWining;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -20,10 +15,10 @@ public class BeanUtil {
     private static final String TAG = "BeanUtil";
 
 
-    public static List<InvoiceKeyIn> allInvoices = new ArrayList<InvoiceKeyIn>();
+    //public static List<InvoiceKeyIn> allInvoices = new ArrayList<InvoiceKeyIn>();
 
     public static WiningInfo info = null;
-    public static WiningBean WiningBean = null;
+    //  public static WiningBean WiningBean = null;
 
     //public static  OutInfo outInfo;
 

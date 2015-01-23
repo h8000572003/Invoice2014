@@ -9,6 +9,7 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:id="@+id/horizontalScrollView">
 
         <LinearLayout
@@ -18,24 +19,24 @@
             android:layout_gravity="center"
             android:layout_height="match_parent">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/invoice_list_tool_lab"
-                android:id="@+id/addInvoiceTn"
-                style="?android:attr/borderlessButtonStyle"
-                android:textColor="@color/material_grey_700"
-                android:layout_gravity="center_vertical" />
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/invoice_list_tool_lab"-->
+                <!--android:id="@+id/addInvoiceTn"-->
+                <!--style="?android:attr/borderlessButtonStyle"-->
+                <!--android:textColor="@color/material_grey_700"-->
+                <!--android:layout_gravity="center_vertical" />-->
 
-            <TextView
+            <!--<TextView-->
 
 
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_margin="10dp"-->
 
-                android:background="@color/material_grey_500" />
+                <!--android:background="@color/material_grey_500" />-->
 
 
             <Button

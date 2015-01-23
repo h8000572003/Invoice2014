@@ -29,7 +29,7 @@ public class ToolBar extends FrameLayout {
 
     private OnClickListener onClickListener1;
     private OnClickListener onClickListener2;
-    private OnClickListener onClickListener3;
+   // private OnClickListener onClickListener3;
 
     public ToolBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -54,9 +54,6 @@ public class ToolBar extends FrameLayout {
     public void setBtn2OnClickListener(OnClickListener onClickListener) {
         this.onClickListener2 = onClickListener;
     }
-    public void setBtn3OnClickListener(OnClickListener onClickListener) {
-        this.onClickListener3 = onClickListener;
-    }
 
 
     private void bindView(Context context) {
@@ -66,7 +63,7 @@ public class ToolBar extends FrameLayout {
 
         this.btn1 = (Button) findViewById(R.id.button1);
         this.btn2 = (Button) findViewById(R.id.button2);
-        this.btn3 = (Button) this.findViewById(R.id.addInvoiceTn);
+    //    this.btn3 = (Button) this.findViewById(R.id.addInvoiceTn);
 
         this.setonClickListener();
     }
@@ -79,8 +76,6 @@ public class ToolBar extends FrameLayout {
     private void setonClickListener() {
         this.btn1.setOnClickListener(new OnClickListenerAdapter(onClickListener1));
         this.btn2.setOnClickListener(new OnClickListenerAdapter(onClickListener2));
-
-        this.btn3.setOnClickListener(new OnClickListenerAdapter(onClickListener3));
 
 
     }

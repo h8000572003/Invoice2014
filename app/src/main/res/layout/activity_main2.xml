@@ -8,7 +8,10 @@
     <tw.com.wa.invoice.ui.StagingView
         android:id="@+id/stagingView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"></tw.com.wa.invoice.ui.StagingView>
+        android:layout_height="wrap_content"></tw.com.wa.invoice.ui.StagingView>
+
+
+
 
 
     <RelativeLayout
@@ -85,8 +88,6 @@
                     android:hint="@string/addCalendarBtn"
                     style="@style/Base.TextAppearance.AppCompat.Display1"
                     android:visibility="gone" />
-
-
 
 
             </LinearLayout>

@@ -5,8 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cccc"
+    android:background="@color/white"
     android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
+    android:divider="@color/material_grey_300"
+    android:padding="5dp"
+    android:dividerHeight="1dp"
+
     tools:context="tw.com.wa.invoice.NavigationDrawerFragment" />

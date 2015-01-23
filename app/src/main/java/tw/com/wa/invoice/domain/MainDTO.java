@@ -1,7 +1,8 @@
 package tw.com.wa.invoice.domain;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Andy on 14/12/9.
@@ -16,6 +17,27 @@ public class MainDTO {
 
     private WiningInfo info;
 
+    private String nowStageTitle = "";
+    private Map<String, List<InvoiceKeyIn>> keyIn = new HashMap<>();
+
+
+
+
+    public String getNowStageTitle() {
+        return nowStageTitle;
+    }
+
+    public void setNowStageTitle(String nowStageTitle) {
+        this.nowStageTitle = nowStageTitle;
+    }
+
+    public Map<String, List<InvoiceKeyIn>> getKeyIn() {
+        return keyIn;
+    }
+
+    public void setKeyIn(Map<String, List<InvoiceKeyIn>> keyIn) {
+        this.keyIn = keyIn;
+    }
 
     public Winning getWinning() {
 

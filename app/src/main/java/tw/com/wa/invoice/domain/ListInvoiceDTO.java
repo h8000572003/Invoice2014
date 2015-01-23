@@ -10,8 +10,8 @@ public class ListInvoiceDTO implements Serializable {
 
     private List<InvoiceEnter> enters = null;
 
-
     private List<InvoiceEnter> showLists = null;
+
 
     public List<InvoiceEnter> getShowLists() {
         return showLists;
@@ -21,7 +21,6 @@ public class ListInvoiceDTO implements Serializable {
         this.showLists = showLists;
     }
 
-    //  private String inYm = "";
 
     public List<InvoiceEnter> getEnters() {
         return enters;
@@ -31,11 +30,5 @@ public class ListInvoiceDTO implements Serializable {
         this.enters = enters;
     }
 
-//    public String getInYm() {
-//        return inYm;
-//    }
-//
-//    public void setInYm(String inYm) {
-//        this.inYm = inYm;
-//    }
+
 }

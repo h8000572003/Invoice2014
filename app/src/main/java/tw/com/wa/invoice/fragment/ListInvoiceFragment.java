@@ -71,15 +71,25 @@ public class ListInvoiceFragment extends Fragment {
     private boolean isCreateOn = true;
 
 
+    public static ListInvoiceFragment newInstance() {
+
+        final ListInvoiceFragment fragment = new ListInvoiceFragment();
+
+
+        return fragment;
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.dto = new ListInvoiceDTO();
 
-        Bundle bundle = getActivity().getIntent().getExtras();
 
-        inYm = bundle.getString("inYm");
+
+
+        inYm = BeanUtil.info.getStages().getStatge();
 
 
     }
@@ -173,17 +183,12 @@ public class ListInvoiceFragment extends Fragment {
         protected List<InvoiceEnter> doInBackground(String... params) {
 
             dto.setShowLists(new ArrayList<InvoiceEnter>());
-
-            List<Invoice> v2 =
-                    BeanUtil.info.getInvoice();
+            List<Invoice> v2 = BeanUtil.info.getInvoice();
             for (InvoiceEnter enter : dto.getEnters()) {
                 Award award =
                         this.commonUtil.checkBestAward(enter.getNumber(), v2);
                 enter.setStatus(award != null ? award.unCode : "");
-
-
             }
-
 
             if (status == 0) {
                 dto.getShowLists().addAll(dto.getEnters());
@@ -208,7 +213,6 @@ public class ListInvoiceFragment extends Fragment {
                 }
 
             }
-
 
             return dto.getEnters();
         }
