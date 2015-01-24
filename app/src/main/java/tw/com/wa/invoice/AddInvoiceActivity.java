@@ -4,14 +4,10 @@ import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.InvoiceEnter;
@@ -28,7 +24,7 @@ public class AddInvoiceActivity extends ActionBarActivity {
     private static final String TAG = "AddInvoiceActivity";
     private KeyBoardLayout keyBoardLayout;
     private EditText editText;
-    private Button addInvoiceBtn;
+
 
     private String inYm = "";
 
@@ -37,21 +33,19 @@ public class AddInvoiceActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_invoice_activity_layout);
 
-        Bundle bundle = getIntent().getExtras();
+
         this.inYm = BeanUtil.info.getStages().getStatge();
 
 
         this.keyBoardLayout = (KeyBoardLayout) this.findViewById(R.id.keyboardLayout);
         this.editText = (EditText) this.findViewById(R.id.invoviceLabel);
-        this.addInvoiceBtn = (Button) this.findViewById(R.id.addInvoiceBtn);
 
 
-        this.addInvoiceBtn.setEnabled(false);
         this.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override
             public void onChange(String value) {
                 editText.setText(value);
-                if (value.length() >= 3 && value.length() <= 8) {
+                if (value.length() >= 3) {
 
 
                     insert();
@@ -60,9 +54,9 @@ public class AddInvoiceActivity extends ActionBarActivity {
 
             }
         });
+        keyBoardLayout.unEnable();
 
 
-        this.addInvoiceBtn.setOnClickListener(new AddInvoiceListener());
     }
 
     private void insert() {
@@ -72,11 +66,36 @@ public class AddInvoiceActivity extends ActionBarActivity {
         keyBoardLayout.cleanValueWithoutUI();
 
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_out_right);
+
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                keyBoardLayout.unEnable();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                keyBoardLayout.enable();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         editText.startAnimation(animation);
 
 
         setResult(Activity.RESULT_OK);
-       // Toast.makeText(AddInvoiceActivity.this, "新增發票成功", Toast.LENGTH_LONG).show();
+
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
     }
 
@@ -109,41 +128,5 @@ public class AddInvoiceActivity extends ActionBarActivity {
         }
     }
 
-    private class AddInvoiceListener implements View.OnClickListener {
-
-
-        @Override
-        public void onClick(View v) {
-            final String number = editText.getText().toString();
-
-
-            try {
-                this.check(number);
-
-                insertInvoice();
-
-                editText.setText("");
-                keyBoardLayout.cleanValueWithoutUI();
-
-
-                setResult(Activity.RESULT_OK);
-                Toast.makeText(AddInvoiceActivity.this, "新增發票成功", Toast.LENGTH_LONG).show();
-
-            } catch (InvoiceBusinessException e) {
-                Toast.makeText(AddInvoiceActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-        }
-
-        private void check(String number) throws InvoiceBusinessException {
-            if (TextUtils.isEmpty(number)) {
-                throw new InvoiceBusinessException("發票號碼需大於3碼");
-            } else if (number.length() < 3 && number.length() > 9) {
-                throw new InvoiceBusinessException("發票號碼需大於3碼");
-            }
-        }
-
-
-    }
 
 }

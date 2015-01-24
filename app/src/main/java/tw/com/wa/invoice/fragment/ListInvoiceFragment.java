@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -39,6 +37,7 @@ import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceEnter;
 import tw.com.wa.invoice.domain.ListInvoiceDTO;
+import tw.com.wa.invoice.ui.RecyAdapter;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.DbHelper;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
@@ -182,6 +181,7 @@ public class ListInvoiceFragment extends Fragment {
 
                 it.putExtras(bundle);
                 startActivityForResult(it, ADD_CODE);
+                getActivity().overridePendingTransition(R.anim.push_up_in, R.anim.abc_fade_out);
             }
         });
 
@@ -294,119 +294,18 @@ public class ListInvoiceFragment extends Fragment {
                 blankView.setVisibility(View.INVISIBLE);
             }
 
-            InvAdapter adapte = new InvAdapter(dto.getShowLists());
-            adapte.setClickListner(new OnItemClickListner() {
+            RecyAdapter adapte = new RecyAdapter(dto.getShowLists());
+            adapte.setOnItemClickListner(new OnItemClickListner() {
                 @Override
-                public void onItemClick(final int pos) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(), pos, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                public void onItemClick(int pos) {
+
+                    Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
                 }
             });
 
             recyclerView.setAdapter(adapte);
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-
-            private TextView titileView;
-            private TextView contentView;
-            private TextView moneyView;
-
-            private CardView container;
-
-
-            public ViewHolder(View v) {
-                super(v);
-
-
-                this.titileView = (TextView) v.findViewById(R.id.titileView);
-                this.contentView = (TextView) v.findViewById(R.id.contentView);
-                this.container = (CardView) v.findViewById(R.id.container);
-                this.moneyView = (TextView) v.findViewById(R.id.moneyView);
-
-
-                this.titileView.setTextColor(Color.GRAY);
-                this.contentView.setTextColor(Color.GRAY);
-
-
-            }
-        }
-
-        public class InvAdapter extends RecyclerView.Adapter<CheckJob.ViewHolder> {
-
-
-            private OnItemClickListner clickListner = null;
-
-            private List<InvoiceEnter> enters = null;
-
-
-            private int lastPosition = -1;
-
-            public InvAdapter(List<InvoiceEnter> enters) {
-                this.enters = enters;
-            }
-
-            public void setClickListner(OnItemClickListner clickListner) {
-                this.clickListner = clickListner;
-            }
-
-            @Override
-            public CheckJob.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-                View v = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.number_layout_v2, parent, false);
-                ViewHolder vh = new ViewHolder(v);
-                return vh;
-            }
-
-            @Override
-            public void onBindViewHolder(CheckJob.ViewHolder holder, final int position) {
-
-                final InvoiceEnter enter = this.enters.get(position);
-
-
-                if (TextUtils.isEmpty(enter.getStatus())) {
-
-                    holder.contentView.setText(enter.getNumber());
-                    holder.moneyView.setText(String.format("+$%,d", 0));
-                    holder.titileView.setText("無中獎");
-
-
-                } else {
-                    Award awrar =
-                            Award.lookup(enter.getStatus());
-
-                    holder.contentView.setText(enter.getNumber());
-                    holder.moneyView.setText(String.format("+$%,d", awrar.dollar));
-                    holder.titileView.setText(awrar.message);
-
-                }
-
-
-                this.setAnimation(holder.container, position);
-
-
-            }
-
-            private synchronized void setAnimation(View viewToAnimate, int position) {
-                // If the bound view wasn't previously displayed on screen, it's animated
-                if (position > lastPosition) {
-                    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.abc_slide_in_top);
-                    viewToAnimate.startAnimation(animation);
-                    lastPosition = position;
-                }
-            }
-
-            @Override
-            public int getItemCount() {
-                return this.enters.size();
-            }
-        }
 
     }
 

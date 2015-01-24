@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.parse.codec.binary.StringUtils;
-
 import java.util.List;
 
 import tw.com.wa.invoice.R;
@@ -25,7 +23,6 @@ import tw.com.wa.invoice.domain.WiningBean;
 import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.marker.ApiGetter;
 import tw.com.wa.invoice.marker.WiningsAdapter;
-import tw.com.wa.invoice.util.DateUtil;
 import tw.com.wa.invoice.util.InvoYm;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
 
@@ -40,23 +37,18 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     private Button nextBtn = null;
     private TextView stagingText = null;
     private TextView stageView = null;
-
-
     private Context context;
 
-    private ApiGetter<WiningBean> marker = ApiGetter.getApi();
     private LoadJob job;
-
     private WiningInfo outInfo;
     private InvoYm invoYm;
-
     private OnValueChangeListener onValueChangeListener = new OnValueChangeListenerAdapter();
-
 
     public StagingView(Context context) {
         super(context);
         this.bindView(context);
     }
+
 
     public StagingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -86,8 +78,8 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.range_staging_layout, this, true);
 
-
-        findUI();
+        this.findUI();
+        this.setViewListener();
 
 
     }
@@ -101,23 +93,22 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String invoceYm = "";
+        this.run(this.getInYm(v));
+    }
+
+    private String getInYm(View v) {
         switch (v.getId()) {
 
             case R.id.nextBtn:
-                invoceYm = InvoYm.after(invoYm).getStatge();
-                break;
+                return InvoYm.after(invoYm).getStatge();
 
             case R.id.beforeBtn:
-                invoceYm = InvoYm.before(invoYm).getStatge();
-                break;
+                return InvoYm.before(invoYm).getStatge();
 
             default:
-                invoceYm = invoYm.getStatge();
-                break;
-        }
+                return invoYm.getStatge();
 
-        run(invoceYm);
+        }
 
     }
 
@@ -127,17 +118,21 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         this.stagingText = (TextView) this.findViewById(R.id.stagingText);
         this.stageView = (TextView) this.findViewById(R.id.stageView);
 
+
+    }
+
+    private void setViewListener() {
         this.beforeBtn.setOnClickListener(this);
         this.nextBtn.setOnClickListener(this);
         this.stagingText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder MyAlertDialog = new AlertDialog.Builder(context);
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
-                MyAlertDialog.setTitle(context.getString(R.string.status_label));
+                alertDialog.setTitle(context.getString(R.string.status_label));
 
 
-                List<Invoice> invoiceList = outInfo.getInvoice();
+                final List<Invoice> invoiceList = outInfo.getInvoice();
 
                 final StringBuffer message = new StringBuffer();
 
@@ -151,14 +146,13 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 }
 
 
-                MyAlertDialog.setMessage(message.toString());
-                MyAlertDialog.setNeutralButton(context.getString(R.string.ok), null);
+                alertDialog.setMessage(message.toString());
+                alertDialog.setNeutralButton(context.getString(R.string.ok), null);
 
-                MyAlertDialog.show();
+                alertDialog.show();
             }
         });
     }
-
 
     public WiningInfo getOutInfo() {
         return outInfo;
@@ -172,7 +166,20 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         return stagingText;
     }
 
+    private void setGobalValue(WiningBean requstBean) {
+        final OutInfo info = new OutInfo(requstBean);
+        StagingView.this.outInfo = info;
+        BeanUtil.info = info;
+    }
+
+    /**
+     * 按鍵輸入監聽行為
+     */
     public interface OnValueChangeListener {
+        /**
+         * @param e
+         * @param messsage
+         */
         void onFail(Throwable e, String messsage);
 
         void onLoad();
@@ -185,21 +192,36 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
     private class OnValueChangeListenerAdapter implements OnValueChangeListener {
 
+        /**
+         * @param e
+         * @param message
+         */
         @Override
         public void onFail(Throwable e, String message) {
 
         }
 
+        /**
+         * 讀取中
+         */
         @Override
         public void onLoad() {
 
         }
 
+        /**
+         * 執行完成
+         */
         @Override
         public void onFinish() {
 
         }
 
+        /**
+         * 執行成功
+         *
+         * @param winingInfo
+         */
         @Override
         public void onSuccessfully(WiningInfo winingInfo) {
 
@@ -222,7 +244,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         protected void onPreExecute() {
 
             stageView.setText(R.string.loading);
-            // stageView.setVisibility(View.INVISIBLE);
+
             StagingView.this.onValueChangeListener.onLoad();
         }
 
@@ -231,26 +253,18 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
             try {
-                marker.setAdapter(new WiningsAdapter(invoiceYm));
-                WiningBean bean = marker.getQuery();
+
+                WiningBean bean = getInvoiceInfoFromWeb(invoiceYm);
 
 
                 if (TextUtils.equals(bean.getCode(), "901")) {
                     throw new InvoiceBusinessException(bean.getMsg());
                 }
 
-                StagingView.this.invoYm = DateUtil.getYm(invoiceYm);
 
-                OutInfo info = new OutInfo(bean);
-                StagingView.this.outInfo = info;
-                BeanUtil.info = info;
+                setGobalValue(bean);
 
-
-                Log.i(TAG, "Get New INvoice.." + info.getTitle());
-                Log.i(TAG, "info=" + info.getTitle());
-
-
-                StagingView.this.onValueChangeListener.onSuccessfully(info);
+                StagingView.this.onValueChangeListener.onSuccessfully(BeanUtil.info);
 
             } catch (InvoiceBusinessException e) {
                 Log.e(TAG, "e:" + e.getMessage());
@@ -264,6 +278,13 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
             return null;
+        }
+
+        private WiningBean getInvoiceInfoFromWeb(String invoiceYm) {
+            ApiGetter<WiningBean> marker = ApiGetter.getApi();
+            marker.setAdapter(new WiningsAdapter(invoiceYm));
+            return marker.getQuery();
+
         }
 
 

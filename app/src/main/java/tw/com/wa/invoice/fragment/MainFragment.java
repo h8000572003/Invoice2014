@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import tw.com.wa.invoice.AwardActivity;
@@ -40,6 +39,9 @@ import tw.com.wa.invoice.util.CommomUtil;
  * Created by Andy on 15/1/22.
  */
 public class MainFragment extends Fragment {
+
+    public final static String LIST = "list";
+    public final static String YM = "Ym";
 
 
     private final static int GO_SEE_INVOICE_CODE = 001;
@@ -125,12 +127,12 @@ public class MainFragment extends Fragment {
                 Intent it = new Intent(getActivity(), AwardActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putString("Ym", dto.getInfo().getStages().getAwardRangDate().toString());
-                bundle.putSerializable("list", (java.io.Serializable) dto.getKeyIn().get(dto.getNowStageTitle()));
+                bundle.putString(MainFragment.YM, dto.getInfo().getStages().getAwardRangDate().toString());
+                bundle.putSerializable(MainFragment.LIST, (java.io.Serializable) dto.getKeyIn().get(dto.getNowStageTitle()));
                 it.putExtras(bundle);
 
                 BeanUtil.info = dto.getInfo();
-                startActivityForResult(it, GO_SEE_INVOICE_CODE);
+                startActivityForResult(it, MainFragment.GO_SEE_INVOICE_CODE);
 
             }
         });
@@ -138,7 +140,7 @@ public class MainFragment extends Fragment {
 
     private void workForSixAward(String value) {
 
-        InvoiceKeyIn keyIn = new InvoiceKeyIn(value);
+        final InvoiceKeyIn keyIn = new InvoiceKeyIn(value);
         keyIn.setAward(Award.Exactsix);
 
 
@@ -153,6 +155,7 @@ public class MainFragment extends Fragment {
 
 
     }
+
 
     private void showAddCalendarBtn() {
         if (addCalendarBtn.getVisibility() == View.GONE) {

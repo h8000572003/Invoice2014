@@ -63,6 +63,26 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
         this.findViewById(R.id.cleanBtn).setOnClickListener(this);
 
     }
+    public void setEnable(Boolean isEnable){
+        this.findViewById(R.id.button).setEnabled(isEnable);
+        this.findViewById(R.id.btn1).setEnabled(isEnable);
+        this.findViewById(R.id.btn2).setEnabled(isEnable);
+        this.findViewById(R.id.btn3).setEnabled(isEnable);
+        this.findViewById(R.id.btn4).setEnabled(isEnable);
+        this.findViewById(R.id.btn5).setEnabled(isEnable);
+        this.findViewById(R.id.btn6).setEnabled(isEnable);
+        this.findViewById(R.id.btn7).setEnabled(isEnable);
+        this.findViewById(R.id.btn8).setEnabled(isEnable);
+        this.findViewById(R.id.btn9).setEnabled(isEnable);
+        this.findViewById(R.id.cleanBtn).setEnabled(isEnable);
+    }
+
+    public void unEnable(){
+        this.setEnabled(false);
+    }
+    public void enable(){
+        this.setEnabled(true);
+    }
 
     @Override
     public void onClick(View v) {
