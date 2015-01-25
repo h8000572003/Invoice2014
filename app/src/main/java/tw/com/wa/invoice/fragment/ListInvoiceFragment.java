@@ -213,6 +213,7 @@ public class ListInvoiceFragment extends Fragment {
 
 
     public void doCheck() {
+        recyclerView.removeAllViews();
         CheckJob job = new CheckJob();
         job.execute(inYm);
     }
@@ -221,6 +222,7 @@ public class ListInvoiceFragment extends Fragment {
      *
      */
     public void reFresh() {
+        recyclerView.removeAllViews();
         job = new QueryJob();
         job.execute(inYm);
     }
@@ -331,10 +333,14 @@ public class ListInvoiceFragment extends Fragment {
                         } else if (TextUtils.equals(value, enter.getNumber())) {
                             throw new InvoiceBusinessException("請修改發票，不能跟原本相同。");
 
+                        } else if (value.length() > 8) {
+                            throw new InvoiceBusinessException("發票號碼最多8碼。");
+
                         } else {
                             try {
                                 enter.setNumber(value);
                                 modfyEnterValue(enter);
+                                Toast.makeText(getActivity(), "發票已修改", Toast.LENGTH_SHORT).show();
                             } catch (InvoiceBusinessException e) {
                                 Log.e(TAG, "e:" + e.getMessage());
                                 throw new InvoiceBusinessException("修改發票有誤。");

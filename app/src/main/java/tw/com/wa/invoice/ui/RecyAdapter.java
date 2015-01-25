@@ -112,12 +112,13 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
         holder.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.hint.setVisibility(View.GONE);
+
                 if (onBtnListner != null) {
                     onBtnListner.onItemClick(holder.keyBoardLayout.getValue(), position);
-                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_out);
-                    holder.editView.startAnimation(animation);
-                    holder.editView.setVisibility(View.GONE);
+                    holder.hint.setVisibility(View.GONE);
+//                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_out);
+//                    holder.editView.startAnimation(animation);
+//                    holder.editView.setVisibility(View.GONE);
                 }
 
             }
@@ -127,6 +128,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
         holder.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override
             public void onChange(String value) {
+                holder.hint.setVisibility(View.VISIBLE);
                 if (onKeyboardClickListner != null) {
                     onKeyboardClickListner.onItemClick(value, position);
                 }
