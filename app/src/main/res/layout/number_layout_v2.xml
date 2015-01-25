@@ -84,7 +84,7 @@
 
             <TextView
                 android:id="@+id/hint"
-                android:visibility="gone"
+
                 android:layout_width="match_parent"
                 android:textColor="@color/material_red_500"
                 android:layout_height="wrap_content"

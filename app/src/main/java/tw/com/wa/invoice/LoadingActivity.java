@@ -130,14 +130,12 @@ public class LoadingActivity extends Activity {
 
 
             try {
+                this.service.loadData(dto, activity);
 
             } catch (InvoiceBusinessException e) {
 
                 return e.getMessage();
             }
-
-
-            this.service.loadData(dto, activity);
 
 
             return null;
@@ -159,7 +157,7 @@ public class LoadingActivity extends Activity {
             } else {
                 statuLabel.setTextColor(getResources().getColor(R.color.material_blue_grey_800));
                 newYmView.setVisibility(View.VISIBLE);
-                newYmView.setText("最新期數：" + risCommon.getTitle(BeanUtil.getInfo()));
+                newYmView.setText(getString(R.string.loading_activtiy_lab, risCommon.getTitle(BeanUtil.getInfo())));
                 statuLabel.setVisibility(View.GONE);
                 toolBar.setVisibility(View.VISIBLE);
 

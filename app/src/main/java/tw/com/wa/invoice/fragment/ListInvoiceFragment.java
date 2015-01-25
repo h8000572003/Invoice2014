@@ -70,23 +70,18 @@ public class ListInvoiceFragment extends Fragment {
         @Override
         public void onRefresh() {
 
-            CheckJob job = new CheckJob();
-            job.execute(inYm);
+            doCheck();
         }
     };
-    private int status = 0;
+    private int position = 0;
     private QueryJob job = null;
     private RisCommon risCommon = null;
 
     private boolean isCreateOn = true;
     private FloatingActionButton fab = null;
 
-
     public static ListInvoiceFragment newInstance() {
-
         final ListInvoiceFragment fragment = new ListInvoiceFragment();
-
-
         return fragment;
     }
 
@@ -146,20 +141,17 @@ public class ListInvoiceFragment extends Fragment {
 
             }
         });
-        String[] items = getResources().getStringArray(R.array.list_items);
-        SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, items);
+        final String[] items = getResources().getStringArray(R.array.list_items);
+        final SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, items);
         this.status_spinner.setAdapter(spinnerAdapter);
         this.status_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-                status = position;
-
-
+                ListInvoiceFragment.this.position = position;
                 if (!isCreateOn) {
-                    CheckJob job = new CheckJob();
-                    job.execute(inYm);
+                    doCheck();
                 }
                 isCreateOn = false;
 
@@ -176,10 +168,7 @@ public class ListInvoiceFragment extends Fragment {
             public void onClick(View v) {
                 Intent it = new Intent(getActivity(), AddInvoiceActivity.class);
 
-
                 Bundle bundle = new Bundle();
-
-
                 it.putExtras(bundle);
                 startActivityForResult(it, ADD_CODE);
                 getActivity().overridePendingTransition(R.anim.push_up_in, R.anim.abc_fade_out);
@@ -222,6 +211,7 @@ public class ListInvoiceFragment extends Fragment {
 
     }
 
+
     public void doCheck() {
         CheckJob job = new CheckJob();
         job.execute(inYm);
@@ -260,7 +250,7 @@ public class ListInvoiceFragment extends Fragment {
             }
 
 
-            if (status == 0) {
+            if (position == 0) {
                 for (InvoiceEnter enter : dto.getEnters()) {
                     if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Get) {
                         dto.getShowLists().add(enter);
@@ -268,14 +258,14 @@ public class ListInvoiceFragment extends Fragment {
                 }
 
 
-            } else if (status == 1) {
+            } else if (position == 1) {
                 for (InvoiceEnter enter : dto.getEnters()) {
                     if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Continue) {
                         dto.getShowLists().add(enter);
                     }
                 }
 
-            } else if (status == 2) {
+            } else if (position == 2) {
                 for (InvoiceEnter enter : dto.getEnters()) {
                     if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.None) {
                         dto.getShowLists().add(enter);
@@ -329,35 +319,33 @@ public class ListInvoiceFragment extends Fragment {
             adapte.setOnBtnListner(new OnValueClickListner() {
                 @Override
                 public void onItemClick(String value, int pos) {
-                    String txt = value;
+                    try {
+                        final InvoiceEnter enter = dto.getShowLists().get(pos);
 
+                        if (TextUtils.isEmpty(value)) {
+                            throw new InvoiceBusinessException("請修改發票。");
 
-                    if (TextUtils.isEmpty(txt)) {
-                        Toast.makeText(getActivity(), "請修改發票", Toast.LENGTH_SHORT).show();
-                    } else if (txt.length() >= 3) {
-                        Toast.makeText(getActivity(), "請修改發票", Toast.LENGTH_SHORT).show();
-                    } else {
+                        } else if (value.length() < 3) {
+                            throw new InvoiceBusinessException("請修改發票，長度必須大於3碼。");
 
-                        InvoiceEnter enter =
-                                dto.getShowLists().get(pos);
+                        } else if (TextUtils.equals(value, enter.getNumber())) {
+                            throw new InvoiceBusinessException("請修改發票，不能跟原本相同。");
 
+                        } else {
+                            try {
+                                enter.setNumber(value);
+                                modfyEnterValue(enter);
+                            } catch (InvoiceBusinessException e) {
+                                Log.e(TAG, "e:" + e.getMessage());
+                                throw new InvoiceBusinessException("修改發票有誤。");
+                            }
+                        }
 
-                        DbHelper helper = new DbHelper(getActivity());
-                        InvoiceEnterDAO dao = new InvoiceEnterDAO(helper.getWritableDatabase(), getActivity());
-
-
-                        dao.delete("id=?", new String[]{enter.getId() + ""});
-
-                        enter.setNumber(value.toString());
-                        dao.insert(enter);
-                        helper.close();
+                    } catch (InvoiceBusinessException e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
             });
-
-            ;
 
 
             adapte.setOnItemClickListner(new OnItemClickListner() {
@@ -380,6 +368,26 @@ public class ListInvoiceFragment extends Fragment {
             });
 
             recyclerView.setAdapter(adapte);
+        }
+
+
+        private void modfyEnterValue(InvoiceEnter enter) throws InvoiceBusinessException {
+            DbHelper dbHelper = new DbHelper(getActivity());
+            SQLiteDatabase con = null;
+            InvoiceEnterDAO dao = new InvoiceEnterDAO(dbHelper.getWritableDatabase(), getActivity());
+            try {
+                con = dbHelper.getReadableDatabase();
+                dao = new InvoiceEnterDAO(con, getActivity());
+                dao.modify(enter, "id=?", new String[]{enter.getId() + ""});
+            } catch (InvoiceBusinessException e) {
+                Log.e(TAG, "e" + e.getMessage());
+            } finally {
+                if (con != null) {
+                    con.close();
+
+                }
+
+            }
         }
 
 

@@ -29,7 +29,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
     private OnItemClickListner onItemClickListner = null;
     private OnValueClickListner onBtnListner = null;
 
-    private OnItemClickListner onKeyboardClickListner = null;
+    private OnValueClickListner onKeyboardClickListner = null;
 
     private List<InvoiceEnter> enters = null;
 
@@ -42,13 +42,14 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
         this.enters = enters;
     }
 
-    public void setOnKeyboardClickListner(OnItemClickListner onKeyboardClickListner) {
-        this.onKeyboardClickListner = onKeyboardClickListner;
-    }
-
     public void setOnBtnListner(OnValueClickListner onBtnListner) {
         this.onBtnListner = onBtnListner;
     }
+
+    public void setOnKeyboardClickListner(OnValueClickListner onKeyboardClickListner) {
+        this.onKeyboardClickListner = onKeyboardClickListner;
+    }
+
 
     public void setOnItemClickListner(OnItemClickListner onItemClickListner) {
         this.onItemClickListner = onItemClickListner;
@@ -69,13 +70,11 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
         final InvoiceEnter enter = this.enters.get(position);
 
         final CheckStatus status = CheckStatus.valueOf(enter.getStatus());
-
         switch (status) {
 
             case Get:
 
                 final Award awrar = Award.lookup(enter.getAward());
-
                 holder.contentView.setText(enter.getNumber());
                 holder.moneyView.setText(String.format("+$%,d", awrar.dollar));
                 holder.titileView.setText(awrar.message);
@@ -85,24 +84,20 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
                 break;
 
             case None:
-
                 holder.contentView.setText(enter.getNumber());
                 holder.moneyView.setText(String.format("+$%,d", 0));
-                holder.titileView.setText("無中獎");
+                holder.titileView.setText(context.getString(R.string.recy_adtper_lab1));
                 holder.editView.setEnabled(false);
                 holder.editView.setVisibility(View.GONE);
 
                 break;
 
             case Continue:
-
                 holder.contentView.setText(enter.getNumber());
                 holder.moneyView.setText(String.format("+$%,d", 0));
-                holder.titileView.setText("有得獎機會");
+                holder.titileView.setText(context.getString(R.string.recy_adtper_lab2));
                 holder.editView.setEnabled(true);
                 holder.editView.setVisibility(View.VISIBLE);
-
-
                 holder.container.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -128,11 +123,12 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
             }
         });
 
+
         holder.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override
             public void onChange(String value) {
                 if (onKeyboardClickListner != null) {
-                    onKeyboardClickListner.onItemClick(holder.container, position);
+                    onKeyboardClickListner.onItemClick(value, position);
                 }
             }
         });
@@ -158,20 +154,18 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
 
-        private TextView titileView;
-        private TextView contentView;
-        private TextView moneyView;
-        private View editView;
+        private TextView titileView = null;
+        private TextView contentView = null;
+        private TextView moneyView = null;
+        private View editView = null;
         private KeyBoardLayout keyBoardLayout;
         private Button saveBtn = null;
-        private TextView hint;
-
-        private CardView container;
+        private TextView hint= null;
+        private CardView container = null;
 
 
         public ViewHolder(final View v) {
             super(v);
-
 
             this.titileView = (TextView) v.findViewById(R.id.titileView);
             this.contentView = (TextView) v.findViewById(R.id.contentView);
@@ -183,9 +177,6 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
             this.hint = (TextView) v.findViewById(R.id.hint);
 
             this.keyBoardLayout.setMonitorView(this.contentView);
-            //    this.button = (ImageButton) v.findViewById(R.id.imageButton);
-
-
             this.titileView.setTextColor(Color.GRAY);
             this.contentView.setTextColor(Color.GRAY);
 

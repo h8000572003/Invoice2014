@@ -107,6 +107,11 @@ public abstract class GenericDAO<T> {
 
     }
 
+    public void modify(T t, String whereClause, String[] whereArgs) throws InvoiceDBException {
+        ContentValues contentValues = this.newInstanceContentValues(t);
+        this.db.update(this.getTable().name, contentValues, whereClause, whereArgs);
+    }
+
     private ContentValues newInstanceContentValues(T domina) throws InvoiceDBException {
         final Field[] fs = this.getAllFields(domina);
 

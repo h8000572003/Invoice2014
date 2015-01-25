@@ -21,7 +21,6 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
 
     private TextView monitorView;
-    private boolean isReadyClean = false;
 
 
     public KeyBoardLayout(Context context) {
@@ -88,10 +87,6 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
     @Override
     public void onClick(View v) {
 
-        if (this.isReadyClean) {
-            this.value = "";
-            this.isReadyClean = false;
-        }
 
         TextView valueBtnView = (TextView) v;
         switch (v.getId()) {
@@ -139,7 +134,7 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
     public void cleanValueWithoutUI() {
 
-        this.isReadyClean = true;
+
         this.value = "";
 
     }
