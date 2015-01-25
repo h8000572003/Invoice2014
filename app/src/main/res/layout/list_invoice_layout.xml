@@ -33,6 +33,7 @@
 
                 <include
                     android:id="@+id/blankView"
+                    android:layout_margin="15dp"
                     layout="@layout/blank_layout"
 
 

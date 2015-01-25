@@ -8,7 +8,8 @@ public enum CheckStatus {
     None,//沒有
     Continue,//上未確定
     Get,//得到
-    Wait,//上未確定
+
+    ;;
 
 
 }

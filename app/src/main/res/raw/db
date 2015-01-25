@@ -2,8 +2,6 @@ CREATE TABLE `invoice_enter` (
 	`number`	TEXT,
 	`inYm`	TEXT,
 	`status`	TEXT,
+	`award`	TEXT,
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT
-);
-CREATE TABLE `InvoiceInfo` (
-	`title`	TEXT
 );

@@ -20,7 +20,7 @@ import tw.com.wa.invoice.domain.InvoiceInfoV2;
 public class DbHelper extends SQLiteOpenHelper {
 
     final static String DB_NAME = "INVOICE_DB";
-    final static int VERSION = 2;
+    final static int VERSION = 4;
     private static final String TAG = "DbHelper";
 
 

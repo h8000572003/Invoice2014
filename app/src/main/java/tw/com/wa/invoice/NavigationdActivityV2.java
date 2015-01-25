@@ -77,7 +77,7 @@ public class NavigationdActivityV2 extends ActionBarActivity
 
     private Fragment getFragment(int pos) {
 
-        OutInfo outInfo = (OutInfo) BeanUtil.info;
+        OutInfo outInfo = (OutInfo) BeanUtil.getInfo();
         switch (pos) {
 
             case 0:
@@ -140,7 +140,6 @@ public class NavigationdActivityV2 extends ActionBarActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
 
         switch (item.getItemId()) {
 

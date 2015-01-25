@@ -30,6 +30,7 @@ import tw.com.wa.invoice.domain.InvoiceKeyIn;
 import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.util.CommomUtil;
 import tw.com.wa.invoice.util.NumberAdapter;
+import tw.com.wa.invoice.util.RisCommon;
 
 /**
  * Created by Andy on 14/12/18.
@@ -53,6 +54,8 @@ public class PlaceholderFragment extends Fragment {
     private TextView dateOfAwardView = null;
 
     private String awardYm = null;
+
+    private RisCommon risCommon;
 
 
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
@@ -87,17 +90,14 @@ public class PlaceholderFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-        Intent it =
-                getActivity().getIntent();
+        this.risCommon = RisCommon.getRisCommon();
 
-        Bundle bundle =
-                it.getExtras();
+        Intent it = getActivity().getIntent();
+        Bundle bundle = it.getExtras();
 
         keyIns = (List<InvoiceKeyIn>) bundle.getSerializable("list");
         awardYm = bundle.getString("Ym");
-
-
-        awardYm = BeanUtil.info.getStages().getAwardRangDate().toString();
+        awardYm = this.risCommon.getRang(BeanUtil.getInfo());
 
 
     }
@@ -152,7 +152,7 @@ public class PlaceholderFragment extends Fragment {
 
 
         try {
-            CommomUtil.checkIsOverDateOfAward(BeanUtil.info);
+            CommomUtil.checkIsOverDateOfAward(BeanUtil.getInfo());
         } catch (Exception e) {
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             this.ccalendarBtn.setEnabled(false);
@@ -165,7 +165,7 @@ public class PlaceholderFragment extends Fragment {
     private Intent buildCalendarIntent() throws RuntimeException {
         Intent calendarIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
         Calendar beginTime = Calendar.getInstance();
-        beginTime.setTime(checkTheInvoiceIsOutOfDate(BeanUtil.info));
+        beginTime.setTime(checkTheInvoiceIsOutOfDate(BeanUtil.getInfo()));
         calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
         calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime.getTimeInMillis());
         calendarIntent.putExtra(CalendarContract.Events.TITLE, "發票獎金");

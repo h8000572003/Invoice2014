@@ -4,20 +4,22 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
 import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
+import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.InvoiceEnter;
 import tw.com.wa.invoice.util.OnItemClickListner;
+import tw.com.wa.invoice.util.OnValueClickListner;
 
 /**
  * Created by Andy on 15/1/24.
@@ -25,6 +27,9 @@ import tw.com.wa.invoice.util.OnItemClickListner;
 public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
 
     private OnItemClickListner onItemClickListner = null;
+    private OnValueClickListner onBtnListner = null;
+
+    private OnItemClickListner onKeyboardClickListner = null;
 
     private List<InvoiceEnter> enters = null;
 
@@ -35,6 +40,14 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
 
     public RecyAdapter(List<InvoiceEnter> enters) {
         this.enters = enters;
+    }
+
+    public void setOnKeyboardClickListner(OnItemClickListner onKeyboardClickListner) {
+        this.onKeyboardClickListner = onKeyboardClickListner;
+    }
+
+    public void setOnBtnListner(OnValueClickListner onBtnListner) {
+        this.onBtnListner = onBtnListner;
     }
 
     public void setOnItemClickListner(OnItemClickListner onItemClickListner) {
@@ -51,35 +64,79 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         final InvoiceEnter enter = this.enters.get(position);
 
-        if (TextUtils.isEmpty(enter.getStatus())) {
+        final CheckStatus status = CheckStatus.valueOf(enter.getStatus());
 
-            holder.contentView.setText(enter.getNumber());
-            holder.moneyView.setText(String.format("+$%,d", 0));
-            holder.titileView.setText("無中獎");
+        switch (status) {
+
+            case Get:
+
+                final Award awrar = Award.lookup(enter.getAward());
+
+                holder.contentView.setText(enter.getNumber());
+                holder.moneyView.setText(String.format("+$%,d", awrar.dollar));
+                holder.titileView.setText(awrar.message);
+                holder.editView.setEnabled(false);
+                holder.editView.setVisibility(View.GONE);
+
+                break;
+
+            case None:
+
+                holder.contentView.setText(enter.getNumber());
+                holder.moneyView.setText(String.format("+$%,d", 0));
+                holder.titileView.setText("無中獎");
+                holder.editView.setEnabled(false);
+                holder.editView.setVisibility(View.GONE);
+
+                break;
+
+            case Continue:
+
+                holder.contentView.setText(enter.getNumber());
+                holder.moneyView.setText(String.format("+$%,d", 0));
+                holder.titileView.setText("有得獎機會");
+                holder.editView.setEnabled(true);
+                holder.editView.setVisibility(View.VISIBLE);
 
 
-
-        } else {
-            final Award awrar = Award.lookup(enter.getStatus());
-
-            holder.contentView.setText(enter.getNumber());
-            holder.moneyView.setText(String.format("+$%,d", awrar.dollar));
-            holder.titileView.setText(awrar.message);
+                holder.container.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onItemClickListner != null) {
+                            onItemClickListner.onItemClick(holder.editView, position);
+                        }
+                    }
+                });
+                break;
 
         }
-
-        holder.container.setOnClickListener(new View.OnClickListener() {
+        holder.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemClickListner != null) {
-                    onItemClickListner.onItemClick(position);
+                holder.hint.setVisibility(View.GONE);
+                if (onBtnListner != null) {
+                    onBtnListner.onItemClick(holder.keyBoardLayout.getValue(), position);
+                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_out);
+                    holder.editView.startAnimation(animation);
+                    holder.editView.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        holder.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
+            @Override
+            public void onChange(String value) {
+                if (onKeyboardClickListner != null) {
+                    onKeyboardClickListner.onItemClick(holder.container, position);
                 }
             }
         });
+
 
         this.setAnimation(holder.container, position);
     }
@@ -104,11 +161,15 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
         private TextView titileView;
         private TextView contentView;
         private TextView moneyView;
+        private View editView;
+        private KeyBoardLayout keyBoardLayout;
+        private Button saveBtn = null;
+        private TextView hint;
 
         private CardView container;
 
 
-        public ViewHolder(View v) {
+        public ViewHolder(final View v) {
             super(v);
 
 
@@ -116,6 +177,13 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder> {
             this.contentView = (TextView) v.findViewById(R.id.contentView);
             this.container = (CardView) v.findViewById(R.id.container);
             this.moneyView = (TextView) v.findViewById(R.id.moneyView);
+            this.editView = v.findViewById(R.id.editView);
+            this.keyBoardLayout = (KeyBoardLayout) v.findViewById(R.id.keyboardLayout);
+            this.saveBtn = (Button) v.findViewById(R.id.saveBtn);
+            this.hint = (TextView) v.findViewById(R.id.hint);
+
+            this.keyBoardLayout.setMonitorView(this.contentView);
+            //    this.button = (ImageButton) v.findViewById(R.id.imageButton);
 
 
             this.titileView.setTextColor(Color.GRAY);

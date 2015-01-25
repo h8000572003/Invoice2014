@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="112323"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/material_grey_600" />
+
+
+    <TextView
+        android:id="@+id/numberText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="請輸入完整發票"
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+    <tw.com.wa.invoice.ui.KeyBoardLayout
+        android:id="@+id/keyboardLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+
+</LinearLayout>

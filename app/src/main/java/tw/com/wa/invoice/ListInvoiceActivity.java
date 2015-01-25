@@ -1,14 +1,19 @@
 package tw.com.wa.invoice;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import tw.com.wa.invoice.fragment.ListInvoiceFragment;
+import tw.com.wa.invoice.ui.KeyBoardLayout;
 
 /**
  * Created by Andy on 15/1/17.
@@ -92,4 +97,5 @@ public class ListInvoiceActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

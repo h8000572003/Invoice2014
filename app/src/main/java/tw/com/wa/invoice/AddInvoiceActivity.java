@@ -15,6 +15,7 @@ import tw.com.wa.invoice.ui.KeyBoardLayout;
 import tw.com.wa.invoice.util.DbHelper;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
 import tw.com.wa.invoice.util.InvoiceEnterDAO;
+import tw.com.wa.invoice.util.RisCommon;
 
 /**
  * Created by Andy on 15/1/17.
@@ -25,6 +26,8 @@ public class AddInvoiceActivity extends ActionBarActivity {
     private KeyBoardLayout keyBoardLayout;
     private EditText editText;
 
+    private RisCommon risCommon;
+
 
     private String inYm = "";
 
@@ -34,29 +37,23 @@ public class AddInvoiceActivity extends ActionBarActivity {
         setContentView(R.layout.add_invoice_activity_layout);
 
 
-        this.inYm = BeanUtil.info.getStages().getStatge();
+        this.risCommon = RisCommon.getRisCommon();
 
+        this.inYm = this.risCommon.getImYm(BeanUtil.getInfo());
 
         this.keyBoardLayout = (KeyBoardLayout) this.findViewById(R.id.keyboardLayout);
         this.editText = (EditText) this.findViewById(R.id.invoviceLabel);
-
 
         this.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override
             public void onChange(String value) {
                 editText.setText(value);
-                if (value.length() >= 3) {
-
-
+                if (value.length() == 3) {
                     insert();
-
                 }
 
             }
         });
-        keyBoardLayout.unEnable();
-
-
     }
 
     private void insert() {

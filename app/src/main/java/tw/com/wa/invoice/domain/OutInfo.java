@@ -30,7 +30,8 @@ public class OutInfo implements WiningInfo, Serializable {
         this.stagingYm = DateUtil.yyymm(this.invoYm.getEnd());
 
         this.changeAwrd(bean);
-        BeanUtil.info = this;
+
+        BeanUtil.setInfo(this);
     }
 
     public WiningBean getBean() {

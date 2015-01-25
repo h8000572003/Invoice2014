@@ -11,6 +11,17 @@ public class InvoiceEnter implements Serializable {
     private String inYm;
     private String status;
 
+    private String award;
+
+
+    public String getAward() {
+        return award;
+    }
+
+    public void setAward(String award) {
+        this.award = award;
+    }
+
     public String getStatus() {
         return status;
     }

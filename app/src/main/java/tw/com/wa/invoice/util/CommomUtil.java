@@ -1,6 +1,7 @@
 package tw.com.wa.invoice.util;
 
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -168,6 +169,66 @@ public class CommomUtil {
 
     }
 
+    public CheckStatus checkStatus(String number, List<Invoice> invoices) throws RuntimeException {
+
+        CheckStatus status = CheckStatus.None;
+
+        for (Invoice invoice : invoices) {
+            if (invoice.isSpecialize()) {
+                final String numOfInvoice = invoice.getNumber();
+                if (numOfInvoice.length() > number.length()) {
+
+                    final int cutIndex = numOfInvoice.length() - number.length();
+                    final String cutInvoice = numOfInvoice.substring(cutIndex);
+                    if (number.equals(cutInvoice)) {
+                        return CheckStatus.Continue;
+                    }
+
+                } else {
+                    final int cutIndex = number.length() - numOfInvoice.length();
+                    final String cutNumber = number.substring(cutIndex);
+
+                    if (TextUtils.equals(cutNumber, numOfInvoice)) {
+                        return CheckStatus.Get;
+                    }
+
+                }
+
+            }
+        }
+
+        for (Invoice invoice : invoices) {
+            if (!invoice.isSpecialize()) {
+
+                boolean isConutine = false;
+                int checkLength = 0;
+
+                int legnth = number.length();
+                for (int i = 3; i <= legnth; i++) {
+                    if (this.matchLastChar(invoice, number, i)) {
+                        isConutine = true;
+                        checkLength = i;
+                    } else {
+                        isConutine=false;
+                        break;
+                    }
+                }
+                if (isConutine) {
+                    if (checkLength == 8) {
+                        return CheckStatus.Get;
+                    }
+                    return CheckStatus.Continue;
+                }else{
+                    if(checkLength>=3){
+                        return CheckStatus.Get;
+                    }
+                }
+
+            }
+        }
+        return status;
+    }
+
 
 //    中獎號碼
 //    特別獎	22267127
@@ -191,13 +252,13 @@ public class CommomUtil {
 
             String matchNumber = invoice.getNumber();
             if (invoice.isSpecialize()) {//
-                if (invoice.getNumber().length() == 3) {
+                if (invoice.getNumber().length() == 3) {//對獎號碼為三碼
                     if (matchNumber.equals(number) && number.length() == 3) {
                         return CheckStatus.Get;
                     }
 
                     if (matchNumber.startsWith(number)) {
-                        return CheckStatus.Wait;
+                        return CheckStatus.Continue;
                     }
                 } else {//
                     matchNumber = matchNumber.substring(5, 8);
@@ -206,7 +267,7 @@ public class CommomUtil {
                     if (matchNumber.equals(number) && number.length() == 3) {
                         return CheckStatus.Continue;
                     } else if (matchNumber.startsWith(number)) {
-                        return CheckStatus.Wait;
+                        return CheckStatus.Continue;
                     }
 
                 }
@@ -219,7 +280,7 @@ public class CommomUtil {
                 if (matchNumber.equals(number) && number.length() == 3) {
                     return CheckStatus.Continue;
                 } else if (matchNumber.startsWith(number)) {
-                    return CheckStatus.Wait;
+                    return CheckStatus.Continue;
                 }
 
             }
@@ -248,8 +309,8 @@ public class CommomUtil {
                 String specialNumber = "";
                 if (invoice.getNumber().length() > number.length()) {
                     specialNumber = number.substring(8 - invoice.getNumber().length());
-                }else{
-                    specialNumber=number;
+                } else {
+                    specialNumber = number;
                 }
 
 

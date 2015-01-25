@@ -34,15 +34,18 @@ import tw.com.wa.invoice.AddInvoiceActivity;
 import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
+import tw.com.wa.invoice.domain.CheckStatus;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceEnter;
 import tw.com.wa.invoice.domain.ListInvoiceDTO;
 import tw.com.wa.invoice.ui.RecyAdapter;
-import tw.com.wa.invoice.util.CommomUtil;
+import tw.com.wa.invoice.util.AwardUtl;
 import tw.com.wa.invoice.util.DbHelper;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
 import tw.com.wa.invoice.util.InvoiceEnterDAO;
 import tw.com.wa.invoice.util.OnItemClickListner;
+import tw.com.wa.invoice.util.OnValueClickListner;
+import tw.com.wa.invoice.util.RisCommon;
 
 /**
  * Created by Andy on 15/1/17.
@@ -73,6 +76,8 @@ public class ListInvoiceFragment extends Fragment {
     };
     private int status = 0;
     private QueryJob job = null;
+    private RisCommon risCommon = null;
+
     private boolean isCreateOn = true;
     private FloatingActionButton fab = null;
 
@@ -90,10 +95,7 @@ public class ListInvoiceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-
                 reFresh();
-
-
             }
         }
 
@@ -103,10 +105,9 @@ public class ListInvoiceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.risCommon = RisCommon.getRisCommon();
         this.dto = new ListInvoiceDTO();
-
-
-        inYm = BeanUtil.info.getStages().getStatge();
+        this.inYm = this.risCommon.getImYm(BeanUtil.getInfo());
 
 
     }
@@ -221,6 +222,11 @@ public class ListInvoiceFragment extends Fragment {
 
     }
 
+    public void doCheck() {
+        CheckJob job = new CheckJob();
+        job.execute(inYm);
+    }
+
     /**
      *
      */
@@ -229,54 +235,77 @@ public class ListInvoiceFragment extends Fragment {
         job.execute(inYm);
     }
 
+
     private class CheckJob extends AsyncTask<String, List<InvoiceEnter>, List<InvoiceEnter>> {
 
-
-        private CommomUtil commonUtil;
 
         @Override
         protected void onPreExecute() {
 
             bottombar.setVisibility(View.GONE);
-            this.commonUtil = new CommomUtil();
+
         }
 
         @Override
         protected List<InvoiceEnter> doInBackground(String... params) {
 
             dto.setShowLists(new ArrayList<InvoiceEnter>());
-            List<Invoice> v2 = BeanUtil.info.getInvoice();
+            final List<Invoice> v2 = risCommon.getInvoice(BeanUtil.getInfo());
+
+
             for (InvoiceEnter enter : dto.getEnters()) {
-                Award award =
-                        this.commonUtil.checkBestAward(enter.getNumber(), v2);
-                enter.setStatus(award != null ? award.unCode : "");
+                CheckStatus status = AwardUtl.getString(enter.getNumber());
+                this.setAward(status, enter);
+
             }
 
+
             if (status == 0) {
-                dto.getShowLists().addAll(dto.getEnters());
+                for (InvoiceEnter enter : dto.getEnters()) {
+                    if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Get) {
+                        dto.getShowLists().add(enter);
+                    }
+                }
 
 
             } else if (status == 1) {
                 for (InvoiceEnter enter : dto.getEnters()) {
-
-
-                    if (!TextUtils.isEmpty(enter.getStatus())) {
+                    if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Continue) {
                         dto.getShowLists().add(enter);
                     }
                 }
 
             } else if (status == 2) {
                 for (InvoiceEnter enter : dto.getEnters()) {
-
-
-                    if (TextUtils.isEmpty(enter.getStatus())) {
+                    if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.None) {
                         dto.getShowLists().add(enter);
                     }
                 }
-
             }
 
             return dto.getEnters();
+        }
+
+        private void setAward(CheckStatus status, InvoiceEnter enter) {
+
+            enter.setStatus(status.toString());
+
+            if (status == CheckStatus.Get) {
+
+                Award award = AwardUtl.getBestAwrd(enter.getNumber());
+                enter.setAward(award.unCode);
+
+
+            } else if (status == CheckStatus.Continue) {
+
+                enter.setAward("");
+
+
+            } else if (status == CheckStatus.None) {
+
+                enter.setAward("");
+            }
+
         }
 
         @Override
@@ -294,12 +323,59 @@ public class ListInvoiceFragment extends Fragment {
                 blankView.setVisibility(View.INVISIBLE);
             }
 
-            RecyAdapter adapte = new RecyAdapter(dto.getShowLists());
+            final RecyAdapter adapte = new RecyAdapter(dto.getShowLists());
+
+
+            adapte.setOnBtnListner(new OnValueClickListner() {
+                @Override
+                public void onItemClick(String value, int pos) {
+                    String txt = value;
+
+
+                    if (TextUtils.isEmpty(txt)) {
+                        Toast.makeText(getActivity(), "請修改發票", Toast.LENGTH_SHORT).show();
+                    } else if (txt.length() >= 3) {
+                        Toast.makeText(getActivity(), "請修改發票", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        InvoiceEnter enter =
+                                dto.getShowLists().get(pos);
+
+
+                        DbHelper helper = new DbHelper(getActivity());
+                        InvoiceEnterDAO dao = new InvoiceEnterDAO(helper.getWritableDatabase(), getActivity());
+
+
+                        dao.delete("id=?", new String[]{enter.getId() + ""});
+
+                        enter.setNumber(value.toString());
+                        dao.insert(enter);
+                        helper.close();
+                    }
+
+
+                }
+            });
+
+            ;
+
+
             adapte.setOnItemClickListner(new OnItemClickListner() {
                 @Override
-                public void onItemClick(int pos) {
+                public void onItemClick(View view, int pos) {
 
-                    Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+
+                    if (view.getVisibility() == View.GONE) {
+
+                        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.abc_fade_in);
+                        view.startAnimation(animation);
+                        view.setVisibility(View.VISIBLE);
+                    } else {
+                        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.abc_fade_out);
+                        view.startAnimation(animation);
+                        view.setVisibility(View.GONE);
+                    }
+
                 }
             });
 

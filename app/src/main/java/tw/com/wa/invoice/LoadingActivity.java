@@ -3,8 +3,6 @@ package tw.com.wa.invoice;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +15,7 @@ import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.LoadDTO;
 import tw.com.wa.invoice.ui.ToolBar;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
+import tw.com.wa.invoice.util.RisCommon;
 
 /**
  * Created by Andy on 2014/12/12.
@@ -44,10 +43,14 @@ public class LoadingActivity extends Activity {
     private TextView newYmView;
 
 
+    private RisCommon risCommon = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.loading_layout);
+
+        this.risCommon = RisCommon.getRisCommon();
 
 
         this.dto = new LoadDTO();
@@ -155,11 +158,8 @@ public class LoadingActivity extends Activity {
 
             } else {
                 statuLabel.setTextColor(getResources().getColor(R.color.material_blue_grey_800));
-
                 newYmView.setVisibility(View.VISIBLE);
-                newYmView.setText("最新期數：" + BeanUtil.info.getTitle());
-
-
+                newYmView.setText("最新期數：" + risCommon.getTitle(BeanUtil.getInfo()));
                 statuLabel.setVisibility(View.GONE);
                 toolBar.setVisibility(View.VISIBLE);
 

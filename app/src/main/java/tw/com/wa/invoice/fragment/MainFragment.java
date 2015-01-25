@@ -103,9 +103,9 @@ public class MainFragment extends Fragment {
     }
 
     private void initValue() {
-        this.stagingView.init(BeanUtil.info);
+        this.stagingView.init(BeanUtil.getInfo());
         final WiningInfo info = this.stagingView.getOutInfo();
-        this.dto.setInfo(BeanUtil.info);
+        this.dto.setInfo(BeanUtil.getInfo());
         this.dto.setInvoiceInfoV2(info.getInfoV2());
         this.dto.setInvoices(info.getInvoice());
         this.dto.setNowStageTitle(this.stagingView.getStagingText().getText().toString());
@@ -119,19 +119,16 @@ public class MainFragment extends Fragment {
     public void setKeyBoardListener() {
 
         this.stagingView.setOnValueChangeListener(new MyOnValueChangeListener());
-        this.keyboardView.setMonitorView(this.invoviceLabel);
+        //  this.keyboardView.setMonitorView(this.invoviceLabel);
         this.keyboardView.setOnValueChangeListener(new MyKeyboardOnValueChangeListener());
         this.addCalendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(getActivity(), AwardActivity.class);
-
                 Bundle bundle = new Bundle();
                 bundle.putString(MainFragment.YM, dto.getInfo().getStages().getAwardRangDate().toString());
                 bundle.putSerializable(MainFragment.LIST, (java.io.Serializable) dto.getKeyIn().get(dto.getNowStageTitle()));
                 it.putExtras(bundle);
-
-                BeanUtil.info = dto.getInfo();
                 startActivityForResult(it, MainFragment.GO_SEE_INVOICE_CODE);
 
             }
@@ -175,10 +172,10 @@ public class MainFragment extends Fragment {
     }
 
     private void work2Continue() {
-        showNumberDiaglog();
+        showNumberDialog();
     }
 
-    private void showNumberDiaglog() {
+    private void showNumberDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null);
         builder.setCancelable(false);
@@ -261,6 +258,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onChange(String value) {
+            invoviceLabel.setText(value);
             messageLabel.setText(getString(R.string.plsEnter));
 
 
@@ -340,14 +338,13 @@ public class MainFragment extends Fragment {
             dto.setInvoices(info.getInvoice());
             dto.setNowStageTitle(outInfo.getTitle());
 
-
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
 
                     if (!dto.getKeyIn().containsKey(dto.getNowStageTitle())) {
-
                         dto.getKeyIn().put(dto.getNowStageTitle(), new ArrayList<InvoiceKeyIn>());
                     }
+
                     if (dto.getKeyIn().get(dto.getNowStageTitle()).size() > 0) {
                         addCalendarBtn.setVisibility(View.VISIBLE);
 
@@ -356,7 +353,6 @@ public class MainFragment extends Fragment {
 
 
                     }
-
                     addCalendarBtn.setText(getString(R.string.addCalendarBtn, dto.getKeyIn().get(dto.getNowStageTitle()).size()));
 
                 }

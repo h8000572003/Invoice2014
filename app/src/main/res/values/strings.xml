@@ -6,7 +6,7 @@
     <string name="teaching_name">app教學</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="action_delete">清除此紀錄</string>
+    <string name="action_delete">清除此期發票記錄</string>
     <string name="one"> 1 </string>
     <string name="two"> 2 </string>
     <string name="three"> 3 </string>
@@ -16,6 +16,7 @@
     <string name="seven"> 7 </string>
     <string name="eight"> 8 </string>
     <string name="nine"> 9 </string>
+    <string name="delete">刪除</string>
     <string name="teachTitle">操作說明</string>
     <string name="teachContent">輸入後發票後三碼，
         若有不只六獎中獎機會，將輸入8碼發票號碼，
@@ -78,7 +79,17 @@
     <string name="menu_add_lab">新增發票</string>
     <string name="add_invoice_btn_lab">新增</string>
 
-    <string name="blank_text">無資料</string>
+    <string name="blank_text">此兌獎方式是透過右下角新增發票，\n
+新增後此清單後，下拉清單將此發票清單，\n
+其中兌獎後將出現三種分類\n
+1.中獎發票\n
+2.有中獎機會發票\n
+3.無中獎發票。\n
+其中有疑慮的為有中獎發票，\n
+表示的意思是有中獎可能，\n
+必須修改發票號碼，\n
+修改後按下「更新發票號碼」，\n
+繼續下拉畫面，將可重新兌獎。</string>
 
     <string name="add_invoice_activity_title">新增發票</string>
 
@@ -94,9 +105,12 @@
 
 
     <string-array name="list_items">
-        <item> 全部</item>
-        <item>僅中獎發票</item>
-        <item> 未中獎發票</item>
+        <item>中獎發票</item>
+        <item>有中獎機會</item>
+        <item>無中獎發票</item>
     </string-array>
+
+    <string name="update_invoice">更新發票號碼</string>
+    <string name="value_change_2_save">數字變更，請點擊更新</string>
 
 </resources>

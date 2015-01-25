@@ -21,6 +21,7 @@ public interface DBContract {
                 , new TypeInfp("number", Type.STRING)//
                 , new TypeInfp("inYm", Type.STRING)//
                 , new TypeInfp("status", Type.STRING)//
+                , new TypeInfp("award", Type.STRING)//
 
 
         );

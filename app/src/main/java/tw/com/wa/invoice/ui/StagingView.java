@@ -25,6 +25,7 @@ import tw.com.wa.invoice.marker.ApiGetter;
 import tw.com.wa.invoice.marker.WiningsAdapter;
 import tw.com.wa.invoice.util.InvoYm;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
+import tw.com.wa.invoice.util.RisCommon;
 
 /**
  * 發票期之畫面
@@ -43,6 +44,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     private WiningInfo outInfo;
     private InvoYm invoYm;
     private OnValueChangeListener onValueChangeListener = new OnValueChangeListenerAdapter();
+    private RisCommon risCommon = RisCommon.getRisCommon();
 
     public StagingView(Context context) {
         super(context);
@@ -66,7 +68,9 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
         this.stagingText.setText(outInfo.getTitle());
-        stageView.setText(context.getString(R.string.main_topic_lab, outInfo.getStages().getAwardRangDate().toString()));
+
+
+        this.stageView.setText(context.getString(R.string.main_topic_lab, outInfo.getStages().getAwardRangDate().toString()));
     }
 
     public void setOnValueChangeListener(OnValueChangeListener onValueChangeListener) {
@@ -137,8 +141,6 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 final StringBuffer message = new StringBuffer();
 
                 for (Invoice invoice : invoiceList) {
-
-
                     message.append(Award.lookup(invoice.getAwards()).message);
                     message.append(":");
                     message.append(invoice.getNumber());
@@ -168,8 +170,10 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
     private void setGobalValue(WiningBean requstBean) {
         final OutInfo info = new OutInfo(requstBean);
-        StagingView.this.outInfo = info;
-        BeanUtil.info = info;
+        this.outInfo = info;
+        BeanUtil.setInfo(info);
+
+
     }
 
     /**
@@ -235,7 +239,6 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         private static final String TAG = "LoadJob";
         private String invoiceYm;
 
-
         private LoadJob(String invoiceYm) {
             this.invoiceYm = invoiceYm;
         }
@@ -260,11 +263,10 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
                 if (TextUtils.equals(bean.getCode(), "901")) {
                     throw new InvoiceBusinessException(bean.getMsg());
                 }
-
-
                 setGobalValue(bean);
 
-                StagingView.this.onValueChangeListener.onSuccessfully(BeanUtil.info);
+
+                StagingView.this.onValueChangeListener.onSuccessfully(BeanUtil.getInfo());
 
             } catch (InvoiceBusinessException e) {
                 Log.e(TAG, "e:" + e.getMessage());
@@ -289,16 +291,15 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
         @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-
-        @Override
         protected void onPostExecute(Void aVoid) {
             try {
-                stageView.setText(context.getString(R.string.main_topic_lab, outInfo.getStages().getAwardRangDate().toString()));
+
+
+                stageView.setText(context.getString(R.string.main_topic_lab, risCommon.getRang(outInfo)));
+                invoYm = outInfo.getStages();
                 stagingText.setText(outInfo.getTitle());
                 stageView.setVisibility(View.VISIBLE);
+
 
 
             } catch (Exception e) {

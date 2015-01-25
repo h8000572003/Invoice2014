@@ -8,8 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import tw.com.wa.invoice.R;
-import tw.com.wa.invoice.compent.ExecutionCheckInvoiceAward;
-import tw.com.wa.invoice.compent.ExecutionCheckManger;
 
 /**
  * 鍵盤
@@ -61,9 +59,11 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
         this.findViewById(R.id.btn8).setOnClickListener(this);
         this.findViewById(R.id.btn9).setOnClickListener(this);
         this.findViewById(R.id.cleanBtn).setOnClickListener(this);
+        this.findViewById(R.id.delBtn).setOnClickListener(this);
 
     }
-    public void setEnable(Boolean isEnable){
+
+    public void setEnable(Boolean isEnable) {
         this.findViewById(R.id.button).setEnabled(isEnable);
         this.findViewById(R.id.btn1).setEnabled(isEnable);
         this.findViewById(R.id.btn2).setEnabled(isEnable);
@@ -77,10 +77,11 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
         this.findViewById(R.id.cleanBtn).setEnabled(isEnable);
     }
 
-    public void unEnable(){
+    public void unEnable() {
         this.setEnabled(false);
     }
-    public void enable(){
+
+    public void enable() {
         this.setEnabled(true);
     }
 
@@ -92,13 +93,22 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
             this.isReadyClean = false;
         }
 
+        TextView valueBtnView = (TextView) v;
         switch (v.getId()) {
 
             case R.id.cleanBtn:
                 cleanValueWithoutUI();
                 break;
+
+            case R.id.delBtn:
+
+
+                if (value.length() >= 1) {
+                    this.value = this.value.substring(0, this.value.length() - 1);
+                }
+                break;
             default:
-                TextView valueBtnView = (TextView) v;
+
                 this.value += valueBtnView.getText();
                 break;
 
@@ -130,7 +140,7 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
     public void cleanValueWithoutUI() {
 
         this.isReadyClean = true;
-        this.value="";
+        this.value = "";
 
     }
 

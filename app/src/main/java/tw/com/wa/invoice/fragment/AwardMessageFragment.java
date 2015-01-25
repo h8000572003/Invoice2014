@@ -20,6 +20,7 @@ import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.Way;
+import tw.com.wa.invoice.util.RisCommon;
 
 /**
  * Created by Andy on 15/1/23.
@@ -50,12 +51,13 @@ public class AwardMessageFragment extends Fragment {
 
     private class Job extends AsyncTask<Void, Void, Void> {
 
+        private RisCommon risCommon = RisCommon.getRisCommon();
 
         @Override
         protected Void doInBackground(Void... params) {
 
 
-            final List<Invoice> invoices = BeanUtil.info.getInvoice();
+            final List<Invoice> invoices = this.risCommon.getInvoice(BeanUtil.getInfo());
             for (Way way : Way.values()) {
                 final WayDTO wayDTO = new WayDTO();
                 wayDTOs.add(wayDTO);
@@ -131,9 +133,9 @@ public class AwardMessageFragment extends Fragment {
                 holder.messageLabel.setText(String.format(way.getMessage(), way.getAward().dollar));
                 holder.title.setText(way.getAward().message);
 
-                if(invs.isEmpty()){
+                if (invs.isEmpty()) {
                     holder.invoviceLabel.setVisibility(View.GONE);
-                }else{
+                } else {
                     holder.invoviceLabel.setVisibility(View.VISIBLE);
                 }
 

@@ -2,6 +2,7 @@ package tw.com.wa.invoice.util;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class InvoiceEnterDAO extends GenericDAO<InvoiceEnter> {
     public void delete(String inYM) {
         super.delete("inYm=?", new String[]{inYM});
     }
+
+
+
 
 
 }
