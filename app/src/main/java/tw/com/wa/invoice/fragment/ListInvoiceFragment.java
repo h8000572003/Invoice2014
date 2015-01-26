@@ -225,6 +225,7 @@ public class ListInvoiceFragment extends Fragment {
         recyclerView.removeAllViews();
         job = new QueryJob();
         job.execute(inYm);
+
     }
 
 
