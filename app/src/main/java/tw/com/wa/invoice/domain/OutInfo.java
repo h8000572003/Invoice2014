@@ -17,7 +17,7 @@ public class OutInfo implements WiningInfo, Serializable {
     private final static String TITLE_TEMPLATE = "%04d/%02d-%02d";
     private InvoiceInfoV2 infoV2 = null;
     private List<Invoice> invoices = null;
-    private InvoYm invoYm;
+    private InvoYm invoYm = null;
     private String stagingYm;
     private String title;
     private WiningBean bean;
@@ -127,6 +127,9 @@ public class OutInfo implements WiningInfo, Serializable {
         this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo1(), true);
         this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo2(), true);
         this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo3(), true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo4(), true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo5(), true);
+        this.addInvoice(Award.Exactsix, invoiceList, bean.getSixthPrizeNo6(), true);
 
 
         return invoiceList;

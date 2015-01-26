@@ -118,5 +118,8 @@
 
 
     <string name="loading_activtiy_lab">最新期數:%s</string>
+    <string name="get_award_list">恭喜有中獎發票。</string>
 
+    <string name="get_continue_award">有可能對中獎清單，記得修改發票號碼，進而兌獎。</string>
+    <string name="get_no_award">無中獎清單。</string>
 </resources>

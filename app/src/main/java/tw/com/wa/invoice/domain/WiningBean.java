@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Andy on 2015/1/6.
  */
-public class WiningBean  implements WiningOutInfo,Serializable {
+public class WiningBean implements WiningOutInfo, Serializable {
     private String v = "";//版本號碼
     private String code = "";//訊息回應碼
     private String msg = "";//系統回應訊息
@@ -29,6 +29,10 @@ public class WiningBean  implements WiningOutInfo,Serializable {
     private String sixthPrizeNo1 = "";//六獎號碼 1
     private String sixthPrizeNo2 = "";//六獎號碼 2
     private String sixthPrizeNo3 = "";//六獎號碼 3
+    private String sixthPrizeNo4 = "";//六獎號碼 4
+    private String sixthPrizeNo5 = "";//六獎號碼 5
+    private String sixthPrizeNo6 = "";//六獎號碼 6
+
 
     private String superPrizeAmt = "";//千萬特獎金額
     private String spcPrizeAmt = "";//特獎金額
@@ -269,5 +273,29 @@ public class WiningBean  implements WiningOutInfo,Serializable {
 
     public void setSixthPrizeAmt(String sixthPrizeAmt) {
         this.sixthPrizeAmt = sixthPrizeAmt;
+    }
+
+    public String getSixthPrizeNo4() {
+        return sixthPrizeNo4;
+    }
+
+    public void setSixthPrizeNo4(String sixthPrizeNo4) {
+        this.sixthPrizeNo4 = sixthPrizeNo4;
+    }
+
+    public String getSixthPrizeNo5() {
+        return sixthPrizeNo5;
+    }
+
+    public void setSixthPrizeNo5(String sixthPrizeNo5) {
+        this.sixthPrizeNo5 = sixthPrizeNo5;
+    }
+
+    public String getSixthPrizeNo6() {
+        return sixthPrizeNo6;
+    }
+
+    public void setSixthPrizeNo6(String sixthPrizeNo6) {
+        this.sixthPrizeNo6 = sixthPrizeNo6;
     }
 }

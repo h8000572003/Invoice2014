@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.parse.codec.binary.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,10 @@ import tw.com.wa.invoice.util.RisCommon;
  * Created by Andy on 15/1/17.
  */
 public class ListInvoiceFragment extends Fragment {
+
+    private static final int GET_AWARD_PAGE = 0;
+    private static final int GET_COUNTINE_AWARD_PAGE = 1;
+    private static final int GET_NO_AWARD_PAGE = 2;
 
     public static final int ADD_CODE = 1;
     private static final String TAG = "ListInvoiceFragment";
@@ -231,6 +236,9 @@ public class ListInvoiceFragment extends Fragment {
 
     private class CheckJob extends AsyncTask<String, List<InvoiceEnter>, List<InvoiceEnter>> {
 
+        private boolean isHasContinueList = false;
+        private boolean isHasWinnings = false;
+
 
         @Override
         protected void onPreExecute() {
@@ -243,63 +251,89 @@ public class ListInvoiceFragment extends Fragment {
         protected List<InvoiceEnter> doInBackground(String... params) {
 
             dto.setShowLists(new ArrayList<InvoiceEnter>());
-            final List<Invoice> v2 = risCommon.getInvoice(BeanUtil.getInfo());
-
-
             for (InvoiceEnter enter : dto.getEnters()) {
-                CheckStatus status = AwardUtl.getString(enter.getNumber());
+                final CheckStatus status = AwardUtl.getString(enter.getNumber());
                 this.setAward(status, enter);
-
             }
+            if (position == ListInvoiceFragment.GET_AWARD_PAGE) {
+                this.deelWithAwardPage();
 
+            } else if (position == ListInvoiceFragment.GET_COUNTINE_AWARD_PAGE) {
+                this.deelWithCountineAwardPage();
 
-            if (position == 0) {
-                for (InvoiceEnter enter : dto.getEnters()) {
-                    if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Get) {
-                        dto.getShowLists().add(enter);
-                    }
-                }
-
-
-            } else if (position == 1) {
-                for (InvoiceEnter enter : dto.getEnters()) {
-                    if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Continue) {
-                        dto.getShowLists().add(enter);
-                    }
-                }
-
-            } else if (position == 2) {
-                for (InvoiceEnter enter : dto.getEnters()) {
-                    if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.None) {
-                        dto.getShowLists().add(enter);
-                    }
-                }
+            } else if (position == ListInvoiceFragment.GET_NO_AWARD_PAGE) {
+                this.deelWithNoAwardPage();
             }
+            this.checkIsWithisHasContinueList();
+            this.checkIsWithisHasWinnings();
 
             return dto.getEnters();
         }
 
-        private void setAward(CheckStatus status, InvoiceEnter enter) {
+        private void checkIsWithisHasContinueList() {
+            this.isHasContinueList = false;
+            for (InvoiceEnter enter : dto.getEnters()) {
+                final CheckStatus status = AwardUtl.getString(enter.getNumber());
+                if (status == CheckStatus.Continue) {
+                    isHasContinueList = true;
+                    break;
 
+                }
+            }
+        }
+
+        private void checkIsWithisHasWinnings() {
+            this.isHasWinnings = false;
+            for (InvoiceEnter enter : dto.getEnters()) {
+                final CheckStatus status = AwardUtl.getString(enter.getNumber());
+                if (status == CheckStatus.Get) {
+                    isHasWinnings = true;
+                    break;
+
+                }
+            }
+        }
+
+        private void deelWithAwardPage() {
+            for (InvoiceEnter enter : dto.getEnters()) {
+                if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Get) {
+                    dto.getShowLists().add(enter);
+                }
+            }
+        }
+
+        private void deelWithNoAwardPage() {
+            for (InvoiceEnter enter : dto.getEnters()) {
+                if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.None) {
+                    dto.getShowLists().add(enter);
+                }
+            }
+        }
+
+        private void deelWithCountineAwardPage() {
+            for (InvoiceEnter enter : dto.getEnters()) {
+                if (CheckStatus.valueOf(enter.getStatus()) == CheckStatus.Continue) {
+                    dto.getShowLists().add(enter);
+                }
+            }
+        }
+
+        private void setAward(CheckStatus status, InvoiceEnter enter) {
             enter.setStatus(status.toString());
 
             if (status == CheckStatus.Get) {
-
                 Award award = AwardUtl.getBestAwrd(enter.getNumber());
                 enter.setAward(award.unCode);
 
-
             } else if (status == CheckStatus.Continue) {
-
                 enter.setAward("");
 
-
             } else if (status == CheckStatus.None) {
-
                 enter.setAward("");
             }
 
         }
+
 
         @Override
         protected void onPostExecute(List<InvoiceEnter> invoiceEnters) {
@@ -318,6 +352,23 @@ public class ListInvoiceFragment extends Fragment {
 
             final RecyAdapter adapte = new RecyAdapter(dto.getShowLists());
 
+
+            List<String> message = new ArrayList<String>();
+
+            if (isHasWinnings) {
+                message.add(getString(R.string.get_award_list));
+            }
+
+            if (isHasContinueList) {
+                message.add(getString(R.string.get_continue_award));
+            }
+
+            String showMessage = TextUtils.join("\n", message);
+
+            if (TextUtils.isEmpty(showMessage)) {
+                showMessage = getString(R.string.get_no_award);
+            }
+            Toast.makeText(getActivity(), showMessage, Toast.LENGTH_SHORT).show();
 
             adapte.setOnBtnListner(new OnValueClickListner() {
                 @Override
