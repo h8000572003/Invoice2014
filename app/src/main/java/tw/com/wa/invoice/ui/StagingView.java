@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tw.com.wa.invoice.R;
@@ -42,8 +43,8 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
     private LoadJob job;
     private WiningInfo outInfo;
-    private InvoYm invoYm;
-    private OnValueChangeListener onValueChangeListener = new OnValueChangeListenerAdapter();
+
+    private OnInfoChangeListener onValueChangeListener = new OnValueChangeListenerAdapter();
     private RisCommon risCommon = RisCommon.getRisCommon();
 
     public StagingView(Context context) {
@@ -62,10 +63,9 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         this.bindView(context);
     }
 
-    public void init(WiningInfo info) {
-        this.outInfo = info;
-        this.invoYm = info.getStages();
 
+    public void buildNowStaus() {
+        this.outInfo = BeanUtil.getInfo();
 
         this.stagingText.setText(outInfo.getTitle());
 
@@ -73,7 +73,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         this.stageView.setText(context.getString(R.string.main_topic_lab, outInfo.getStages().getAwardRangDate().toString()));
     }
 
-    public void setOnValueChangeListener(OnValueChangeListener onValueChangeListener) {
+    public void setOnValueChangeListener(OnInfoChangeListener onValueChangeListener) {
         this.onValueChangeListener = onValueChangeListener;
     }
 
@@ -101,6 +101,9 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     }
 
     private String getInYm(View v) {
+
+
+        InvoYm invoYm = BeanUtil.getInfo().getStages();
         switch (v.getId()) {
 
             case R.id.nextBtn:
@@ -138,17 +141,18 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
                 final List<Invoice> invoiceList = outInfo.getInvoice();
 
-                final StringBuffer message = new StringBuffer();
+
+                List<String> messageList = new ArrayList<String>();
+
 
                 for (Invoice invoice : invoiceList) {
-                    message.append(Award.lookup(invoice.getAwards()).message);
-                    message.append(":");
-                    message.append(invoice.getNumber());
-                    message.append("\n");
+
+                    messageList.add(Award.lookup(invoice.getAwards()).message + ":" + invoice.getNumber());
+
                 }
 
 
-                alertDialog.setMessage(message.toString());
+                alertDialog.setMessage(TextUtils.join("\n", messageList));
                 alertDialog.setNeutralButton(context.getString(R.string.ok), null);
 
                 alertDialog.show();
@@ -179,7 +183,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     /**
      * 按鍵輸入監聽行為
      */
-    public interface OnValueChangeListener {
+    public interface OnInfoChangeListener {
         /**
          * @param e
          * @param messsage
@@ -194,7 +198,8 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
     }
 
-    private class OnValueChangeListenerAdapter implements OnValueChangeListener {
+
+    private class OnValueChangeListenerAdapter implements OnInfoChangeListener {
 
         /**
          * @param e
@@ -296,10 +301,9 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
                 stageView.setText(context.getString(R.string.main_topic_lab, risCommon.getRang(outInfo)));
-                invoYm = outInfo.getStages();
+
                 stagingText.setText(outInfo.getTitle());
                 stageView.setVisibility(View.VISIBLE);
-
 
 
             } catch (Exception e) {

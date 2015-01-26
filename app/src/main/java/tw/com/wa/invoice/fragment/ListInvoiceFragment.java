@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -26,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
-import com.parse.codec.binary.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +37,11 @@ import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.Award;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.CheckStatus;
-import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.InvoiceEnter;
 import tw.com.wa.invoice.domain.ListInvoiceDTO;
+import tw.com.wa.invoice.domain.WiningInfo;
 import tw.com.wa.invoice.ui.RecyAdapter;
+import tw.com.wa.invoice.ui.StagingView;
 import tw.com.wa.invoice.util.AwardUtl;
 import tw.com.wa.invoice.util.DbHelper;
 import tw.com.wa.invoice.util.InvoiceBusinessException;
@@ -53,11 +55,10 @@ import tw.com.wa.invoice.util.RisCommon;
  */
 public class ListInvoiceFragment extends Fragment {
 
+    public static final int ADD_CODE = 1;
     private static final int GET_AWARD_PAGE = 0;
     private static final int GET_COUNTINE_AWARD_PAGE = 1;
     private static final int GET_NO_AWARD_PAGE = 2;
-
-    public static final int ADD_CODE = 1;
     private static final String TAG = "ListInvoiceFragment";
     private Spinner status_spinner = null;
     private RecyclerView recyclerView = null;
@@ -65,16 +66,20 @@ public class ListInvoiceFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private View blankView = null;
     private TextView bottombar = null;
+    private StagingView stagingView = null;
 
 
     private ListInvoiceDTO dto = null;
     private View rootView = null;
 
-    private String inYm = "";
+
+    private boolean isShowMessage = false;
+
+
     private SwipeRefreshLayout.OnRefreshListener onSwipeToRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-
+            isShowMessage = true;
             doCheck();
         }
     };
@@ -106,9 +111,12 @@ public class ListInvoiceFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         this.risCommon = RisCommon.getRisCommon();
-        this.dto = new ListInvoiceDTO();
-        this.inYm = this.risCommon.getImYm(BeanUtil.getInfo());
 
+
+        this.dto = new ListInvoiceDTO();
+
+
+        // getActionBar().setSubtitle(risCommon.getTitle(BeanUtil.getInfo()));
 
     }
 
@@ -124,6 +132,7 @@ public class ListInvoiceFragment extends Fragment {
         this.status_spinner = (Spinner) rootView.findViewById(R.id.status_spinner);
         this.bottombar = (TextView) rootView.findViewById(R.id.bottombar);
         this.fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        this.stagingView = (StagingView) rootView.findViewById(R.id.stagingView);
 
 
         this.laySwipe.setOnRefreshListener(onSwipeToRefresh);
@@ -134,6 +143,7 @@ public class ListInvoiceFragment extends Fragment {
                 android.R.color.holo_orange_light);
 
 
+        this.stagingView.buildNowStaus();
         this.blankView.setVisibility(View.VISIBLE);
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
@@ -180,10 +190,40 @@ public class ListInvoiceFragment extends Fragment {
             }
         });
 
+        this.stagingView.setOnValueChangeListener(new StagingView.OnInfoChangeListener() {
+            @Override
+            public void onFail(Throwable e, String messsage) {
+
+            }
+
+            @Override
+            public void onLoad() {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+
+            }
+
+            @Override
+            public void onSuccessfully(WiningInfo winingInfo) {
+
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reFresh();
+                    }
+                });
+            }
+        });
+
 
         if (job == null) {
             job = new QueryJob();
-            job.execute(inYm);
+            job.execute(this.inYm());
         }
 
 
@@ -200,7 +240,7 @@ public class ListInvoiceFragment extends Fragment {
             con = dbHelper.getWritableDatabase();
 
             InvoiceEnterDAO enterDAO = new InvoiceEnterDAO(con, getActivity());
-            enterDAO.delete(inYm);
+            enterDAO.delete(this.inYm());
 
         } catch (InvoiceBusinessException e) {
             Log.e(TAG, "e" + e.getMessage());
@@ -220,7 +260,7 @@ public class ListInvoiceFragment extends Fragment {
     public void doCheck() {
         recyclerView.removeAllViews();
         CheckJob job = new CheckJob();
-        job.execute(inYm);
+        job.execute(this.inYm());
     }
 
     /**
@@ -229,10 +269,17 @@ public class ListInvoiceFragment extends Fragment {
     public void reFresh() {
         recyclerView.removeAllViews();
         job = new QueryJob();
-        job.execute(inYm);
+        job.execute(this.inYm());
 
     }
 
+    private String inYm() {
+        return risCommon.getImYm(BeanUtil.getInfo());
+    }
+
+    private ActionBar getActionBar() {
+        return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
 
     private class CheckJob extends AsyncTask<String, List<InvoiceEnter>, List<InvoiceEnter>> {
 
@@ -270,6 +317,7 @@ public class ListInvoiceFragment extends Fragment {
             return dto.getEnters();
         }
 
+        //
         private void checkIsWithisHasContinueList() {
             this.isHasContinueList = false;
             for (InvoiceEnter enter : dto.getEnters()) {
@@ -334,6 +382,28 @@ public class ListInvoiceFragment extends Fragment {
 
         }
 
+        private void showMessage() {
+            if (isShowMessage) {
+                isShowMessage = false;
+
+                final List<String> message = new ArrayList<String>();
+                if (isHasWinnings) {
+                    message.add(getString(R.string.get_award_list));
+                }
+
+                if (isHasContinueList) {
+                    message.add(getString(R.string.get_continue_award));
+                }
+
+                String showMessage = TextUtils.join("\n", message);
+
+                if (TextUtils.isEmpty(showMessage)) {
+                    showMessage = getString(R.string.get_no_award);
+                }
+                Toast.makeText(getActivity(), showMessage, Toast.LENGTH_LONG).show();
+            }
+        }
+
 
         @Override
         protected void onPostExecute(List<InvoiceEnter> invoiceEnters) {
@@ -350,26 +420,10 @@ public class ListInvoiceFragment extends Fragment {
                 blankView.setVisibility(View.INVISIBLE);
             }
 
+
+            this.showMessage();
+
             final RecyAdapter adapte = new RecyAdapter(dto.getShowLists());
-
-
-            List<String> message = new ArrayList<String>();
-
-            if (isHasWinnings) {
-                message.add(getString(R.string.get_award_list));
-            }
-
-            if (isHasContinueList) {
-                message.add(getString(R.string.get_continue_award));
-            }
-
-            String showMessage = TextUtils.join("\n", message);
-
-            if (TextUtils.isEmpty(showMessage)) {
-                showMessage = getString(R.string.get_no_award);
-            }
-            Toast.makeText(getActivity(), showMessage, Toast.LENGTH_SHORT).show();
-
             adapte.setOnBtnListner(new OnValueClickListner() {
                 @Override
                 public void onItemClick(String value, int pos) {
@@ -580,6 +634,5 @@ public class ListInvoiceFragment extends Fragment {
         }
 
     }
-
 
 }

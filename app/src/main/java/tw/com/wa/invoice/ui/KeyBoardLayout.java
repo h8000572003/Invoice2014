@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import tw.com.wa.invoice.R;
+import tw.com.wa.invoice.domain.WiningInfo;
 
 /**
  * 鍵盤
@@ -21,7 +22,6 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
 
 
     private TextView monitorView;
-
 
     public KeyBoardLayout(Context context) {
         super(context);
@@ -164,4 +164,6 @@ public class KeyBoardLayout extends LinearLayout implements View.OnClickListener
     public interface OnValueChangeListener {
         public void onChange(String value);
     }
+
+
 }

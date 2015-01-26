@@ -5,10 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
+
+        <tw.com.wa.invoice.ui.StagingView
+            android:id="@+id/stagingView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></tw.com.wa.invoice.ui.StagingView>
 
 
         <Spinner
@@ -60,7 +66,6 @@
                     android:layout_height="wrap_content"
                     android:background="@color/material_grey_500"
                     android:text="@string/invoice_list_hin" />
-
 
 
             </RelativeLayout>

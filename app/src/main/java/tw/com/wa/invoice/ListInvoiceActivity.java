@@ -1,19 +1,15 @@
 package tw.com.wa.invoice;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
+import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.fragment.ListInvoiceFragment;
-import tw.com.wa.invoice.ui.KeyBoardLayout;
+import tw.com.wa.invoice.util.RisCommon;
 
 /**
  * Created by Andy on 15/1/17.
@@ -25,8 +21,9 @@ public class ListInvoiceActivity extends ActionBarActivity {
 
     private ListInvoiceFragment listInvoiceFragment;
 
-    private Toolbar topToolBar = null;
-    private Toolbar bottomToolBar = null;
+
+    private RisCommon risCommon = null;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -55,30 +52,17 @@ public class ListInvoiceActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.invoice_layout);
 
-        getSupportActionBar().setSubtitle(getIntent().getExtras().getString("subTitle"));
-
-        //  Toolbar toolbar= getSupportActionBar();
-
-//        this.topToolBar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-//        topToolBar.setTitle(R.string.app_name);
-//        topToolBar.setSubtitle();
-
-        //  setSupportActionBar(topToolBar);
-
-        //     this.bottomToolBar= (Toolbar) this.findViewById(R.id.my_bottom_tool_bar);
+        this.risCommon = RisCommon.getRisCommon();
 
 
-        // setSupportActionBar(toolbar);
+        getSupportActionBar().setSubtitle(this.risCommon.getTitle(BeanUtil.getInfo()));
 
-        // getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-        if (savedInstanceState == null) {
-
-        }
         this.listInvoiceFragment = (ListInvoiceFragment) getSupportFragmentManager().findFragmentById(R.id.listInvoiceFragment);
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

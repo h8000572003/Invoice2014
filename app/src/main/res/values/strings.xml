@@ -79,7 +79,9 @@
     <string name="menu_add_lab">新增發票</string>
     <string name="add_invoice_btn_lab">新增</string>
 
-    <string name="blank_text">此兌獎方式是透過右下角新增發票，\n
+    <string name="blank_text">尚未加入發票</string>
+
+    <string name="job_teaching_txt">此兌獎方式是透過右下角新增發票，\n
 新增後此清單後，下拉清單將此發票清單，\n
 其中兌獎後將出現三種分類\n
 1.中獎發票\n
@@ -100,7 +102,6 @@
     <string name="invoice_list_hin">下拉清單，將兌獎</string>
     <string name="invoice_list_tool_lab">批次發票兌獎</string>
 
-
     <string name="main_topic_lab">領獎時間:%s</string>
 
 
@@ -120,6 +121,9 @@
     <string name="loading_activtiy_lab">最新期數:%s</string>
     <string name="get_award_list">恭喜有中獎發票。</string>
 
-    <string name="get_continue_award">有可能對中獎清單，記得修改發票號碼，進而兌獎。</string>
+    <string name="get_continue_award">有可能中獎清單。</string>
     <string name="get_no_award">無中獎清單。</string>
+
+    <string name="add_invoice_list_count">本次輸入發票數量:%s</string>
+    <string name="ready2InsetInvoice">剛剛新增之發票－＞%s</string>
 </resources>

@@ -103,7 +103,7 @@ public class MainFragment extends Fragment {
     }
 
     private void initValue() {
-        this.stagingView.init(BeanUtil.getInfo());
+        this.stagingView.buildNowStaus();
         final WiningInfo info = this.stagingView.getOutInfo();
         this.dto.setInfo(BeanUtil.getInfo());
         this.dto.setInvoiceInfoV2(info.getInfoV2());
@@ -292,7 +292,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private class MyOnValueChangeListener implements StagingView.OnValueChangeListener {
+    private class MyOnValueChangeListener implements StagingView.OnInfoChangeListener {
 
         @Override
         public void onFail(final Throwable e, final String messsage) {

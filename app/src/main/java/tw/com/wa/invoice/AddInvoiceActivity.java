@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.InvoiceEnter;
@@ -25,8 +26,11 @@ public class AddInvoiceActivity extends ActionBarActivity {
     private static final String TAG = "AddInvoiceActivity";
     private KeyBoardLayout keyBoardLayout;
     private EditText editText;
+    private TextView insetMessage;
 
     private RisCommon risCommon;
+
+    private String insertValue = "";
 
 
     private String inYm = "";
@@ -39,10 +43,15 @@ public class AddInvoiceActivity extends ActionBarActivity {
 
         this.risCommon = RisCommon.getRisCommon();
 
+        getSupportActionBar().setSubtitle(risCommon.getTitle(BeanUtil.getInfo()));
+
+
+
         this.inYm = this.risCommon.getImYm(BeanUtil.getInfo());
 
         this.keyBoardLayout = (KeyBoardLayout) this.findViewById(R.id.keyboardLayout);
         this.editText = (EditText) this.findViewById(R.id.invoviceLabel);
+        this.insetMessage = (TextView) this.findViewById(R.id.insetMessage);
 
         this.keyBoardLayout.setOnValueChangeListener(new KeyBoardLayout.OnValueChangeListener() {
             @Override
@@ -50,6 +59,7 @@ public class AddInvoiceActivity extends ActionBarActivity {
                 editText.setText(value);
                 if (value.length() == 3) {
                     insert();
+                    insertValue = value;
                 }
 
             }
@@ -73,7 +83,11 @@ public class AddInvoiceActivity extends ActionBarActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                keyBoardLayout.enable();
+
+                editText.setText("");
+                insetMessage.setText(getString(R.string.ready2InsetInvoice, insertValue));
+
+
             }
 
             @Override

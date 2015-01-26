@@ -1,7 +1,5 @@
 package tw.com.wa.invoice;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +14,7 @@ import tw.com.wa.invoice.domain.OutInfo;
 import tw.com.wa.invoice.fragment.AwardMessageFragment;
 import tw.com.wa.invoice.fragment.ListInvoiceFragment;
 import tw.com.wa.invoice.fragment.MainFragment;
+import tw.com.wa.invoice.util.RisCommon;
 
 
 public class NavigationdActivityV2 extends ActionBarActivity
@@ -35,6 +34,7 @@ public class NavigationdActivityV2 extends ActionBarActivity
     private int pos = 0;
 
 
+    private RisCommon risCommon = null;
 
 
     @Override
@@ -42,10 +42,13 @@ public class NavigationdActivityV2 extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_v2);
 
+        risCommon=RisCommon.getRisCommon();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+
+
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -142,7 +145,6 @@ public class NavigationdActivityV2 extends ActionBarActivity
         }
 
         switch (item.getItemId()) {
-
 
 
             case R.id.action_delete:

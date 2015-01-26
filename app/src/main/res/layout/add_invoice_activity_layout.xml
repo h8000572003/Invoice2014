@@ -7,13 +7,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="10dp"
-        android:layout_above="@id/keyboardLayout"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_above="@+id/keyboardLayout">
 
 
         <EditText
@@ -29,6 +32,21 @@
             android:layout_height="wrap_content"
             android:text="@string/add_invoice_messsage"
             android:id="@+id/textView3" />
+
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/insetMessage"
+                android:layout_width="wrap_content"
+                android:hint="新增資訊"
+                android:layout_height="wrap_content"
+                android:textColor="@color/material_green_300" />
+
+        </LinearLayout>
 
 
     </LinearLayout>

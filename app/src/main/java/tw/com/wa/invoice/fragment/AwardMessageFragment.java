@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ import tw.com.wa.invoice.R;
 import tw.com.wa.invoice.domain.BeanUtil;
 import tw.com.wa.invoice.domain.Invoice;
 import tw.com.wa.invoice.domain.Way;
+import tw.com.wa.invoice.domain.WiningInfo;
+import tw.com.wa.invoice.ui.StagingView;
 import tw.com.wa.invoice.util.RisCommon;
 
 /**
@@ -31,27 +34,84 @@ public class AwardMessageFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
+    private StagingView stagingView = null;
 
     private List<WayDTO> wayDTOs = new ArrayList<>();
+    private Job job = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.award_message_layout, container, false);
 
+        this.stagingView = (StagingView) rootView.findViewById(R.id.stagingView);
         this.recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
 
+        this.stagingView.buildNowStaus();
 
-        new Job().execute();
+        this.stagingView.setOnValueChangeListener(new StagingView.OnInfoChangeListener() {
+            @Override
+            public void onFail(final Throwable e, String messsage) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onLoad() {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onSuccessfully(WiningInfo winingInfo) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getJob() == null) {
+                            job = new Job();
+                            job.execute();
+                        } else {
+                            Toast.makeText(getActivity(), "資料更新中請稍後載試", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        if (this.getJob() == null) {
+            job = new Job();
+            this.getJob().execute();
+        }
+
 
         return rootView;
     }
 
 
+    public synchronized Job getJob() {
+        return job;
+    }
+
     private class Job extends AsyncTask<Void, Void, Void> {
 
+
         private RisCommon risCommon = RisCommon.getRisCommon();
+
+        @Override
+        protected void onPreExecute() {
+            wayDTOs.clear();
+            ;
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -78,6 +138,7 @@ public class AwardMessageFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             recyclerView.setAdapter(new InvAdapter());
+            job = null;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
