@@ -85,6 +85,8 @@ public class ListInvoiceFragment extends Fragment {
     };
     private int position = 0;
     private QueryJob job = null;
+
+    private CheckJob checkjob;
     private RisCommon risCommon = null;
 
     private boolean isCreateOn = true;
@@ -104,6 +106,10 @@ public class ListInvoiceFragment extends Fragment {
             }
         }
 
+    }
+
+    public synchronized CheckJob getCheckjob() {
+        return checkjob;
     }
 
     @Override
@@ -143,7 +149,7 @@ public class ListInvoiceFragment extends Fragment {
                 android.R.color.holo_orange_light);
 
 
-        this.stagingView.buildNowStaus();
+        this.stagingView.buildNowStatus();
         this.blankView.setVisibility(View.VISIBLE);
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
@@ -192,7 +198,13 @@ public class ListInvoiceFragment extends Fragment {
 
         this.stagingView.setOnValueChangeListener(new StagingView.OnInfoChangeListener() {
             @Override
-            public void onFail(Throwable e, String messsage) {
+            public void onFail(final Throwable e, String messsage) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
 
@@ -221,13 +233,17 @@ public class ListInvoiceFragment extends Fragment {
         });
 
 
-        if (job == null) {
+        if (getJob() == null) {
             job = new QueryJob();
             job.execute(this.inYm());
         }
 
 
         return rootView;
+    }
+
+    private synchronized AsyncTask getJob() {
+        return job;
     }
 
     public void deletList() {
@@ -258,16 +274,19 @@ public class ListInvoiceFragment extends Fragment {
 
 
     public void doCheck() {
-        recyclerView.removeAllViews();
-        CheckJob job = new CheckJob();
-        job.execute(this.inYm());
+        getRecyclerView().removeAllViews();
+        if (getCheckjob() == null) {
+            checkjob = new CheckJob();
+            checkjob.execute(this.inYm());
+        }
+
     }
 
     /**
      *
      */
     public void reFresh() {
-        recyclerView.removeAllViews();
+        getRecyclerView().removeAllViews();
         job = new QueryJob();
         job.execute(this.inYm());
 
@@ -407,15 +426,16 @@ public class ListInvoiceFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<InvoiceEnter> invoiceEnters) {
+            checkjob = null;
             dto.setEnters(invoiceEnters);
             laySwipe.setRefreshing(false);
 
             if (invoiceEnters == null || invoiceEnters.isEmpty()) {
                 blankView.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.INVISIBLE);
+                getRecyclerView().setVisibility(View.INVISIBLE);
             } else {
                 status_spinner.setVisibility(View.VISIBLE);
-                recyclerView
+                getRecyclerView()
                         .setVisibility(View.VISIBLE);
                 blankView.setVisibility(View.INVISIBLE);
             }
@@ -479,7 +499,7 @@ public class ListInvoiceFragment extends Fragment {
                 }
             });
 
-            recyclerView.setAdapter(adapte);
+            getRecyclerView().setAdapter(adapte);
         }
 
 
@@ -547,19 +567,20 @@ public class ListInvoiceFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<InvoiceEnter> invoiceEnters) {
+            job = null;
             dto.setEnters(invoiceEnters);
             laySwipe.setRefreshing(false);
 
             if (invoiceEnters == null || invoiceEnters.isEmpty()) {
                 blankView.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.INVISIBLE);
+                getRecyclerView().setVisibility(View.INVISIBLE);
             } else {
-                recyclerView
+                getRecyclerView()
                         .setVisibility(View.VISIBLE);
                 blankView.setVisibility(View.INVISIBLE);
             }
 
-            recyclerView.setAdapter(new InvAdapter(invoiceEnters, getActivity()));
+            getRecyclerView().setAdapter(new InvAdapter(invoiceEnters, getActivity()));
         }
 
 
@@ -635,4 +656,7 @@ public class ListInvoiceFragment extends Fragment {
 
     }
 
+    public synchronized RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
 }

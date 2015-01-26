@@ -103,7 +103,7 @@ public class MainFragment extends Fragment {
     }
 
     private void initValue() {
-        this.stagingView.buildNowStaus();
+        this.stagingView.buildNowStatus();
         final WiningInfo info = this.stagingView.getOutInfo();
         this.dto.setInfo(BeanUtil.getInfo());
         this.dto.setInvoiceInfoV2(info.getInfoV2());

@@ -64,7 +64,7 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     }
 
 
-    public void buildNowStaus() {
+    public void buildNowStatus() {
         this.outInfo = BeanUtil.getInfo();
 
         this.stagingText.setText(outInfo.getTitle());
@@ -89,9 +89,11 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
     }
 
     public void run(String invoiceYm) {
-        if (this.job == null) {
-            this.job = new LoadJob(invoiceYm);
-            this.job.execute();
+        if (getJob() == null) {
+
+            this.setJob(new LoadJob(invoiceYm));
+
+            getJob().execute();
         }
     }
 
@@ -180,6 +182,14 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
     }
 
+    public synchronized LoadJob getJob() {
+        return job;
+    }
+
+    public synchronized void setJob(LoadJob job) {
+        this.job = job;
+    }
+
     /**
      * 按鍵輸入監聽行為
      */
@@ -197,7 +207,6 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
         void onSuccessfully(WiningInfo winingInfo);
 
     }
-
 
     private class OnValueChangeListenerAdapter implements OnInfoChangeListener {
 
@@ -301,7 +310,6 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
 
 
                 stageView.setText(context.getString(R.string.main_topic_lab, risCommon.getRang(outInfo)));
-
                 stagingText.setText(outInfo.getTitle());
                 stageView.setVisibility(View.VISIBLE);
 
@@ -309,7 +317,8 @@ public class StagingView extends LinearLayout implements View.OnClickListener {
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             } finally {
-                StagingView.this.job = null;
+                StagingView.this.setJob(null);
+
                 StagingView.this.onValueChangeListener.onFinish();
             }
         }

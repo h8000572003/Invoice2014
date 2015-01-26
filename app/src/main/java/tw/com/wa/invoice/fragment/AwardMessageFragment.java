@@ -48,7 +48,7 @@ public class AwardMessageFragment extends Fragment {
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
 
-        this.stagingView.buildNowStaus();
+        this.stagingView.buildNowStatus();
 
         this.stagingView.setOnValueChangeListener(new StagingView.OnInfoChangeListener() {
             @Override
