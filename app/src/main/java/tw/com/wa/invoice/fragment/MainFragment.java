@@ -301,7 +301,7 @@ public class MainFragment extends Fragment {
                     Toast.makeText(getActivity(), messsage, Toast.LENGTH_SHORT).show();
 
                 }
-            });
+            });1
         }
 
         @Override
